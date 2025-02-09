@@ -1,12 +1,27 @@
-'use-client';
+'use client';
 
-import { PropsWithChildren } from "react";
+import NavDrawer from "@/components/layout/NavDrawer/NavDrawer";
+import { theme } from "@/styles/Theme";
+import { ThemeProvider } from "@mui/material";
+import { PropsWithChildren, useState } from "react";
 
-const ClientLayout = (props: PropsWithChildren) => {
+const ClientLayout = ({ children }: PropsWithChildren) => {
+  const [isNavDrawerOpen, setNavDrawerOpen] = useState(false);
+
+  const handleDrawerOpen = () => {
+    setNavDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setNavDrawerOpen(false);
+  };
+
   return (
-    <div>
-      <h1>Client Layout</h1>
-      {props.children}  
-    </div>
+    <ThemeProvider theme={theme}>
+      <NavDrawer open={isNavDrawerOpen} onClose={handleDrawerClose} onOpen={handleDrawerOpen} />
+      {children}
+    </ThemeProvider>
   );
 }
+
+export default ClientLayout;
