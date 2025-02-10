@@ -63,9 +63,9 @@ declare module '@mui/material/Button' {
     dark: true;
   }
 }
-
+// export const theme = createTheme({});
 export const theme = createTheme({
-  cssVariables: true,
+  // cssVariables: true,
   palette: {
     primary: {
       main: '#1626BA',
@@ -223,9 +223,9 @@ theme.components = {
           backgroundColor: theme.palette.grey[500],
         },
         '& input::-webkit-search-decoration, & input::-webkit-search-cancel-button, & input::-webkit-search-results-button, & input::-webkit-search-results-decoration':
-          {
-            '-webkit-appearance': 'none',
-          },
+        {
+          'WebkitAppearance': 'none',
+        },
       },
     },
   },
@@ -300,55 +300,55 @@ theme.components = {
       },
     },
   },
-  MuiButton: {
-    variants: [
-      {
-        props: { variant: 'outlined' },
-        style: {
-          border: '2px solid ',
-          '&:hover': {
-            borderWidth: '2px',
-          },
-        },
-      },
-    ],
-    defaultProps: {
-      color: 'primary',
-      variant: 'contained',
-      size: 'small',
-      disableElevation: true,
-    },
-    styleOverrides: {
-      root: {
-        alignItems: 'center',
-        borderRadius: 8,
-        display: 'flex',
-        fontStyle: 'normal',
-        fontWeight: 700,
-        fontSize: 12,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        lineHeight: '22px',
-        letterSpacing: '0.46px',
-        margin: '0px',
-      },
-      sizeLarge: {
-        height: 50,
-        padding: '0px 14px',
-      },
-      sizeMedium: {
-        height: 42,
-        padding: '0px 11px',
-      },
-      sizeSmall: {
-        height: 36,
-        padding: '0px 16px',
-      },
-      colorInherit: {
-        color: theme.palette.grey[800],
-      },
-    },
-  },
+  // MuiButton: {
+  //   variants: [
+  //     {
+  //       props: { variant: 'outlined' },
+  //       style: {
+  //         border: '2px solid ',
+  //         '&:hover': {
+  //           borderWidth: '2px',
+  //         },
+  //       },
+  //     },
+  //   ],
+  //   defaultProps: {
+  //     color: 'primary',
+  //     variant: 'contained',
+  //     size: 'small',
+  //     disableElevation: true,
+  //   },
+  //   styleOverrides: {
+  //     root: {
+  //       alignItems: 'center',
+  //       borderRadius: 8,
+  //       display: 'flex',
+  //       fontStyle: 'normal',
+  //       fontWeight: 700,
+  //       fontSize: 12,
+  //       flexDirection: 'column',
+  //       justifyContent: 'center',
+  //       lineHeight: '22px',
+  //       letterSpacing: '0.46px',
+  //       margin: '0px',
+  //     },
+  //     sizeLarge: {
+  //       height: 50,
+  //       padding: '0px 14px',
+  //     },
+  //     sizeMedium: {
+  //       height: 42,
+  //       padding: '0px 11px',
+  //     },
+  //     sizeSmall: {
+  //       height: 36,
+  //       padding: '0px 16px',
+  //     },
+  //     colorInherit: {
+  //       color: theme.palette.grey[800],
+  //     },
+  //   },
+  // },
   MuiPaper: {
     styleOverrides: {
       root: {
