@@ -1,9 +1,9 @@
 'use client';
 
-import NavDrawer from "@/components/layout/NavDrawer/NavDrawer";
-import { theme } from "@/styles/Theme";
-import { ThemeProvider } from "@mui/material";
-import { PropsWithChildren, useState } from "react";
+import NavDrawer from '@/components/layout/NavDrawer/NavDrawer';
+import { theme } from '@/styles/Theme';
+import { ThemeProvider } from '@mui/material';
+import { PropsWithChildren, useState } from 'react';
 
 const ClientLayout = ({ children }: PropsWithChildren) => {
   const [isNavDrawerOpen, setNavDrawerOpen] = useState(false);
@@ -22,6 +22,6 @@ const ClientLayout = ({ children }: PropsWithChildren) => {
       {children}
     </ThemeProvider>
   );
-}
+};
 
 export default ClientLayout;

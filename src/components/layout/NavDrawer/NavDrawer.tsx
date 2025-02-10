@@ -1,6 +1,7 @@
-import useDrawerWidth from "@/hooks/useDrawerWidth";
-import { PropsWithChildren } from "react";
-import { NavDrawerStyled } from "./NavDrawerStyled";
+'use client';
+
+import useDrawerWidth from '@/hooks/useDrawerWidth';
+import { NavDrawerStyled } from './NavDrawerStyled';
 
 interface NavDrawerProps {
   open: boolean;
@@ -8,7 +9,7 @@ interface NavDrawerProps {
   onOpen: () => void;
 }
 
-const NavDrawer = ({ open, onClose, onOpen }: NavDrawerProps) => {
+const NavDrawer = ({ open }: NavDrawerProps) => {
   const drawerWidth = useDrawerWidth();
   const drawerVariant = drawerWidth === '250px' ? 'permanent' : 'persistent';
   return (
@@ -16,9 +17,8 @@ const NavDrawer = ({ open, onClose, onOpen }: NavDrawerProps) => {
       drawerwidth={drawerWidth}
       variant={drawerVariant}
       open={open}
-    >
-    </NavDrawerStyled>
-  )
-}
+    ></NavDrawerStyled>
+  );
+};
 
 export default NavDrawer;

@@ -1,8 +1,8 @@
 'use client';
 
-import { Billing } from "@/components/features/billing/types";
-import { useBillingData } from "@/services/billingServices";
-import { createContext, useContext, useEffect, useState } from "react";
+import { Billing } from '@/components/features/billing/types';
+import { fetchBillingData } from '@/services/billingServices';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 interface BillintContextType {
   data: Billing[];
@@ -20,7 +20,7 @@ const BillingContext = createContext({} as BillintContextType);
 export const BillingProvider = ({ children }: Props) => {
   const value = useBillingProvider();
   return <BillingContext.Provider value={value}>{children}</BillingContext.Provider>;
-}
+};
 
 export const useBilling = () => {
   const context = useContext(BillingContext);
@@ -37,7 +37,7 @@ const useBillingProvider = () => {
 
   const refreshData = async () => {
     setLoading(true);
-    const { data, error } = await useBillingData();
+    const { data, error } = await fetchBillingData();
     if (error) {
       setError(error);
     } else {
@@ -51,4 +51,4 @@ const useBillingProvider = () => {
   }, []);
 
   return { data, loading, error, refreshData };
-}
+};

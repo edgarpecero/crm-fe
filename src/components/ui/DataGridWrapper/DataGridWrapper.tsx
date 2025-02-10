@@ -1,13 +1,12 @@
 'use client';
 
-import React, { use, useEffect, useMemo, useState } from 'react';
-import type {} from '@mui/x-data-grid/themeAugmentation'; 
-import { LinearProgress } from '@mui/material';
-import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import React, { useEffect, useMemo, useState } from 'react';
+import type { } from '@mui/x-data-grid/themeAugmentation';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
-import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
+// import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import { DataGrid, DataGridProps, GridRowParams, GridSortModel } from '@mui/x-data-grid';
 import { theme as currentTheme } from '@/styles/Theme';
 import NoResults from '../IconButtons/NoResults/NoResults';
@@ -16,6 +15,7 @@ import { getDataGridTheme, GridTheme } from './DataGridTheme';
 export const expandIconStyles = { color: currentTheme.palette.grey[800], fontSize: '16px' };
 
 export interface DataGridWrapperProps extends Omit<DataGridProps, 'rows'> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rowData: any;
   onSortChange?: (sortModel: GridSortModel) => void;
   onRowDelete?: (params: GridRowParams) => void;
@@ -37,9 +37,10 @@ const DataGridWrapper = ({
   sx,
   ...props
 }: DataGridWrapperProps) => {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [data, setData] = useState<any>([]);
   const dataGridTheme = getDataGridTheme(themeSelector);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const rows: any[] = [];
@@ -93,7 +94,7 @@ const DataGridWrapper = ({
   //   const timeoutIndex = setTimeout(() => setLoading(false), 1000);
   //   return () => clearInterval(timeoutIndex);
   // }, [data]);
-
+  /* eslint-enable @typescript-eslint/no-explicit-any */
   return (
     <ThemeProvider theme={createTheme(dataGridTheme)}>
       <DataGrid

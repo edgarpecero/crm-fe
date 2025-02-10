@@ -1,9 +1,9 @@
 'use client';
 
-import { GridColDef } from "@mui/x-data-grid";
-import { Billing } from "./types";
-import DataGridWrapper from "@/components/ui/DataGridWrapper/DataGridWrapper";
-import { useBilling } from "@/context/BillingContext/BillingContext";
+import { GridColDef } from '@mui/x-data-grid';
+import { Billing } from './types';
+import DataGridWrapper from '@/components/ui/DataGridWrapper/DataGridWrapper';
+import { useBilling } from '@/context/BillingContext/BillingContext';
 
 const columns: GridColDef<Billing>[] = [
   { field: 'folio', headerName: 'Folio', width: 100 },
@@ -34,14 +34,9 @@ const columns: GridColDef<Billing>[] = [
 ];
 
 const BillingTable = () => {
-  const { data, loading, error } = useBilling();
+  const { data } = useBilling();
 
-  return (
-    <DataGridWrapper
-      columns={columns}
-      rowData={data}
-    />
-  );
-}
+  return <DataGridWrapper columns={columns} rowData={data} />;
+};
 
 export default BillingTable;

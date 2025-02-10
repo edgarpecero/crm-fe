@@ -84,6 +84,7 @@ const spreadSheetTheme = createTheme({
   components: {
     MuiDataGrid: {
       defaultProps: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         getCellClassName: (params: GridCellParams<any, any, number>) => {
           if (params.isEditable) return 'editableCell';
           return 'disableCell';

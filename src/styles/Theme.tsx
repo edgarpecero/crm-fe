@@ -3,14 +3,7 @@
 import { createTheme } from '@mui/material/styles';
 import Clear from '@mui/icons-material/Clear';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Roboto, Poppins } from 'next/font/google';
-
-const poppins = Poppins({
-  weight: ['300', '400', '500', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-poppins',
-});
+import { Roboto } from 'next/font/google';
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -223,9 +216,9 @@ theme.components = {
           backgroundColor: theme.palette.grey[500],
         },
         '& input::-webkit-search-decoration, & input::-webkit-search-cancel-button, & input::-webkit-search-results-button, & input::-webkit-search-results-decoration':
-        {
-          'WebkitAppearance': 'none',
-        },
+          {
+            WebkitAppearance: 'none',
+          },
       },
     },
   },
