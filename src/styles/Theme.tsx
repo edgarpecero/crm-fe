@@ -71,7 +71,7 @@ export const theme = createTheme({
     },
     error: {
       main: '#D9244F',
-      light: '#d9244f14',
+      light: '#e97b95',
     },
     warning: {
       main: '#D6A11C',
@@ -195,7 +195,7 @@ theme.components = {
         '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
           backgroundColor: theme.palette.grey[500],
           width: '6px',
-          height: '6px',
+          height: '10px',
         },
         '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
           borderRadius: 8,

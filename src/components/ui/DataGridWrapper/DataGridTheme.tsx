@@ -23,6 +23,12 @@ const greyDataGridTheme = createTheme({
           '& .MuiDataGrid-detailPanelToggleCell:disabled': {
             opacity: 0,
           },
+          '& .red-row': {
+            backgroundColor: theme.palette.error.light,
+            '&:hover': {
+              backgroundColor: theme.palette.error.main,
+            },
+          },
         },
         columnHeader: {
           backgroundColor: theme.palette.grey[300],

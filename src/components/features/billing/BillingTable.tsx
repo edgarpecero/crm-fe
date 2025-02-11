@@ -1,9 +1,11 @@
 'use client';
 
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridRowParams } from '@mui/x-data-grid';
 import { Billing } from './types';
 import DataGridWrapper from '@/components/ui/DataGridWrapper/DataGridWrapper';
 import { useBilling } from '@/context/BillingContext/BillingContext';
+import DataGridHeader from '@/components/ui/DataGridWrapper/DataGridHeader';
+import { useState } from 'react';
 
 const columns: GridColDef<Billing>[] = [
   { field: 'folio', headerName: 'Folio', width: 100 },
@@ -35,8 +37,35 @@ const columns: GridColDef<Billing>[] = [
 
 const BillingTable = () => {
   const { data } = useBilling();
+  const [searchInput, setSearchInput] = useState('');
 
-  return <DataGridWrapper columns={columns} rowData={data} />;
+  const memoizedData = data.filter(
+    (item) => {
+      return (
+        item.folio.toLowerCase().includes(searchInput.toLowerCase()) ||
+        item.seller.toLowerCase().includes(searchInput.toLowerCase()) ||
+        item.product.toLowerCase().includes(searchInput.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchInput.toLowerCase()) ||
+        item.client.toLowerCase().includes(searchInput.toLowerCase())
+      );
+    },
+    [searchInput],
+  );
+
+  const handleSearch = (value: string) => {
+    setSearchInput(value);
+  };
+
+  const getRowClassName = (params: GridRowParams) => {
+    return params.row.status === 'Cancelado' ? 'red-row' : '';
+  };
+
+  return (
+    <>
+      <DataGridHeader handleSearch={handleSearch} />
+      <DataGridWrapper columns={columns} rowData={memoizedData} getRowClassName={getRowClassName} />
+    </>
+  );
 };
 
 export default BillingTable;

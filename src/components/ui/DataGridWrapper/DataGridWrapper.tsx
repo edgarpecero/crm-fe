@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import type { } from '@mui/x-data-grid/themeAugmentation';
+import type {} from '@mui/x-data-grid/themeAugmentation';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
@@ -14,8 +14,8 @@ import { getDataGridTheme, GridTheme } from './DataGridTheme';
 
 export const expandIconStyles = { color: currentTheme.palette.grey[800], fontSize: '16px' };
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface DataGridWrapperProps extends Omit<DataGridProps, 'rows'> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rowData: any;
   onSortChange?: (sortModel: GridSortModel) => void;
   onRowDelete?: (params: GridRowParams) => void;
@@ -37,7 +37,6 @@ const DataGridWrapper = ({
   sx,
   ...props
 }: DataGridWrapperProps) => {
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [data, setData] = useState<any>([]);
   const dataGridTheme = getDataGridTheme(themeSelector);
   // const [loading, setLoading] = useState(true);

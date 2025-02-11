@@ -58,6 +58,7 @@
   {
     "folio": "PC1027AM",
     "seller": "CARLOS",
+    "status": "Cancelado",
     "product": "AUTO",
     "description": "NISSAN MARCH",
     "amount": "$ 217.000",
