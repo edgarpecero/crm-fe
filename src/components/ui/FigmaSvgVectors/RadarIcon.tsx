@@ -1,5 +1,4 @@
-import { v4 } from 'uuid';
-import { theme } from '../../theme/Theme';
+import { theme } from "@/styles/Theme";
 
 const circleStyles = {
   animationDuration: '2s',
@@ -16,7 +15,8 @@ const svgStyles = {
 };
 
 const RadarIcon = ({ waveBg = theme.palette.success.dark, wrapperSize = 15, margin = '' }) => {
-  const uuidv4 = v4();
+  // const uuidv4 = v4();
+  const uuidv4 = 'Id' + Math.random().toString(16).slice(2);
   return (
     <div style={{ width: wrapperSize, height: wrapperSize, margin }}>
       <svg style={svgStyles} viewBox='0 0 130 130' xmlns='http://www.w3.org/2000/svg'>

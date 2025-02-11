@@ -1,4 +1,4 @@
-import BarcodeReader from 'react-barcode-reader';
+// import BarcodeReader from 'react-barcode-reader';
 
 const ScanBarCode = ({
   onScan,
@@ -9,7 +9,7 @@ const ScanBarCode = ({
 }) => {
   return (
     <>
-      <BarcodeReader onScan={onScan} onError={onError} />
+      {/* <BarcodeReader onScan={onScan} onError={onError} /> */}
       <img width={300} height={300} src='./FigmaSvgVectors/ScanBarCode.svg' alt='Scan Bar Code' />
     </>
   );
