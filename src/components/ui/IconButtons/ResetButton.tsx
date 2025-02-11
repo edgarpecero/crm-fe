@@ -3,7 +3,7 @@ import { memo } from 'react';
 import { getIconButtonsProps } from './helpers';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { ButtonTypeEnum, IconButtonsProps } from './types';
-import { theme } from '../../theme/Theme';
+import { theme } from '@/styles/Theme';
 
 const ResetButton = (props: IconButtonsProps) => {
   const defaultProps = { ...props, buttonType: ButtonTypeEnum.CellButton };

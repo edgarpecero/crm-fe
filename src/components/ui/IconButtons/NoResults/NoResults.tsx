@@ -8,17 +8,17 @@ import { SearchHandsSVG } from '../../FigmaSvgVectors/SearchHands';
 interface NoResultsProps {
   title?: string;
   subtitle?: string;
-  iconSize?: string;
+  iconSize?: number;
 }
 
 const NoResults = ({
   title = 'Oops, no hay resultados',
   subtitle = 'Intenta con otra búsqueda',
-  iconSize,
+  iconSize = 250,
 }: NoResultsProps) => {
   return (
     <div style={noResultsWrapperStyles}>
-      <SearchHandsSVG size={iconSize || '250px'} />
+      <SearchHandsSVG size={iconSize} />
       <Typography variant='h6' fontWeight={800}>
         {title}
       </Typography>

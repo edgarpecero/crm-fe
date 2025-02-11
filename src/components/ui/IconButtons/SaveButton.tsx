@@ -3,7 +3,7 @@ import { memo } from 'react';
 import { getIconButtonsProps } from './helpers';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { ButtonTypeEnum, IconButtonsProps } from './types';
-import { theme } from '../../theme/Theme';
+import { theme } from '@/styles/Theme';
 
 const SaveButton = (props: IconButtonsProps) => {
   const defaultProps = { ...props, buttonType: ButtonTypeEnum.CellButton };
