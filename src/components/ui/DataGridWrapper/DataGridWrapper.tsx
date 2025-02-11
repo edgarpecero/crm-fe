@@ -22,7 +22,7 @@ export interface DataGridWrapperProps extends Omit<DataGridProps, 'rows'> {
   themeSelector?: GridTheme;
   notFoundSubtitle?: string;
   notFoundTitle?: string;
-  notFoundIconSize?: string;
+  notFoundIconSize?: number;
 }
 
 const DataGridWrapper = ({
