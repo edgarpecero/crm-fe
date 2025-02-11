@@ -1,4 +1,4 @@
-import { theme } from "@/styles/Theme";
+import { theme } from '@/styles/Theme';
 
 const circleStyles = {
   animationDuration: '2s',

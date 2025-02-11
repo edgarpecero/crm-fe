@@ -4,7 +4,7 @@ import { Billing } from '@/components/features/billing/types';
 import { fetchBillingData } from '@/services/billingServices';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-interface BillintContextType {
+interface BillingContextType {
   data: Billing[];
   loading: boolean;
   error: Error | null;
@@ -15,7 +15,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const BillingContext = createContext({} as BillintContextType);
+const BillingContext = createContext({} as BillingContextType);
 
 export const BillingProvider = ({ children }: Props) => {
   const value = useBillingProvider();

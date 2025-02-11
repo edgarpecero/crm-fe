@@ -5,12 +5,7 @@ import Image from 'next/image';
 
 export const SearchHandsSVG = ({ size = 500 }: { size?: number }) => {
   return (
-    <Image
-      width={size}
-      height={size}
-      src='./FigmaSvgVectors/SearchHands.svg'
-      alt='Search Hands'
-    />
+    <Image width={size} height={size} src='./FigmaSvgVectors/SearchHands.svg' alt='Search Hands' />
   );
 };
 

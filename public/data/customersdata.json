@@ -1,0 +1,254 @@
+[
+  {
+    "customerId": 201,
+    "name": "Juan",
+    "lastName": "Pérez López",
+    "email": "juan.perez@email.com",
+    "phonePrimary": "5551234567",
+    "phoneSecondary": "5559876543",
+    "address": "Av. Reforma 123, CDMX, MX",
+    "dateOfBirth": "1985-04-23",
+    "nationalId": "MXP850423HDFRRN01",
+    "licenseNumber": "LJPL123456",
+    "licenseExpiration": "2026-12-10",
+    "registrationDate": "2023-02-15",
+    "purchaseHistory": [
+      {
+        "folio": "PC4001AM",
+        "carDescription": "Toyota Corolla",
+        "saleDate": "2023-03-01",
+        "purchaseType": "Financing",
+        "totalPrice": 280000,
+        "downPayment": 40000,
+        "loanAmount": 240000,
+        "monthlyPayment": 10000,
+        "termMonths": 24,
+        "remainingBalance": 180000,
+        "status": "Active"
+      }
+    ],
+    "paymentHistory": [
+      {
+        "paymentNumber": 1,
+        "folio": "PC4001AM",
+        "scheduledPaymentDate": "2023-04-01",
+        "realPaymentDate": "2023-04-01",
+        "amountPaid": 10000,
+        "capitalPaid": 9000,
+        "interestPaid": 1000,
+        "interestGenerated": 0,
+        "status": "On Time",
+        "daysLate": 0
+      }
+    ],
+    "financialSummary": {
+      "totalLoanAmount": 240000,
+      "totalAmountDue": 180000,
+      "nextPaymentDueDate": "2024-02-01",
+      "nextPaymentAmount": 10000,
+      "lastPaymentDate": "2024-01-01",
+      "lastPaymentAmount": 10000,
+      "totalLatePayments": 0,
+      "totalAdvancedPayments": 1,
+      "totalInterestPaid": 1000
+    },
+    "documents": {
+      "contractSigned": true,
+      "insuranceValid": true,
+      "licenseValid": true,
+      "identificationVerified": true
+    },
+    "notes": "Customer has never missed a payment."
+  },
+  {
+    "customerId": 202,
+    "name": "Maria Fernanda",
+    "lastName": "Gómez",
+    "email": "maria.gomez@email.com",
+    "phonePrimary": "5587654321",
+    "phoneSecondary": "5576543210",
+    "address": "Calle Independencia 56, Guadalajara, MX",
+    "dateOfBirth": "1990-11-10",
+    "nationalId": "MXG901110MDFRLR02",
+    "licenseNumber": "LMFG765432",
+    "licenseExpiration": "2027-09-15",
+    "registrationDate": "2023-03-20",
+    "purchaseHistory": [
+      {
+        "folio": "PC4002AM",
+        "carDescription": "Honda Civic",
+        "saleDate": "2023-05-05",
+        "purchaseType": "Financing",
+        "totalPrice": 320000,
+        "downPayment": 50000,
+        "loanAmount": 270000,
+        "monthlyPayment": 12000,
+        "termMonths": 36,
+        "remainingBalance": 216000,
+        "status": "Active"
+      }
+    ],
+    "paymentHistory": [
+      {
+        "paymentNumber": 1,
+        "folio": "PC4002AM",
+        "scheduledPaymentDate": "2023-06-05",
+        "realPaymentDate": "2023-06-07",
+        "amountPaid": 12200,
+        "capitalPaid": 11000,
+        "interestPaid": 1200,
+        "interestGenerated": 200,
+        "status": "Late",
+        "daysLate": 2
+      }
+    ],
+    "financialSummary": {
+      "totalLoanAmount": 270000,
+      "totalAmountDue": 216000,
+      "nextPaymentDueDate": "2024-02-05",
+      "nextPaymentAmount": 12000,
+      "lastPaymentDate": "2024-01-05",
+      "lastPaymentAmount": 12000,
+      "totalLatePayments": 1,
+      "totalAdvancedPayments": 0,
+      "totalInterestPaid": 1200
+    },
+    "documents": {
+      "contractSigned": true,
+      "insuranceValid": true,
+      "licenseValid": true,
+      "identificationVerified": true
+    },
+    "notes": "Customer paid late once but remains consistent."
+  },
+  {
+    "customerId": 203,
+    "name": "Carlos",
+    "lastName": "Ramírez Díaz",
+    "email": "carlos.ramirez@email.com",
+    "phonePrimary": "5543219876",
+    "phoneSecondary": "5598765432",
+    "address": "Av. Juárez 200, Monterrey, MX",
+    "dateOfBirth": "1982-07-18",
+    "nationalId": "MXR820718HDFRRN03",
+    "licenseNumber": "LCRD876543",
+    "licenseExpiration": "2025-11-22",
+    "registrationDate": "2023-04-10",
+    "purchaseHistory": [
+      {
+        "folio": "PC4003AM",
+        "carDescription": "Ford Mustang",
+        "saleDate": "2023-07-01",
+        "purchaseType": "Cash",
+        "totalPrice": 450000,
+        "downPayment": 450000,
+        "loanAmount": 0,
+        "monthlyPayment": 0,
+        "termMonths": 0,
+        "remainingBalance": 0,
+        "status": "Completed"
+      }
+    ],
+    "paymentHistory": [],
+    "financialSummary": {
+      "totalLoanAmount": 0,
+      "totalAmountDue": 0,
+      "nextPaymentDueDate": "",
+      "nextPaymentAmount": 0,
+      "lastPaymentDate": "2023-07-01",
+      "lastPaymentAmount": 450000,
+      "totalLatePayments": 0,
+      "totalAdvancedPayments": 0,
+      "totalInterestPaid": 0
+    },
+    "documents": {
+      "contractSigned": true,
+      "insuranceValid": true,
+      "licenseValid": true,
+      "identificationVerified": true
+    },
+    "notes": "Paid in full at the time of purchase."
+  },
+  {
+    "customerId": 204,
+    "name": "Sofía",
+    "lastName": "Hernández Torres",
+    "email": "sofia.hernandez@email.com",
+    "phonePrimary": "5596543210",
+    "phoneSecondary": "5532109876",
+    "address": "Calle Reforma 80, Mérida, MX",
+    "dateOfBirth": "1995-03-25",
+    "nationalId": "MXH950325MDFRLR04",
+    "licenseNumber": "LSHT987654",
+    "licenseExpiration": "2028-06-30",
+    "registrationDate": "2023-06-15",
+    "purchaseHistory": [
+      {
+        "folio": "PC4004AM",
+        "carDescription": "Nissan Sentra",
+        "saleDate": "2023-08-10",
+        "purchaseType": "Financing",
+        "totalPrice": 300000,
+        "downPayment": 50000,
+        "loanAmount": 250000,
+        "monthlyPayment": 10500,
+        "termMonths": 36,
+        "remainingBalance": 220500,
+        "status": "Active"
+      }
+    ],
+    "paymentHistory": [],
+    "financialSummary": {
+      "totalLoanAmount": 250000,
+      "totalAmountDue": 220500,
+      "nextPaymentDueDate": "2024-02-10",
+      "nextPaymentAmount": 10500,
+      "lastPaymentDate": "2024-01-10",
+      "lastPaymentAmount": 10500,
+      "totalLatePayments": 0,
+      "totalAdvancedPayments": 0,
+      "totalInterestPaid": 0
+    },
+    "documents": {
+      "contractSigned": true,
+      "insuranceValid": true,
+      "licenseValid": true,
+      "identificationVerified": true
+    },
+    "notes": "No payments missed so far."
+  },
+  {
+    "customerId": 205,
+    "name": "Luis",
+    "lastName": "Martínez Rojas",
+    "email": "luis.martinez@email.com",
+    "phonePrimary": "5581122334",
+    "phoneSecondary": "5582233445",
+    "address": "Blvd. Benito Juárez 99, Tijuana, MX",
+    "dateOfBirth": "1988-09-12",
+    "nationalId": "MXM880912HDFRLR05",
+    "licenseNumber": "LLMR112233",
+    "licenseExpiration": "2026-05-12",
+    "registrationDate": "2023-07-20",
+    "purchaseHistory": [],
+    "paymentHistory": [],
+    "financialSummary": {
+      "totalLoanAmount": 0,
+      "totalAmountDue": 0,
+      "nextPaymentDueDate": "",
+      "nextPaymentAmount": 0,
+      "lastPaymentDate": "",
+      "lastPaymentAmount": 0,
+      "totalLatePayments": 0,
+      "totalAdvancedPayments": 0,
+      "totalInterestPaid": 0
+    },
+    "documents": {
+      "contractSigned": false,
+      "insuranceValid": false,
+      "licenseValid": true,
+      "identificationVerified": true
+    },
+    "notes": "Potential customer, no purchases yet."
+  }
+]

@@ -6,7 +6,7 @@ import SearchInput from '../SearchInput';
 interface DataGridHeaderProps {
   handleSearch: (value: string) => void;
   buttonProps?: {
-    title: string;
+    text: string;
   };
 }
 
@@ -27,7 +27,11 @@ const DataGridHeader = ({ handleSearch, buttonProps }: DataGridHeaderProps) => {
         width='30%'
         autoFocus
       />
-      {buttonProps?.title ? <Button size='small'>{buttonProps?.title}</Button> : null}
+      {buttonProps?.text ? (
+        <Button variant='contained' size='small'>
+          {buttonProps?.text}
+        </Button>
+      ) : null}
     </Box>
   );
 };
