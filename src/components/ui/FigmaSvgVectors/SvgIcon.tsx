@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export interface SVGProps {
   name: string;
   width?: number;
@@ -12,6 +14,6 @@ const SvgIcon = ({
   name: string;
   width?: number;
   height?: number;
-}) => <img width={width} height={height} src={`./FigmaSvgVectors/${name}.svg`} alt={name} />;
+}) => <Image width={width} height={height} src={`./FigmaSvgVectors/${name}.svg`} alt={name} />;
 
 export default SvgIcon;

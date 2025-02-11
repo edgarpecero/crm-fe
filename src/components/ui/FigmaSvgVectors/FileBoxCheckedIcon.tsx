@@ -1,6 +1,8 @@
+import Image from "next/image";
+
 const FileBoxCheckedIcon = () => {
   return (
-    <img
+    <Image
       width={12}
       height={12}
       src='./FigmaSvgVectors/FileBoxCheckedIcon.svg'

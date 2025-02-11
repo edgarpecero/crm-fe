@@ -1,5 +1,7 @@
+import Image from "next/image";
+
 const TrashIcon = () => {
-  return <img width={16} height={16} src='./FigmaSvgVectors/TrashIcon.svg' alt='Delete' />;
+  return <Image width={16} height={16} src='./FigmaSvgVectors/TrashIcon.svg' alt='Delete' />;
 };
 
 export default TrashIcon;

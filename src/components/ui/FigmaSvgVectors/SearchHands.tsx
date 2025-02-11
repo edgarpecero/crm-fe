@@ -1,12 +1,13 @@
 'use client';
 
 import { Typography } from '@mui/material';
+import Image from 'next/image';
 
-export const SearchHandsSVG = ({ size }: { size?: string }) => {
+export const SearchHandsSVG = ({ size = 500 }: { size?: number }) => {
   return (
-    <img
-      width={size || 500}
-      height={size || 500}
+    <Image
+      width={size}
+      height={size}
       src='./FigmaSvgVectors/SearchHands.svg'
       alt='Search Hands'
     />
