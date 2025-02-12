@@ -17,7 +17,7 @@ const columns: GridColDef<Customer>[] = [
   { field: 'phoneSecondary', headerName: 'Teléfono Secundario', width: 150 },
   { field: 'address', headerName: 'Dirección', width: 300 },
   {
-    field: 'dateOfBirth',
+    field: 'birthdate',
     headerName: 'Fecha de Nacimiento',
     width: 150,
     valueFormatter: (value) => dateFormatter(value),
@@ -54,7 +54,7 @@ const CustomerTable = () => {
 
   return (
     <>
-      <DataGridHeader handleSearch={handleSearch} />
+      <DataGridHeader handleSearch={handleSearch} buttonProps={{ text: 'Crear Nuevo Cliente' }} />
       <DataGridWrapper columns={columns} rowData={memoizedData} />
     </>
   );

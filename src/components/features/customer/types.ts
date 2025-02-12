@@ -4,9 +4,12 @@ export interface Customer {
   lastName: string;
   email: string;
   phonePrimary: string;
-  phoneSecondary: string;
+  phoneSecondary?: string;
   address: string;
-  dateOfBirth: string; // ISO format (YYYY-MM-DD)
+  city: string;
+  state: string;
+  zip: string;
+  birthday: string; // ISO format (YYYY-MM-DD)
   nationalId: string;
   licenseNumber: string;
   licenseExpiration: string; // ISO format (YYYY-MM-DD)
