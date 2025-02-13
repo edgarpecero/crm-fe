@@ -7,7 +7,13 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 // import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-import { DataGrid, DataGridProps, GridRowParams, GridSortModel } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  DataGridProps,
+  GridRowParams,
+  GridSortModel,
+  GridToolbar,
+} from '@mui/x-data-grid';
 import { theme as currentTheme } from '@/styles/Theme';
 import NoResults from '../IconButtons/NoResults/NoResults';
 import { getDataGridTheme, GridTheme } from './DataGridTheme';
@@ -111,6 +117,7 @@ const DataGridWrapper = ({
         // loading={loading}
         slots={{
           // loadingOverlay: LinearProgress,
+          toolbar: GridToolbar,
           noResultsOverlay: () => (
             <NoResults
               title={notFoundTitle}

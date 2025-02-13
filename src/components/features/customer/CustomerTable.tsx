@@ -50,34 +50,34 @@ const CustomerTable = () => {
 };
 
 const columns: GridColDef<Customer>[] = [
-  { field: 'customerId', headerName: 'ID Cliente', width: 100 },
-  { field: 'name', headerName: 'Nombre', width: 200 },
-  { field: 'lastName', headerName: 'Apellido', width: 200 },
-  { field: 'email', headerName: 'Correo Electrónico', width: 250 },
-  { field: 'phonePrimary', headerName: 'Teléfono Primario', width: 150 },
-  { field: 'phoneSecondary', headerName: 'Teléfono Secundario', width: 150 },
-  { field: 'address', headerName: 'Dirección', width: 300 },
+  { field: 'customerId', headerName: 'ID Cliente', flex: 1 },
+  { field: 'name', headerName: 'Nombre', flex: 1 },
+  { field: 'lastName', headerName: 'Apellido', flex: 1 },
+  { field: 'email', headerName: 'Correo Electrónico', flex: 1 },
+  { field: 'phonePrimary', headerName: 'Teléfono Primario', flex: 1 },
+  { field: 'phoneSecondary', headerName: 'Teléfono Secundario', flex: 1 },
+  { field: 'address', headerName: 'Dirección', flex: 1 },
   {
     field: 'birthdate',
     headerName: 'Fecha de Nacimiento',
-    width: 150,
+    flex: 1,
     valueFormatter: (value) => dateFormatter(value),
   },
-  { field: 'nationalId', headerName: 'ID Nacional', width: 200 },
-  { field: 'licenseNumber', headerName: 'Número de Licencia', width: 180 },
+  { field: 'nationalId', headerName: 'ID Nacional', flex: 1 },
+  { field: 'licenseNumber', headerName: 'Número de Licencia', flex: 1 },
   {
     field: 'licenseExpiration',
     headerName: 'Vencimiento de Licencia',
-    width: 180,
+    flex: 1,
     valueFormatter: (value) => dateFormatter(value),
   },
   {
     field: 'registrationDate',
     headerName: 'Fecha de Registro',
-    width: 150,
+    flex: 1,
     valueFormatter: (value) => dateFormatter(value),
   },
-  { field: 'notes', headerName: 'Notas', width: 300 },
+  { field: 'notes', headerName: 'Notas', flex: 1 },
 ];
 
 export default CustomerTable;
