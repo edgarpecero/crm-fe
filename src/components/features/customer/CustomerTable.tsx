@@ -10,6 +10,7 @@ import { dateFormatter, filterData } from '@/helpers/utils';
 
 // import { useRouter } from 'next/router';
 import { useRouter } from 'next/navigation';
+import ChipCell from '@/components/ui/DataGridCellComponents/ChipCell';
 
 const CustomerTable = () => {
   const { data, setCustomer } = useCustomer();
@@ -50,9 +51,17 @@ const CustomerTable = () => {
 };
 
 const columns: GridColDef<Customer>[] = [
-  { field: 'customerId', headerName: 'ID Cliente', flex: 1 },
+  { field: 'customerId', headerName: 'ID Cliente', width: 120 },
   { field: 'name', headerName: 'Nombre', flex: 1 },
   { field: 'lastName', headerName: 'Apellido', flex: 1 },
+  {
+    field: 'status', headerName: 'Estado',
+    renderCell: (props) => <ChipCell {...props} />,
+
+    flex: 1
+
+
+  },
   { field: 'email', headerName: 'Correo Electrónico', flex: 1 },
   { field: 'phonePrimary', headerName: 'Teléfono Primario', flex: 1 },
   { field: 'phoneSecondary', headerName: 'Teléfono Secundario', flex: 1 },

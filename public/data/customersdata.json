@@ -2,6 +2,7 @@
   {
     "customerId": 201,
     "name": "Juan",
+    "status": "Activo",
     "lastName": "Pérez López",
     "email": "juan.perez@email.com",
     "phonePrimary": "5551234567",
@@ -68,6 +69,7 @@
     "customerId": 202,
     "name": "Maria Fernanda",
     "lastName": "Gómez",
+    "status": "Activo",
     "email": "maria.gomez@email.com",
     "phonePrimary": "5587654321",
     "phoneSecondary": "5576543210",
@@ -132,6 +134,8 @@
   {
     "customerId": 203,
     "name": "Carlos",
+    "status": "Desactivado",
+
     "lastName": "Ramírez Díaz",
     "email": "carlos.ramirez@email.com",
     "phonePrimary": "5543219876",
@@ -183,6 +187,7 @@
   },
   {
     "customerId": 204,
+    "status": "En progreso",
     "name": "Sofía",
     "lastName": "Hernández Torres",
     "email": "sofia.hernandez@email.com",
@@ -236,6 +241,8 @@
   {
     "customerId": 205,
     "name": "Luis",
+    "status": "Desactivado",
+
     "lastName": "Martínez Rojas",
     "email": "luis.martinez@email.com",
     "phonePrimary": "5581122334",

@@ -26,7 +26,7 @@ export const formatToPrice = (value?: number | string): string => {
   // Display the price with the "$" symbol added.
   // Use as valueFormatter function for DataGrid.
 
-  if (value === '') return '';
+  if (value === '') return '$0.00';
   if (typeof value === 'string' && value.charAt(0) === '$') return value;
   // Format value as price: "$" + {price with 2 decimal places}
   // (e.g., "$123.45")

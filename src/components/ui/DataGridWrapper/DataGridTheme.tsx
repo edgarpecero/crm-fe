@@ -6,7 +6,7 @@ const greyDataGridTheme = createTheme({
   components: {
     MuiDataGrid: {
       defaultProps: {
-        rowHeight: 32,
+        rowHeight: 45,
         // headerHeight: 45,
       },
       styleOverrides: {

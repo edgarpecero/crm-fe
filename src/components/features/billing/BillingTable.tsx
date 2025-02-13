@@ -7,6 +7,8 @@ import { useBilling } from '@/context/BillingContext/BillingContext';
 import DataGridHeader from '@/components/ui/DataGridWrapper/DataGridHeader';
 import { useMemo, useState } from 'react';
 import { dateFormatter, filterData, formatToPrice } from '@/helpers/utils';
+import { theme } from '@/styles/Theme';
+import IconCell from '@/components/ui/DataGridCellComponents/IconCell';
 
 const BillingTable = () => {
   const { data } = useBilling();
@@ -36,6 +38,7 @@ const BillingTable = () => {
           columns: {
             columnVisibilityModel: {
               second: false,
+              apReal: false,
               description: false,
               enganche: false,
               third: false,
@@ -45,6 +48,8 @@ const BillingTable = () => {
               phone1: false,
               phone2: false,
               payments: false,
+              onTimePayment: false,
+              downPayment: false,
             },
           },
         }}
@@ -56,7 +61,12 @@ const BillingTable = () => {
 const columns: GridColDef<Billing>[] = [
   { field: 'folio', headerName: 'Folio', flex: 1 },
   { field: 'seller', headerName: 'Vendedor', flex: 1 },
-  { field: 'product', headerName: 'Producto', flex: 1 },
+  {
+    field: 'product',
+    headerName: 'Producto',
+    flex: 1,
+    renderCell: (props) => <IconCell {...props} />,
+  },
   { field: 'description', headerName: 'Descripción', flex: 1 },
   {
     field: 'amount',
@@ -81,6 +91,9 @@ const columns: GridColDef<Billing>[] = [
     headerName: 'Excedente',
     flex: 1,
     valueFormatter: (value) => formatToPrice(value),
+    renderCell: (params) => (
+      <span style={{ color: theme.palette.success.main }}>{params.value}</span>
+    ),
   },
   {
     field: 'monthly',
@@ -105,7 +118,12 @@ const columns: GridColDef<Billing>[] = [
     flex: 1,
     valueFormatter: (value) => formatToPrice(value),
   },
-  { field: 'advancedPayments', headerName: 'Pagos Adelantados', flex: 1, type: 'number' },
+  {
+    field: 'advancedPayments',
+    headerName: 'Pagos Adelantados',
+    flex: 1,
+    valueFormatter: (value) => formatToPrice(value),
+  },
   {
     field: 'second',
     headerName: '2DA',
@@ -117,6 +135,7 @@ const columns: GridColDef<Billing>[] = [
     headerName: 'INT Diario',
     flex: 1,
     valueFormatter: (value) => formatToPrice(value),
+    renderCell: (params) => <span style={{ color: theme.palette.error.main }}>{params.value}</span>,
   },
   {
     field: 'accumulated',
