@@ -12,8 +12,8 @@ export interface ControlledTextInputProps extends Omit<StandardTextFieldProps, '
 const ControlledTextInput = ({
   control,
   name,
-  type = 'text', 
-  maxLength = 40, 
+  type = 'text',
+  maxLength = 40,
   id,
   ...props
 }: ControlledTextInputProps) => (

@@ -1,24 +1,29 @@
+'use client';
+
 import { Customer } from '@/components/features/customer/types';
-import { FormProvider, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { customerSchema, defaultValuesCustomer } from '@/helpers/formSchemas';
+import CustomerForm from '@/components/layout/CustomerForm/CustomerForm';
+import { enumToTabsArray } from '@/components/layout/InnerPageTabs/helpers';
+import InnerPageTabs from '@/components/layout/InnerPageTabs/InnerPageTabs';
+import { TabsIdentifierEnum } from '@/components/layout/InnerPageTabs/types';
 
-const CreateNewCustomerPage = () => {
-  const methods = useForm<Customer>({
-    resolver: zodResolver(customerSchema),
-    defaultValues: defaultValuesCustomer,
-    mode: 'all',
-  });
+export enum CustomerTabsEnum {
+  Details = 'Detalles',
+  Payments = 'Historial de pagos',
+}
 
+const CustomerPage = () => {
   const onSubmit = (data: Customer) => {
     console.log(data);
   };
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}></form>
-    </FormProvider>
+    <InnerPageTabs
+      tabsArray={enumToTabsArray(CustomerTabsEnum)}
+      id={TabsIdentifierEnum.customerTab}
+    >
+      <CustomerForm onSubmit={onSubmit} />
+    </InnerPageTabs>
   );
 };
 
-export default CreateNewCustomerPage;
+export default CustomerPage;

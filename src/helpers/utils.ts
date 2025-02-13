@@ -71,23 +71,6 @@ export const parseStringToNumber = (value?: string): number => {
   return parseFloat(value.replace(/,/g, ''));
 };
 
-export const enumToArrayOfObjects = <T extends string>(
-  enumeration: Record<T, string>,
-): { value: T; label: string }[] => {
-  const arrayOfObjects: { value: T; label: string }[] = [];
-
-  for (const key in enumeration) {
-    if (Object.prototype.hasOwnProperty.call(enumeration, key)) {
-      const value = key as T;
-      const label = enumeration[key];
-      arrayOfObjects.push({ value, label });
-    }
-  }
-
-  // Converts an enum to an array of objects with "value" and "label" properties.
-  return arrayOfObjects;
-};
-
 export const dateFormatter = (value: string | undefined): string => {
   // This fn can be used as a valueFormatter for DataGrid columns
   if (!value) return '';

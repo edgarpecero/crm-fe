@@ -1,36 +1,35 @@
 import { Grid2, Typography } from '@mui/material';
-import { ControlledInputType, GridInputsProps } from './types';
+import { InputsProps } from './types';
 import { useFormContext } from 'react-hook-form';
 import {
-  ControlledAutocomplete,
-  ControlledSingleSelect,
+  // ControlledAutocomplete,
+  // ControlledSingleSelect,
   ControlledTextInput,
-  ControlledCheckboxInput,
-  ControlledDatePicker,
-  ControlledTimePicker,
-  ControlledPasswordInput,
-  ControlledMultipleSelect,
-  ControlledCategoryAutocomplete,
-  ControlledProductAutocomplete,
-  ControlledInvoiceAutocomplete,
-  ControlledVendorAutocomplete,
+  // ControlledCheckboxInput,
+  // ControlledDatePicker,
+  // ControlledTimePicker,
+  // ControlledPasswordInput,
+  // ControlledMultipleSelect,
+  // ControlledCategoryAutocomplete,
+  // ControlledProductAutocomplete,
+  // ControlledInvoiceAutocomplete,
+  // ControlledVendorAutocomplete,
 } from '../ControlledInputs';
 
-const GridInputs = ({ inputs }: GridInputsProps) => {
+const GridInputs = ({ inputs }: { inputs: InputsProps[] }) => {
   const { control } = useFormContext();
 
   return (
     <>
-      {inputs?.map(
-        ({ items, breakpoints, typography, inputType, typographyProps, ...controlledProps }) => (
-          <Grid2 key={controlledProps.name} {...breakpoints}>
-            {typography ? (
-              <Typography variant='h5' pb='12px' {...typographyProps}>
-                {typography}
-              </Typography>
-            ) : null}
+      {inputs?.map(({ gridSize, typography, inputType, typographyProps, ...controlledProps }) => (
+        <Grid2 key={controlledProps.name} size={gridSize || { xs: 12, sm: 6 }}>
+          {typography ? (
+            <Typography variant='h5' pb='12px' {...typographyProps}>
+              {controlledProps.name}
+            </Typography>
+          ) : null}
 
-            {inputType === ControlledInputType.datePicker && (
+          {/* {inputType === ControlledInputType.datePicker && (
               <ControlledDatePicker {...controlledProps} />
             )}
             {inputType === ControlledInputType.timePicker && (
@@ -54,9 +53,9 @@ const GridInputs = ({ inputs }: GridInputsProps) => {
             )}
             {inputType === ControlledInputType.checkbox && (
               <ControlledCheckboxInput control={control} {...controlledProps} />
-            )}
-            {/* {inputType === ControlledInputType.usdInput && <USDInput {...controlledProps} />} */}
-            {inputType === ControlledInputType.categoryAutocomplete && (
+            )} */}
+          {/* {inputType === ControlledInputType.usdInput && <USDInput {...controlledProps} />} */}
+          {/* {inputType === ControlledInputType.categoryAutocomplete && (
               <ControlledCategoryAutocomplete {...controlledProps} />
             )}
             {inputType === ControlledInputType.productAutocomplete && (
@@ -67,11 +66,12 @@ const GridInputs = ({ inputs }: GridInputsProps) => {
             )}
             {inputType === ControlledInputType.vendorAutocomplete && (
               <ControlledVendorAutocomplete {...controlledProps} />
-            )}
-            {!inputType && <ControlledTextInput control={control} {...controlledProps} />}
-          </Grid2>
-        ),
-      )}
+            )} */}
+          {!inputType && !typography && (
+            <ControlledTextInput control={control} {...controlledProps} />
+          )}
+        </Grid2>
+      ))}
     </>
   );
 };

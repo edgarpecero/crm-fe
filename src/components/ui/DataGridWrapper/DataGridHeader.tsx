@@ -1,12 +1,14 @@
 'use client';
 
-import { Box, Button } from '@mui/material';
+import { Box, Button, ButtonProps } from '@mui/material';
 import SearchInput from '../SearchInput';
+import Link from 'next/link';
 
 interface DataGridHeaderProps {
   handleSearch: (value: string) => void;
-  buttonProps?: {
+  buttonProps?: ButtonProps & {
     text: string;
+    href?: string;
   };
 }
 
@@ -28,9 +30,11 @@ const DataGridHeader = ({ handleSearch, buttonProps }: DataGridHeaderProps) => {
         autoFocus
       />
       {buttonProps?.text ? (
-        <Button variant='contained' size='small'>
-          {buttonProps?.text}
-        </Button>
+        <Link href={buttonProps.href || '#'}>
+          <Button variant='contained' size='small'>
+            {buttonProps?.text}
+          </Button>
+        </Link>
       ) : null}
     </Box>
   );

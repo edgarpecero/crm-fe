@@ -8,6 +8,30 @@ import { useMemo, useState } from 'react';
 import { useCustomer } from '@/context/BillingContext/CustomerContext';
 import { dateFormatter, filterData } from '@/helpers/utils';
 
+const CustomerTable = () => {
+  const { data } = useCustomer();
+  const [searchInput, setSearchInput] = useState('');
+
+  const memoizedData = useMemo(
+    () => filterData(data, searchInput, 'customerId', 'name', 'lastName', 'phonePrimary'),
+    [searchInput, data],
+  );
+
+  const handleSearch = (value: string) => {
+    setSearchInput(value);
+  };
+
+  return (
+    <>
+      <DataGridHeader
+        handleSearch={handleSearch}
+        buttonProps={{ text: 'Crear Nuevo Cliente', href: 'clientes/crear' }}
+      />
+      <DataGridWrapper columns={columns} rowData={memoizedData} />
+    </>
+  );
+};
+
 const columns: GridColDef<Customer>[] = [
   { field: 'customerId', headerName: 'ID Cliente', width: 100 },
   { field: 'name', headerName: 'Nombre', width: 200 },
@@ -38,26 +62,5 @@ const columns: GridColDef<Customer>[] = [
   },
   { field: 'notes', headerName: 'Notas', width: 300 },
 ];
-
-const CustomerTable = () => {
-  const { data } = useCustomer();
-  const [searchInput, setSearchInput] = useState('');
-
-  const memoizedData = useMemo(
-    () => filterData(data, searchInput, 'customerId', 'name', 'lastName', 'phonePrimary'),
-    [searchInput, data],
-  );
-
-  const handleSearch = (value: string) => {
-    setSearchInput(value);
-  };
-
-  return (
-    <>
-      <DataGridHeader handleSearch={handleSearch} buttonProps={{ text: 'Crear Nuevo Cliente' }} />
-      <DataGridWrapper columns={columns} rowData={memoizedData} />
-    </>
-  );
-};
 
 export default CustomerTable;

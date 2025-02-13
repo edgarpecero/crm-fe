@@ -14,6 +14,7 @@ const MainStyled = styled('main', { shouldForwardProp: (prop) => prop !== 'open'
   }) => ({
     flexGrow: 1,
     display: 'flex',
+    flexDirection: 'column',
     position: 'relative',
     height: '100vh',
     overflow: 'hidden',

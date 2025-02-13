@@ -1,16 +1,17 @@
 import { z } from 'zod';
-import { errorMessages, regexUsername } from '@/helpers/constants';
+import { errorMessages } from '@/helpers/constants';
 import { Customer } from '@/components/features/customer/types';
 
 export const customerSchema = z.object({
-  name: z.string().regex(regexUsername, errorMessages.noWhitespaceOrSpecialCharacters),
-  lastName: z.string().regex(regexUsername, errorMessages.noWhitespaceOrSpecialCharacters),
+  name: z.string(),
+  lastName: z.string(),
   email: z.string().email(errorMessages.validEmailRequired),
   phonePrimary: z.string(),
   phoneSecondary: z.string().optional(),
   address: z.string(),
   city: z.string(),
   state: z.string(),
+  country: z.string(),
   zip: z
     .string()
     .min(5, errorMessages.validZipCodeRequired)
@@ -19,10 +20,10 @@ export const customerSchema = z.object({
       message: errorMessages.validZipCodeRequired,
     })
     .or(z.literal('-')), // For handling "-"
-  birthday: z.date(),
+  birthday: z.string(),
   nationalId: z.string(),
   licenseNumber: z.string(),
-  licenseExpiration: z.date(),
+  licenseExpiration: z.string(),
 });
 
 export const defaultValuesCustomer: Partial<Customer> = {

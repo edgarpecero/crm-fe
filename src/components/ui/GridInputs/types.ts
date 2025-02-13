@@ -1,13 +1,5 @@
-import { BaseTextFieldProps, TypographyProps } from '@mui/material';
+import { BaseTextFieldProps, GridBaseProps, TypographyProps } from '@mui/material';
 // import { SingleSelectItem } from '../ControlledInputs/ControlledSingleSelect';
-
-export interface Breakpoints {
-  xs?: number;
-  sm?: number;
-  md?: number;
-  lg?: number;
-  xl?: number;
-}
 
 export enum ControlledInputType {
   select = 'select',
@@ -29,10 +21,10 @@ export enum ControlledInputType {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface InputsProps extends Omit<BaseTextFieldProps, 'label' | 'variant'> {
   name: string;
-  label: string;
+  label?: string;
   items?: any[];
-  breakpoints?: Breakpoints;
-  typography?: string;
+  gridSize?: GridBaseProps['size'];
+  typography?: boolean;
   onClear?: (name: string) => void;
   inputType?: ControlledInputType;
   customConvertItems?: (items: any[]) => any[];

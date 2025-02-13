@@ -497,7 +497,7 @@ theme.components = {
         },
         '& .Mui-disabled': {
           color: theme.palette.grey[800],
-          '-webkit-text-fill-color': theme.palette.grey[800],
+          WebkitTextFillColor: theme.palette.grey[800],
           opacity: 0.75,
           cursor: 'not-allowed',
           '& fieldset, .MuiOutlinedInput-notchedOutline': {

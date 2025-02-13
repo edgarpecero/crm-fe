@@ -1,11 +1,15 @@
-import { styled } from '@mui/material';
+'use client';
+
+import { styled, Box, BoxProps } from '@mui/material';
 import React from 'react';
 
-interface ContentProps {
+interface ContentProps extends BoxProps {
   hideBorderOnMobile?: boolean;
 }
 
-const Content = styled('div')<ContentProps>(({ theme, hideBorderOnMobile }) => ({
+const Content = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'hideBorderOnMobile',
+})<ContentProps>(({ theme, hideBorderOnMobile }) => ({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
