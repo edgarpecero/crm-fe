@@ -23,6 +23,7 @@ export interface DataGridWrapperProps extends Omit<DataGridProps, 'rows'> {
   notFoundSubtitle?: string;
   notFoundTitle?: string;
   notFoundIconSize?: number;
+  indexColumn?: boolean;
 }
 
 const DataGridWrapper = ({
@@ -34,6 +35,7 @@ const DataGridWrapper = ({
   notFoundSubtitle,
   notFoundTitle,
   notFoundIconSize,
+  indexColumn = true,
   sx,
   ...props
 }: DataGridWrapperProps) => {
@@ -56,7 +58,7 @@ const DataGridWrapper = ({
         field: 'tableIndex',
         headerName: '#',
         hide: true,
-        flex: 0.5,
+        width: 60,
       },
       ...columns,
     ];
@@ -152,6 +154,13 @@ const DataGridWrapper = ({
         slotProps={{
           panel: {
             placement: 'bottom-end',
+          },
+        }}
+        initialState={{
+          columns: {
+            columnVisibilityModel: {
+              tableIndex: indexColumn,
+            },
           },
         }}
         sx={{

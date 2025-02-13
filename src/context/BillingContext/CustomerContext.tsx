@@ -2,11 +2,13 @@
 
 import { Customer } from '@/components/features/customer/types';
 import { fetchCustomersData } from '@/services/customerServices';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 
 interface CustomerContextType {
   data: Customer[];
   loading: boolean;
+  customer: Customer | null;
+  setCustomer: Dispatch<SetStateAction<Customer | null>>;
   error: Error | null;
   refreshData: () => void;
 }
@@ -32,6 +34,7 @@ export const useCustomer = () => {
 
 const useCustomerProvider = () => {
   const [data, setData] = useState<Customer[]>([]);
+  const [customer, setCustomer] = useState<Customer | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -51,5 +54,5 @@ const useCustomerProvider = () => {
     refreshData();
   }, []);
 
-  return { data, loading, error, refreshData };
+  return { data, loading, error, customer, setCustomer, refreshData };
 };

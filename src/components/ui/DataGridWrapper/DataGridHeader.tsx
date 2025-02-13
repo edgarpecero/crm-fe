@@ -5,7 +5,7 @@ import SearchInput from '../SearchInput';
 import Link from 'next/link';
 
 interface DataGridHeaderProps {
-  handleSearch: (value: string) => void;
+  handleSearch?: (value: string) => void;
   buttonProps?: ButtonProps & {
     text: string;
     href?: string;
@@ -17,18 +17,20 @@ const DataGridHeader = ({ handleSearch, buttonProps }: DataGridHeaderProps) => {
     <Box
       sx={{
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: handleSearch ? 'space-between' : 'flex-end',
         alignItems: 'center',
         gap: 3,
         mb: '20px',
       }}
     >
-      <SearchInput
-        id='manager-user-table-search'
-        handleSearch={handleSearch}
-        width='30%'
-        autoFocus
-      />
+      {handleSearch && (
+        <SearchInput
+          id='manager-user-table-search'
+          handleSearch={handleSearch}
+          width='30%'
+          autoFocus
+        />
+      )}
       {buttonProps?.text ? (
         <Link href={buttonProps.href || '#'}>
           <Button variant='contained' size='small'>

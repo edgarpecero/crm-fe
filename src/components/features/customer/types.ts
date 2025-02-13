@@ -8,8 +8,9 @@ export interface Customer {
   address: string;
   city: string;
   state: string;
+  country: string;
   zip: string;
-  birthday: string; // ISO format (YYYY-MM-DD)
+  birthdate: string; // ISO format (YYYY-MM-DD)
   nationalId: string;
   licenseNumber: string;
   licenseExpiration: string; // ISO format (YYYY-MM-DD)

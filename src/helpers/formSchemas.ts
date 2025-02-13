@@ -20,7 +20,7 @@ export const customerSchema = z.object({
       message: errorMessages.validZipCodeRequired,
     })
     .or(z.literal('-')), // For handling "-"
-  birthday: z.string(),
+  birthdate: z.string(),
   nationalId: z.string(),
   licenseNumber: z.string(),
   licenseExpiration: z.string(),
@@ -36,7 +36,7 @@ export const defaultValuesCustomer: Partial<Customer> = {
   city: '',
   state: '',
   zip: '',
-  birthday: '',
+  birthdate: '',
   nationalId: '',
   licenseNumber: '',
   licenseExpiration: '',

@@ -1,7 +1,7 @@
 import CustomerTabPanel from '@/components/features/customer/CustomerTabPanel';
 
-const CustomerPage = () => {
+const CustomerDetailsPage = () => {
   return <CustomerTabPanel />;
 };
 
-export default CustomerPage;
+export default CustomerDetailsPage;

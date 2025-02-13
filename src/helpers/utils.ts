@@ -1,7 +1,5 @@
 import { format } from 'date-fns';
 import { datePickerFormat } from './constants';
-import * as yup from 'yup';
-import 'yup-phone';
 
 export const filterData = <T>(data: T[], searchInput: string, ...keys: (keyof T)[]): T[] => {
   if (!searchInput) return data; // Return all data if search input is empty
@@ -108,13 +106,3 @@ export const formatToTime = (date?: string) => {
 };
 
 /* VALIDATORS */
-export const phoneValidation = (label: string) =>
-  yup.lazy((value) =>
-    value === ''
-      ? yup.string()
-      : yup
-          .string()
-          .transform((value) => (value === '+' ? '' : value))
-          // .phone()
-          .label(label),
-  );

@@ -43,7 +43,7 @@ const greyDataGridTheme = createTheme({
           fontWeight: '600',
         },
         columnSeparator: {
-          opacity: '0 !important',
+          // opacity: '0 !important',
         },
         rowReorderCell: {
           '& svg path': {

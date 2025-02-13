@@ -7,27 +7,48 @@ import GridInputs from '@/components/ui/GridInputs/GridInputs';
 import { InputsProps } from '@/components/ui/GridInputs/types';
 import { Box, Grid2, Typography } from '@mui/material';
 import { Customer } from '@/components/features/customer/types';
-import { useInnerPageTabs } from '../InnerPageTabs/NestedTabsProvider';
-import { TabsIdentifierEnum } from '../InnerPageTabs/types';
-import { useMemo } from 'react';
-import { CustomerTabsEnum } from '@/app/clientes/crear/page';
-import { getTabContentStyle } from '../InnerPageTabs/helpers';
+import { useInnerPageTabs } from '../../layout/InnerPageTabs/NestedTabsProvider';
+import { TabsIdentifierEnum } from '../../layout/InnerPageTabs/types';
+import { useEffect, useMemo } from 'react';
+import { getTabContentStyle } from '../../layout/InnerPageTabs/helpers';
+import { CustomerTabsEnum } from './CustomerTabPanel';
+import { useCustomer } from '@/context/BillingContext/CustomerContext';
+import { useParams } from 'next/navigation';
+import { fetchCustomersData } from '@/services/customerServices';
 
 interface CustomerFormProps {
   onSubmit: (data: Customer) => void;
 }
 
 const CustomerForm = ({ onSubmit }: CustomerFormProps) => {
+  const { customer } = useCustomer();
   const { innerPageTab } = useInnerPageTabs(TabsIdentifierEnum.customerTab);
+  const urlParams = useParams();
+
   const wrapperStyles = useMemo(
     () => getTabContentStyle(innerPageTab === CustomerTabsEnum.Details),
     [innerPageTab],
   );
+
   const methods = useForm<Customer>({
     resolver: zodResolver(customerSchema),
-    defaultValues: defaultValuesCustomer,
+    defaultValues: customer || defaultValuesCustomer,
     mode: 'all',
   });
+
+  //TODO: REMOVE
+  useEffect(() => {
+    if (!customer) {
+      const customerId = Number(urlParams.id);
+      const fetchData = async () => {
+        const result = await fetchCustomersData();
+        const customer = result.data.find((customer) => customer.customerId === customerId);
+        methods.reset(customer);
+      };
+
+      fetchData();
+    }
+  }, [customer, urlParams, methods]);
 
   return (
     <Box sx={wrapperStyles}>
@@ -62,7 +83,7 @@ const generalInputs: InputsProps[] = [
   { name: 'name', label: 'Nombre', required: true },
   { name: 'lastName', label: 'Apellido', required: true },
   { name: 'email', label: 'Email', required: true },
-  { name: 'birthday', label: 'Fecha de nacimiento', required: true },
+  { name: 'birthdate', label: 'Fecha de nacimiento', required: true },
   { name: 'phonePrimary', label: 'Teléfono principal', required: true },
   { name: 'phoneSecondary', label: 'Teléfono secundario', required: true },
 ];

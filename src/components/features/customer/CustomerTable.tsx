@@ -1,16 +1,20 @@
 'use client';
 
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridRowParams } from '@mui/x-data-grid';
 import { Customer } from './types';
 import DataGridWrapper from '@/components/ui/DataGridWrapper/DataGridWrapper';
 import DataGridHeader from '@/components/ui/DataGridWrapper/DataGridHeader';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useCustomer } from '@/context/BillingContext/CustomerContext';
 import { dateFormatter, filterData } from '@/helpers/utils';
 
+// import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+
 const CustomerTable = () => {
-  const { data } = useCustomer();
+  const { data, setCustomer } = useCustomer();
   const [searchInput, setSearchInput] = useState('');
+  const router = useRouter();
 
   const memoizedData = useMemo(
     () => filterData(data, searchInput, 'customerId', 'name', 'lastName', 'phonePrimary'),
@@ -21,13 +25,26 @@ const CustomerTable = () => {
     setSearchInput(value);
   };
 
+  const handleRowDoubleClick = useCallback(
+    ({ row }: GridRowParams) => {
+      console.log('row', row);
+      setCustomer(row as Customer);
+      router.push(`/clientes/${row.customerId}`);
+    },
+    [setCustomer, router],
+  );
+
   return (
     <>
       <DataGridHeader
         handleSearch={handleSearch}
         buttonProps={{ text: 'Crear Nuevo Cliente', href: 'clientes/crear' }}
       />
-      <DataGridWrapper columns={columns} rowData={memoizedData} />
+      <DataGridWrapper
+        columns={columns}
+        rowData={memoizedData}
+        onRowDoubleClick={handleRowDoubleClick}
+      />
     </>
   );
 };
