@@ -55,12 +55,10 @@ const columns: GridColDef<Customer>[] = [
   { field: 'name', headerName: 'Nombre', flex: 1 },
   { field: 'lastName', headerName: 'Apellido', flex: 1 },
   {
-    field: 'status', headerName: 'Estado',
+    field: 'status',
+    headerName: 'Estado',
     renderCell: (props) => <ChipCell {...props} />,
-
-    flex: 1
-
-
+    flex: 1,
   },
   { field: 'email', headerName: 'Correo Electrónico', flex: 1 },
   { field: 'phonePrimary', headerName: 'Teléfono Primario', flex: 1 },

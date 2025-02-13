@@ -23,9 +23,10 @@ export enum ChipTypesEnum {
 export const errorChipStyle = {
   // backgroundColor: theme.palette.error.light,
   color: theme.palette.error.main,
-  // '& svg path': {
-  //   fill: theme.palette.error.main,
-  // },
+  height: '2.5rem',
+  '& svg path': {
+    fill: theme.palette.error.main,
+  },
 };
 
 const errorStyle = {
@@ -37,6 +38,8 @@ const errorStyle = {
 };
 
 export const mainChipStyle = {
+  height: '2.5rem',
+
   // backgroundColor: theme.palette.error.light,
   color: theme.palette.primary.main,
   // '& svg path': {
@@ -45,6 +48,8 @@ export const mainChipStyle = {
 };
 
 export const holdChipStyle = {
+  height: '2.5rem',
+
   // backgroundColor: theme.palette.grey[400],
   color: theme.palette.grey[900],
   // '& svg path': {
@@ -106,7 +111,6 @@ export const getChipIcon = (status: ChipTypesEnum) => {
       return <CheckRoundedIcon fontSize='small' />;
   }
 };
-
 
 export const getStylesByCashDrawerStatus = (value: string): SxProps<Theme> => {
   const fontStyle = { fontWeight: '700' };
