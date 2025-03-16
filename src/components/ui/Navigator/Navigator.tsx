@@ -32,7 +32,6 @@ interface NavigatorTabsProps {
   value: number;
   defaultIndex?: number;
   onChange: (event: any, newValue: number) => void;
-
 }
 
 export const mainTabIndex = 0;
@@ -194,6 +193,5 @@ const BackNavigationButtonComponent = ({
 };
 
 const BackNavigationButton = memo(BackNavigationButtonComponent);
-
 
 export { BackNavigationButton };

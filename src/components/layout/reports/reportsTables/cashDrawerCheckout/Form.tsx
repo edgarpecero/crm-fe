@@ -26,12 +26,9 @@ const CashDrawerCheckoutForm = () => {
     // clearPrintFilters(ReportsNodeIndexEnum.cashDrawerCheckout);
   };
 
-  const handleFormSubmit = useCallback(
-    () => {
-      handleRefresh();
-    },
-    [handleRefresh],
-  );
+  const handleFormSubmit = useCallback(() => {
+    handleRefresh();
+  }, [handleRefresh]);
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>

@@ -42,7 +42,7 @@ const ControlledSingleSelect = (props: ControlledSingleSelectProps) => {
         if (formContext) formContext.resetField(name);
       }
     },
-    [formContext, onClear]
+    [formContext, onClear],
   );
 
   return (

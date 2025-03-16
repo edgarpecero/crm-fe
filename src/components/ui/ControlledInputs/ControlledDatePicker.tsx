@@ -35,7 +35,6 @@ const ControlledDatePicker = ({
             disableFuture={disableFuture}
             disablePast={disablePast}
             disabled={disabled}
-
             {...field}
           />
         </LocalizationProvider>
