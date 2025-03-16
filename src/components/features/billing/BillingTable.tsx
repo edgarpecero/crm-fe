@@ -34,6 +34,7 @@ const BillingTable = () => {
         columns={columns}
         rowData={memoizedData}
         getRowClassName={getRowClassName}
+        toolbar={true}
         initialState={{
           columns: {
             columnVisibilityModel: {
@@ -64,14 +65,15 @@ const columns: GridColDef<Billing>[] = [
   {
     field: 'product',
     headerName: 'Producto',
-    flex: 1,
+    width: 120,
+    align: 'center',
     renderCell: (props) => <IconCell {...props} />,
   },
   { field: 'description', headerName: 'Descripción', flex: 1 },
   {
     field: 'amount',
     headerName: 'Monto',
-    flex: 1,
+    width: 120,
     valueFormatter: (value) => formatToPrice(value),
   },
   {
@@ -89,7 +91,7 @@ const columns: GridColDef<Billing>[] = [
   {
     field: 'surplus',
     headerName: 'Excedente',
-    flex: 1,
+    width: 120,
     valueFormatter: (value) => formatToPrice(value),
     renderCell: (params) => (
       <span style={{ color: theme.palette.success.main }}>{params.value}</span>
@@ -98,10 +100,10 @@ const columns: GridColDef<Billing>[] = [
   {
     field: 'monthly',
     headerName: 'Mensual',
-    flex: 1,
+    width: 120,
     valueFormatter: (value) => formatToPrice(value),
   },
-  { field: 'term', headerName: 'Plazo', flex: 1, type: 'number' },
+  { field: 'term', headerName: 'Plazo', width: 100 },
   {
     field: 'saleDate',
     headerName: 'Fecha de Vta',

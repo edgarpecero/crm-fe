@@ -9,6 +9,9 @@ interface BillingContextType {
   loading: boolean;
   error: Error | null;
   refreshData: () => void;
+  refresh: boolean;
+  handleRefresh: () => void;
+  count: number;
 }
 
 interface Props {
@@ -34,6 +37,8 @@ const useBillingProvider = () => {
   const [data, setData] = useState<Billing[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [refresh, setRefresh] = useState(false);
+  const [count, setCount] = useState(0);
 
   const refreshData = async () => {
     setLoading(true);
@@ -46,9 +51,14 @@ const useBillingProvider = () => {
     setLoading(false);
   };
 
+  const handleRefresh = () => {
+    setCount((prev) => prev + 1);
+    setRefresh(!refresh);
+  };
+
   useEffect(() => {
     refreshData();
-  }, []);
+  }, [refresh]);
 
-  return { data, loading, error, refreshData };
+  return { data, loading, error, refreshData, refresh, handleRefresh, count };
 };

@@ -30,6 +30,7 @@ export interface DataGridWrapperProps extends Omit<DataGridProps, 'rows'> {
   notFoundTitle?: string;
   notFoundIconSize?: number;
   indexColumn?: boolean;
+  toolbar?: boolean;
 }
 
 const DataGridWrapper = ({
@@ -42,6 +43,7 @@ const DataGridWrapper = ({
   notFoundTitle,
   notFoundIconSize,
   indexColumn = true,
+  toolbar = false,
   sx,
   ...props
 }: DataGridWrapperProps) => {
@@ -117,7 +119,7 @@ const DataGridWrapper = ({
         // loading={loading}
         slots={{
           // loadingOverlay: LinearProgress,
-          toolbar: GridToolbar,
+          toolbar: toolbar ? GridToolbar : null,
           noResultsOverlay: () => (
             <NoResults
               title={notFoundTitle}

@@ -1,14 +1,15 @@
-export enum BillingStatus {
-  PENDING = 'Pendiente',
-  PAID = 'Pagado',
-  OVERDUE = 'Atrasado',
-  CANCELED = 'Cancelado',
+export enum CustomerStatus {
+  PREMIER = 'Premier',
+  IN_PROGRESS = 'In Progress',
+  DELIVERED = 'Delivered',
+  ACTIVE = 'Active',
+  CANCELED = 'Canceled',
 }
 
 export interface Billing {
   folio: string;
   seller: string;
-  status: BillingStatus;
+  status: CustomerStatus;
   product: string;
   description: string;
   amount: number;

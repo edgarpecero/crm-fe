@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { datePickerFormat } from './constants';
+import { GridRowParams } from '@mui/x-data-grid';
 
 export const filterData = <T>(data: T[], searchInput: string, ...keys: (keyof T)[]): T[] => {
   if (!searchInput) return data; // Return all data if search input is empty
@@ -10,6 +11,8 @@ export const filterData = <T>(data: T[], searchInput: string, ...keys: (keyof T)
     keys.some((key) => String(item[key])?.toLowerCase().includes(lowerCasedSearch)),
   );
 };
+
+export const getRowId = (row: GridRowParams) => row.id;
 
 /* FORMATTERS */
 const extractNumberFromString = (str: string) => {

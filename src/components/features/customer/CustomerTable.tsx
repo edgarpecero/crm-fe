@@ -44,6 +44,7 @@ const CustomerTable = () => {
       <DataGridWrapper
         columns={columns}
         rowData={memoizedData}
+        toolbar={true}
         onRowDoubleClick={handleRowDoubleClick}
       />
     </>
@@ -57,6 +58,7 @@ const columns: GridColDef<Customer>[] = [
   {
     field: 'status',
     headerName: 'Estado',
+    align: 'center',
     renderCell: (props) => <ChipCell {...props} />,
     flex: 1,
   },

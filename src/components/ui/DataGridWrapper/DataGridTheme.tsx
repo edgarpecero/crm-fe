@@ -27,6 +27,9 @@ const greyDataGridTheme = createTheme({
             backgroundColor: theme.palette.error.light,
             '&:hover': {
               backgroundColor: theme.palette.error.main,
+              '& svg path': {
+                fill: theme.palette.grey[50],
+              },
             },
           },
         },
