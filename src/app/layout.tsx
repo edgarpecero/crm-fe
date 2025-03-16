@@ -4,6 +4,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '@/styles/Theme';
+import ClientQueryProvider from '@/context/ClientQueryProvider/ClientQueryProvider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,13 +19,15 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body className={`roboto.variable`}>
-        <InitColorSchemeScript attribute='class' />
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <ClientLayout>{children}</ClientLayout>
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+        <ClientQueryProvider>
+          <InitColorSchemeScript attribute='class' />
+          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <ClientLayout>{children}</ClientLayout>
+            </ThemeProvider>
+          </AppRouterCacheProvider>
+        </ClientQueryProvider>
       </body>
     </html>
   );
