@@ -1,3 +1,5 @@
+import { revalidatePath } from "next/cache";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const defaultHeaders = {
@@ -10,7 +12,8 @@ const defaultHeaders = {
 
 export const apiFetch = async <T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  shouldRevalidate: boolean = false
 ): Promise<T> => {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
@@ -24,5 +27,15 @@ export const apiFetch = async <T>(
     throw new Error(`Error ${response.status}: ${response.statusText}`);
   }
 
+  // Revalidate cache if needed
+  shouldRevalidate && revalidatePath(endpoint);
+  
   return response.json();
 };
+
+export enum QueryKeysEnum {
+  ORDERS = 'orders',
+  CUSTOMERS = 'customers',
+  INVENTORY = 'inventory',
+  USERS = 'users',
+}

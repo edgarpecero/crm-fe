@@ -1,6 +1,6 @@
-interface Order {
-  id: string;                       // Unique identifier
-  status: string;                   // Status of the order
+import { BaseEntity } from "../BaseEntity";
+
+export interface Order extends BaseEntity {
   orderNumber: string;              // Folio
   userId: string;                   // Vendedor
   userNumber: string;               // Vendedor
@@ -8,6 +8,7 @@ interface Order {
   productNumber: string;            // Producto
   customerId: string;               // Cliente
   customerName: string;             // Cliente
+
   description: string;              // Descripcion
   totalAmount: number;              // Monto
   actualContribution: number;       // AP REAL
@@ -21,15 +22,17 @@ interface Order {
   totalPayments: number;            // PAGOS
   onTimePayment: number;            // PAGO PUNTUAL
   advancedPayments: number;         // PAGOS ADELANTADOS
-  secondPayment: number;            // 2DA
   dailyInterest: number;            // INT DIARIO
   accumulatedAmount: number;        // ACUMULADO
   amountPaid: number;               // PAGADO
+  secondPayment: number;            // 2DA
   thirdPayment: number;             // 3RA
   fourthPayment: number;            // 4TA
   fifthPayment: number;             // 5TA
   sixthPayment: number;             // 6TA
-  createdAt: string;                // Timestamp of creation (ISO 8601 string)
-  lastModifiedAt: string;           // Timestamp of last modification (ISO 8601 string)
-  lastModifiedBy: string;           // Who last modified the order
+}
+
+export interface ListOrdersResponse {
+  orders: Order[];
+  count: number;
 }

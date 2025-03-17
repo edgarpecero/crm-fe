@@ -1,6 +1,7 @@
 'use client';
 
 import NavDrawer from '@/components/layout/NavDrawer/NavDrawer';
+import Content from '@/components/layout/PageLayout/Content';
 import MainStyled from '@/components/layout/PageLayout/MainStyled';
 import useDrawerWidth from '@/hooks/useDrawerWidth';
 import { Box } from '@mui/material';
@@ -22,8 +23,8 @@ const ClientLayout = ({ children }: PropsWithChildren) => {
     <Box sx={{ height: '100%', display: 'flex' }}>
       <NavDrawer open={isNavDrawerOpen} onClose={handleDrawerClose} onOpen={handleDrawerOpen} />
       <MainStyled open={isNavDrawerOpen} drawerwidth={drawerWidth}>
-        {children}
-        {/* <Content>{children}</Content>  */}
+        {/* {children} */}
+        <Content>{children}</Content>
       </MainStyled>
     </Box>
   );

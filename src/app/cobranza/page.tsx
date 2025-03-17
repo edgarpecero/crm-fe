@@ -1,19 +1,17 @@
-import BillingTable from '@/components/features/billing/BillingTable';
-import Content from '@/components/layout/PageLayout/Content';
-import { BillingProvider } from '@/context/BillingContext/BillingContext';
-import { Typography } from '@mui/material';
+import OrdersTable from "@/components/features/orders/OrdersTable";
+import { getAllOrders } from "@/services/orders";
+import { Typography } from "@mui/material";
 
-const BillingPage = () => {
+const OrdersPage = async () => {
+  const initialOrders = await getAllOrders();
+
   return (
-    <BillingProvider>
-      <Content>
-        <Typography variant='h2' sx={{ mb: 2 }}>
-          Cobranza
-        </Typography>
-        <BillingTable />
-      </Content>
-    </BillingProvider>
+    <>
+      <Typography variant='h2' sx={{ mb: 2 }}>
+        Cobranza
+      </Typography>
+      <OrdersTable initialOrders={initialOrders} />
+    </>
   );
-};
-
-export default BillingPage;
+}
+export default OrdersPage;

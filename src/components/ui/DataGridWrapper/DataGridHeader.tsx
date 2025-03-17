@@ -4,7 +4,7 @@ import { Box, Button, ButtonProps } from '@mui/material';
 import SearchInput from '../SearchInput';
 import Link from 'next/link';
 
-interface DataGridHeaderProps {
+export interface DataGridHeaderProps {
   handleSearch?: (value: string) => void;
   buttonProps?: ButtonProps & {
     text: string;

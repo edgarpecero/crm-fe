@@ -1,23 +1,16 @@
-import { apiFetch } from '@/services/config/config';
+'use-server';
 
-const endpoint = '/orders';
+import { apiFetch } from '@/services/config';
+import { endpoint } from '../orders';
+import { Order } from '@/types/orders';
 
-// GET all orders
-export const getAllOrders = async (): Promise<Order[]> => {
-  return apiFetch<Order[]>(endpoint, { cache: 'no-store' }); // Para Server Components
-};
-
-// GET single order
-export const getOrderById = async (id: string): Promise<Order> => {
-  return apiFetch<Order>(`${endpoint}/${id}`);
-};
-
+const shouldRevalidate = true;
 // POST create order
 export const createOrder = async (data: Omit<Order, 'id' | 'createdAt | lastModifiedAt '>): Promise<Order> => {
   return apiFetch<Order>(endpoint, {
     method: 'POST',
     body: JSON.stringify(data),
-  });
+  }, shouldRevalidate);
 };
 
 // PUT update order
@@ -25,10 +18,10 @@ export const updateOrder = async (id: string, data: Partial<Order>): Promise<Ord
   return apiFetch<Order>(`${endpoint}/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
-  });
+  }, shouldRevalidate);
 };
 
 // DELETE order
 export const deleteOrder = async (id: string): Promise<void> => {
-  await apiFetch<void>(`${endpoint}/${id}`, { method: 'DELETE' });
+  await apiFetch<void>(`${endpoint}/${id}`, { method: 'DELETE' }, shouldRevalidate);
 };

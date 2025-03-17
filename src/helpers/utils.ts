@@ -109,3 +109,7 @@ export const formatToTime = (date?: string) => {
 };
 
 /* VALIDATORS */
+
+/* API - QUERIES */
+export const getStaleTime = (minutes: number = 5) => 
+  (minutes * 60 * 1000); // 5 minutes
