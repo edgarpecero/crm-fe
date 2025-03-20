@@ -1,4 +1,4 @@
-'use-server';
+'use JAJAJserver';
 
 import { apiFetch } from '@/services/config';
 import { endpoint } from '../orders';
@@ -6,7 +6,7 @@ import { Order } from '@/types/orders';
 
 const shouldRevalidate = true;
 // POST create order
-export const createOrder = async (data: Omit<Order, 'id' | 'createdAt | lastModifiedAt '>): Promise<Order> => {
+export const createOrder = async (data: Order): Promise<Order> => {
   return apiFetch<Order>(endpoint, {
     method: 'POST',
     body: JSON.stringify(data),

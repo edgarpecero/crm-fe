@@ -9,6 +9,5 @@ export const getAllOrders = async (): Promise<Order[]> => {
 };
 
 // GET single order
-export const getOrderById = async (id: string): Promise<Order> => {
-  return apiFetch<Order>(`${endpoint}/${id}`);
-};
+export const getOrderById = async (orderId: string, customerId?: string): Promise<Order> =>
+  apiFetch<Order>(`${endpoint}/${orderId}${customerId ? `?customerId=${customerId}` : ''}`);

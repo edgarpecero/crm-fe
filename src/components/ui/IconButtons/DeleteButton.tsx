@@ -6,7 +6,7 @@ import { IconButtonsProps } from './types';
 
 const DeleteButton = (props: IconButtonsProps) => {
   return (
-    <Tooltip title='Delete'>
+    <Tooltip title='Remover'>
       <IconButton aria-label='delete' {...getIconButtonsProps(props)}>
         <RedTrashIcon />
       </IconButton>

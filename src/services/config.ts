@@ -1,3 +1,4 @@
+import { EntityTypeEnum } from "@/types/BaseEntity";
 import { revalidatePath } from "next/cache";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -28,14 +29,14 @@ export const apiFetch = async <T>(
   }
 
   // Revalidate cache if needed
-  shouldRevalidate && revalidatePath(endpoint);
-  
+  // shouldRevalidate && revalidatePath(endpoint);
+
   return response.json();
 };
 
 export enum QueryKeysEnum {
-  ORDERS = 'orders',
-  CUSTOMERS = 'customers',
+  ORDERS = `${EntityTypeEnum.ORDER}s`,
+  CUSTOMERS = `${EntityTypeEnum.CUSTOMER}s`,
   INVENTORY = 'inventory',
-  USERS = 'users',
+  USERS = `${EntityTypeEnum.USER}s`,
 }

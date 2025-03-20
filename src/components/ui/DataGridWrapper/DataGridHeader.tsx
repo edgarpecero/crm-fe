@@ -33,7 +33,7 @@ const DataGridHeader = ({ handleSearch, buttonProps }: DataGridHeaderProps) => {
       )}
       {buttonProps?.text ? (
         <Link href={buttonProps.href || '#'}>
-          <Button variant='contained' size='small'>
+          <Button variant='contained' size='medium'>
             {buttonProps?.text}
           </Button>
         </Link>

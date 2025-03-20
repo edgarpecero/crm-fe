@@ -2,16 +2,29 @@
 
 import DataGridPage from "@/components/layout/DataGridPage/DataGridPage";
 import IconCell from "@/components/ui/DataGridCellComponents/IconCell";
-import { dateFormatter, filterData, formatToPrice, getStaleTime } from "@/helpers/utils";
+import SimpleActionsCell from "@/components/ui/DataGridCellComponents/SimpleActionsCell";
+import { dateFormatter, formatToPrice, getStaleTime } from "@/helpers/utils";
 import { QueryKeysEnum } from "@/services/config";
 import { getAllOrders } from "@/services/orders";
 import { theme } from "@/styles/Theme";
 import { Order } from "@/types/orders";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { useCallback } from "react";
 
 export default function OrdersTable({ initialOrders }: { initialOrders: Order[] }) {
+  const aColumns: GridColDef<Order>[] = [
+    ...columns,
+    {
+      field: 'actions',
+      headerName: '',
+      sortable: false,
+      align: 'right',
+      maxWidth: 100,
+      renderCell: (params: GridRenderCellParams) => <SimpleActionsCell {...params} />,
+    },
+  ];
   const dataGridProp = {
-    columns: columns,
+    columns: aColumns,
     rowData: initialOrders,
     toolbar: true,
     initialState: {
@@ -36,6 +49,7 @@ export default function OrdersTable({ initialOrders }: { initialOrders: Order[] 
 
   const dataGridHeaderProps = {
     handleSearch: (value: string) => console.log(value),
+    buttonProps: { text: 'Crear nuevo contrato', href: 'cobranza/crear' }
   }
 
   const queryProps = {
@@ -45,18 +59,19 @@ export default function OrdersTable({ initialOrders }: { initialOrders: Order[] 
     staleTime: getStaleTime()
   }
 
+
   return (
     <DataGridPage<Order[]>
-      queryProps={queryProps}
-      dataGridProps={dataGridProp}
       dataGridHeaderProps={dataGridHeaderProps}
+      dataGridProps={dataGridProp}
+      queryProps={queryProps}
     />
   );
 }
 
 const columns: GridColDef<Order>[] = [
   {
-    field: 'orderNumber',
+    field: 'number',
     headerName: 'Folio',
     minWidth: 100,
     flex: 1
@@ -68,9 +83,9 @@ const columns: GridColDef<Order>[] = [
     minWidth: 100,
 
   },
-  { field: 'userNumber', headerName: 'Vendedor', flex: 1 },
+  { field: 'userName', headerName: 'Vendedor', flex: 1 },
   {
-    field: 'productNumber',
+    field: 'itemName',
     headerName: 'Producto',
     width: 120,
     align: 'center',

@@ -48,3 +48,6 @@ export const regexPositiveNonRequiredDigit = /^\d*$/;
 export const regexAnyDigit = /^-?\d+$/;
 export const regexDigitOrMinus = /^-?\d*$/;
 export const regexPositiveDigitOrFloatPoint = /^(?:0|[1-9]\d*)(?:\.\d+)?$/;
+
+
+/* COMMON INPUTS */

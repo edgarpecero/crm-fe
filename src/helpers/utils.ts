@@ -1,6 +1,9 @@
 import { format } from 'date-fns';
 import { datePickerFormat } from './constants';
 import { GridRowParams } from '@mui/x-data-grid';
+import { UseQueryOptions } from '@tanstack/react-query';
+import { th } from 'date-fns/locale';
+import { PageProps } from '@/types/pageprops';
 
 export const filterData = <T>(data: T[], searchInput: string, ...keys: (keyof T)[]): T[] => {
   if (!searchInput) return data; // Return all data if search input is empty
@@ -108,8 +111,25 @@ export const formatToTime = (date?: string) => {
   return formattedDate;
 };
 
+export const capitalizeFirstLetter = (text: string): string => {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+};
+
+export const processPageProps = <T>(queryProps: UseQueryOptions<T>, pageProps?: PageProps, currPathname?: string): PageProps => {
+  const { pathname, title } = pageProps ?? {};
+  const queryKey = queryProps.queryKey[0] as string;
+  const result = currPathname !== queryKey ? currPathname : queryKey;
+
+  if (!result) throw new Error('Entity not found in pathname or queryKey');
+
+  return {
+    pathname: pathname ?? result,
+    title: title ?? capitalizeFirstLetter(result),
+  };
+};
+
 /* VALIDATORS */
 
 /* API - QUERIES */
-export const getStaleTime = (minutes: number = 5) => 
+export const getStaleTime = (minutes: number = 5) =>
   (minutes * 60 * 1000); // 5 minutes

@@ -15,6 +15,7 @@ import { CustomerTabsEnum } from './CustomerTabPanel';
 import { useCustomer } from '@/context/BillingContext/CustomerContext';
 import { useParams } from 'next/navigation';
 import { fetchCustomersData } from '@/services/customerServices';
+import { add } from 'date-fns';
 
 interface CustomerFormProps {
   onSubmit: (data: Customer) => void;
@@ -42,7 +43,7 @@ const CustomerForm = ({ onSubmit }: CustomerFormProps) => {
       const customerId = Number(urlParams.id);
       const fetchData = async () => {
         const result = await fetchCustomersData();
-        const customer = result.data.find((customer) => customer.customerId === customerId);
+        const customer = result.data.find((customer) => customer.id === customerId.toString());
         methods.reset(customer);
       };
 
@@ -59,7 +60,7 @@ const CustomerForm = ({ onSubmit }: CustomerFormProps) => {
           </Typography>
           <Grid2 container spacing={6} alignItems='start' justifyContent='space-between'>
             <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
-              <GridInputs inputs={generalInputs} />
+              <GridInputs inputs={userAttributesInputs} />
             </Grid2>
             <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
               <GridInputs inputs={addressInputs} />
@@ -70,7 +71,10 @@ const CustomerForm = ({ onSubmit }: CustomerFormProps) => {
           </Typography>
           <Grid2 container spacing={6} alignItems='start' justifyContent='space-between'>
             <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
-              <GridInputs inputs={additionalInfoInputs} />
+              <GridInputs inputs={contractInputs} />
+            </Grid2>
+            <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
+              <GridInputs inputs={userAditionalAttributesInputs} />
             </Grid2>
           </Grid2>
         </form>
@@ -79,12 +83,12 @@ const CustomerForm = ({ onSubmit }: CustomerFormProps) => {
   );
 };
 
-const generalInputs: InputsProps[] = [
+const userAttributesInputs: InputsProps[] = [
   { name: 'name', label: 'Nombre', required: true },
   { name: 'lastName', label: 'Apellido', required: true },
   { name: 'email', label: 'Email', required: true },
   { name: 'birthdate', label: 'Fecha de nacimiento', required: true },
-  { name: 'phonePrimary', label: 'Teléfono principal', required: true },
+  { name: 'phone', label: 'Teléfono principal', required: true },
   { name: 'phoneSecondary', label: 'Teléfono secundario', required: true },
 ];
 
@@ -95,9 +99,24 @@ const addressInputs: InputsProps[] = [
   { name: 'country', label: 'País', required: true },
   { name: 'zip', label: 'Código postal', required: true },
 ];
+const userAdressInputs = addressInputs;
 
-const additionalInfoInputs: InputsProps[] = [
+const paymentCommonProps = { gridSize: { xs: 12, sm: 3 }, disabled: false };
+const paymentInputCommonProps = { gridSize: { xs: 12, sm: 9 }, required: true };
+const contractInputs: InputsProps[] = [
+  { name: 'totalAmount', label: 'Saldo Mensual', ...paymentInputCommonProps },
+  { name: 'totalPayments', label: 'Mens Pag', ...paymentCommonProps },
+  { name: 'interestRate', label: 'Tasa', ...paymentInputCommonProps },
+  { name: 'onTimePayment', label: 'Mens Punt', ...paymentCommonProps },
+  { name: 'termMonths', label: '# No. Adjud', ...paymentInputCommonProps },
+  { name: 'advancedPayments', label: 'Mens Adela', ...paymentCommonProps },
+  { name: 'monthlyPayment', label: 'Mensualidad', ...paymentInputCommonProps },
+  { name: 'overduePayments', label: 'Mens Venci', ...paymentCommonProps },
+];
+
+const userAditionalAttributesInputs: InputsProps[] = [
   { name: 'nationalId', label: 'ID' },
+  { name: 'taxNumber', label: 'RFC' },
   { name: 'licenseNumber', label: 'Número de licencia' },
   { name: 'licenseExpiration', label: 'Fecha de expiración de la licencia' },
 ];

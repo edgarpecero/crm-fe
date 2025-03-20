@@ -1,17 +1,14 @@
 import OrdersTable from "@/components/features/orders/OrdersTable";
+import CircularIndeterminate from "@/components/ui/Progress/CircularIndeterminate";
 import { getAllOrders } from "@/services/orders";
-import { Typography } from "@mui/material";
+import { Suspense } from "react";
 
-const OrdersPage = async () => {
+export default async function OrdersTablePage() {
   const initialOrders = await getAllOrders();
 
   return (
-    <>
-      <Typography variant='h2' sx={{ mb: 2 }}>
-        Cobranza
-      </Typography>
+    <Suspense fallback={<CircularIndeterminate />} >
       <OrdersTable initialOrders={initialOrders} />
-    </>
-  );
+    </Suspense>
+  )
 }
-export default OrdersPage;
