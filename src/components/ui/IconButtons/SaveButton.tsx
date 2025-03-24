@@ -1,19 +1,14 @@
-import { IconButton, Tooltip } from '@mui/material';
-import { memo } from 'react';
-import { getIconButtonsProps } from './helpers';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { ButtonTypeEnum, IconButtonsProps } from './types';
-import { theme } from '@/styles/Theme';
-
-const SaveButton = (props: IconButtonsProps) => {
-  const defaultProps = { ...props, buttonType: ButtonTypeEnum.CellButton };
-
+import { memo } from "react";
+import BaseIconButton, { BaseIconButtonProps } from "./BaseIconButton"
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
+const SaveButton = (props: BaseIconButtonProps) => {
   return (
-    <Tooltip title='Save'>
-      <IconButton aria-label='save' {...getIconButtonsProps(defaultProps)}>
-        <CheckRoundedIcon fontSize='small' sx={{ color: theme.palette.secondary.main }} />
-      </IconButton>
-    </Tooltip>
+    <BaseIconButton
+      {...props}
+      tooltip='Guardar'
+      icon={<SaveAltIcon />}
+      color='success'
+    />
   );
 };
 

@@ -1,11 +1,7 @@
-import { MouseEventHandler, memo, useCallback, useMemo } from 'react';
+import { memo } from 'react';
 import { Box } from '@mui/material';
-import { GridRenderCellParams } from '@mui/x-data-grid';
-import SaveButton from '../IconButtons/SaveButton';
-import ResetButton from '../IconButtons/ResetButton';
 import EditButton from '../IconButtons/EditButton';
 import DeleteButton from '../IconButtons/DeleteButton';
-import { ButtonTypeEnum } from '../IconButtons/types';
 import ViewButton from '../IconButtons/ViewButton';
 
 interface SimpleActionsCellProps {
@@ -29,7 +25,7 @@ const SimpleActionsCell = ({ onEdit, onDelete, onView }: SimpleActionsCellProps)
     >
       <ViewButton onClick={onView} />
       <EditButton onClick={onEdit} />
-      <DeleteButton buttonType={ButtonTypeEnum.CellButton} onClick={onDelete} />
+      <DeleteButton onClick={onDelete} />
     </Box>
   );
 };

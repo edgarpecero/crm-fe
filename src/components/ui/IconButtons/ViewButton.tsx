@@ -1,16 +1,14 @@
-import { IconButton, Tooltip } from '@mui/material';
-import RedTrashIcon from '../FigmaSvgVectors/RedTrashIcon';
-import { memo } from 'react';
-import { getIconButtonsProps } from './helpers';
-import { IconButtonsProps } from './types';
-
-const ViewButton = (props: IconButtonsProps) => {
+import { memo } from "react";
+import BaseIconButton, { BaseIconButtonProps } from "./BaseIconButton"
+import VisibilityIcon from '@mui/icons-material/Visibility';
+const ViewButton = (props: BaseIconButtonProps) => {
   return (
-    <Tooltip title='View'>
-      <IconButton aria-label='view' {...getIconButtonsProps(props)}>
-        <RedTrashIcon />
-      </IconButton>
-    </Tooltip>
+    <BaseIconButton
+      {...props}
+      tooltip='Ver'
+      icon={<VisibilityIcon />}
+      color='info'
+    />
   );
 };
 

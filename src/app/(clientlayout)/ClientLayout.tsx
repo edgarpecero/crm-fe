@@ -5,7 +5,7 @@ import Content from '@/components/layout/PageLayout/Content';
 import MainStyled from '@/components/layout/PageLayout/MainStyled';
 import useDrawerWidth from '@/hooks/useDrawerWidth';
 import { Box } from '@mui/material';
-import { PropsWithChildren, useCallback, useState } from 'react';
+import { memo, PropsWithChildren, useCallback, useState } from 'react';
 
 const ClientLayout = ({ children }: PropsWithChildren) => {
   const [isNavDrawerOpen, setNavDrawerOpen] = useState(false);
@@ -30,4 +30,4 @@ const ClientLayout = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default ClientLayout;
+export default memo(ClientLayout);

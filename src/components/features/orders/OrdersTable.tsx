@@ -5,19 +5,64 @@ import { dateFormatter, formatToPrice } from '@/helpers/utils';
 import { QueryKeysEnum } from '@/services/config';
 import { theme } from '@/styles/Theme';
 import { ListOrdersResponse, Order } from '@/types/orders';
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import ChipCell from '@/components/ui/DataGridCellComponents/ChipCell';
 import { orderService } from '@/services/orderService';
 import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
-import { useDataGrid } from '@/hooks/useDataGrid';
+import { useQueryDataGrid } from '@/hooks/useQueryDataGrid';
+import React, { useCallback, useMemo } from 'react';
+import SimpleActionsCell from '@/components/ui/DataGridCellComponents/SimpleActionsCell';
+import { Button, Typography } from '@mui/material';
+import { useModal } from '@/context/GlobalModalContext/GlobalModalContext';
+// import { useRouter } from 'next/navigate';
 
-export default function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
-  const gridMethods = useDataGrid<ListOrdersResponse>({
+function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
+  const { openModal } = useModal();
+  // const router = useRouter();
+
+  console.log('ORDER TABLE');
+
+  const gridMethods = useQueryDataGrid<ListOrdersResponse>({
     queryKey: QueryKeysEnum.ORDERS,
     fetchFn: () => orderService.getAll(),
     initialData,
   });
   const { data, ...rest } = gridMethods;
+  const renderActionsCell = useCallback(
+    (params: GridRenderCellParams) => {
+      const rowId = params.row.id;
+      const description = params.row.description;
+
+      const onDelete = () => {
+        // selectRole({ name: name, description: description, values: [] });
+        // openDeleteModal();
+      };
+
+      const onEdit = () => {
+        // router.push(`/cobranza/${rowId}`);
+      };
+      const onView = async () => {
+        openModal({
+          body: <Typography>Order Placeholder</Typography>,
+          title: 'Orden',
+        })
+      };
+
+      return <SimpleActionsCell onDelete={onDelete} onEdit={onEdit} onView={onView} />;
+    },
+    [openModal]
+  );
+  const resultCustomColumns = useMemo(() => {
+    return [
+      ...columns,
+      {
+        field: 'actions',
+        headerName: 'Acciones',
+        width: 150,
+        renderCell: renderActionsCell,
+      },
+    ];
+  }, [columns, renderActionsCell]);
 
   const pageProps = { ...rest };
   const dataGridHeaderProps = {
@@ -25,7 +70,7 @@ export default function OrdersTable({ initialData }: { initialData: ListOrdersRe
     handleSearch: () => { },
   };
   const dataGridProps = {
-    columns: columns,
+    columns: resultCustomColumns,
     rowData: data?.orders,
     toolbar: true,
     initialState: {
@@ -56,6 +101,8 @@ export default function OrdersTable({ initialData }: { initialData: ListOrdersRe
     />
   )
 }
+
+export default React.memo(OrdersTable);
 
 const columns: GridColDef<Order>[] = [
   {

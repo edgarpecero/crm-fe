@@ -1,20 +1,14 @@
-import { IconButton, Tooltip } from '@mui/material';
-import { memo } from 'react';
-import { getIconButtonsProps } from './helpers';
+import { memo } from "react";
+import BaseIconButton, { BaseIconButtonProps } from "./BaseIconButton"
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
-import { ButtonTypeEnum, IconButtonsProps } from './types';
-import { theme } from '@/styles/Theme';
 
-const ResetButton = (props: IconButtonsProps) => {
-  const defaultProps = { ...props, buttonType: ButtonTypeEnum.CellButton };
-
+const ResetButton = (props: BaseIconButtonProps) => {
   return (
-    <Tooltip title='Reset'>
-      <IconButton aria-label='reset' {...getIconButtonsProps(defaultProps)}>
-        <ClearRoundedIcon fontSize='small' sx={{ color: theme.palette.grey[700] }} />
-      </IconButton>
-    </Tooltip>
+    <BaseIconButton
+      {...props}
+      tooltip='Reset'
+      icon={<ClearRoundedIcon />}
+    />
   );
 };
-
 export default memo(ResetButton);

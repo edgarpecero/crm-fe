@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
-import ClientLayout from './(clientlayout)/ClientLayout';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '@/styles/Theme';
 import ClientQueryProvider from '@/context/ClientQueryProvider/ClientQueryProvider';
+import { GlobalModalProvider } from '@/context/GlobalModalContext/GlobalModalContext';
+import ClientLayout from './(clientlayout)/ClientLayout';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -23,8 +24,12 @@ export default function RootLayout({
           <InitColorSchemeScript attribute='class' />
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <ClientLayout>{children}</ClientLayout>
+              <GlobalModalProvider>
+                <CssBaseline />
+                <ClientLayout>
+                  {children}
+                </ClientLayout>
+              </GlobalModalProvider>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </ClientQueryProvider>

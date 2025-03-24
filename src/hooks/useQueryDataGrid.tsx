@@ -7,7 +7,7 @@ interface FilterParams {
   searchText?: string;
 }
 
-export function useDataGrid<T>({
+export function useQueryDataGrid<T>({
   queryKey,
   fetchFn,
   initialData,

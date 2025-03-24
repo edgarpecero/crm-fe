@@ -1,16 +1,14 @@
-import { IconButton, Tooltip } from '@mui/material';
-import RedTrashIcon from '../FigmaSvgVectors/RedTrashIcon';
-import { memo } from 'react';
-import { getIconButtonsProps } from './helpers';
-import { IconButtonsProps } from './types';
-
-const DeleteButton = (props: IconButtonsProps) => {
+import { memo } from "react";
+import BaseIconButton, { BaseIconButtonProps } from "./BaseIconButton"
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+const DeleteButton = (props: BaseIconButtonProps) => {
   return (
-    <Tooltip title='Remover'>
-      <IconButton aria-label='delete' {...getIconButtonsProps(props)}>
-        <RedTrashIcon />
-      </IconButton>
-    </Tooltip>
+    <BaseIconButton
+      {...props}
+      tooltip='Remover'
+      icon={<DeleteForeverIcon />}
+      color='error'
+    />
   );
 };
 
