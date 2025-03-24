@@ -111,11 +111,16 @@ export const formatToTime = (date?: string) => {
   return formattedDate;
 };
 
-export const capitalizeFirstLetter = (text: string): string => {
+export const capitalizeFirstLetter = (text?: string): string => {
+  if (!text) return '';
   return text.charAt(0).toUpperCase() + text.slice(1);
 };
 
-export const processPageProps = <T>(queryProps: UseQueryOptions<T>, pageProps?: PageProps, currPathname?: string): PageProps => {
+export const processPageProps = <T>(
+  queryProps: UseQueryOptions<T>,
+  pageProps?: PageProps,
+  currPathname?: string,
+): PageProps => {
   const { pathname, title } = pageProps ?? {};
   const queryKey = queryProps.queryKey[0] as string;
   const result = currPathname !== queryKey ? currPathname : queryKey;
@@ -131,5 +136,4 @@ export const processPageProps = <T>(queryProps: UseQueryOptions<T>, pageProps?: 
 /* VALIDATORS */
 
 /* API - QUERIES */
-export const getStaleTime = (minutes: number = 5) =>
-  (minutes * 60 * 1000); // 5 minutes
+export const getStaleTime = (minutes: number = 5) => minutes * 60 * 1000; // 5 minutes

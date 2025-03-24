@@ -15,6 +15,7 @@ export enum ControlledInputType {
   productAutocomplete = 'productAutocomplete',
   invoiceAutocomplete = 'invoiceAutocomplete',
   vendorAutocomplete = 'vendorAutocomplete',
+  readOnly = 'readOnly',
 }
 
 //TODO: Add SingleSelectItem type for Items prop

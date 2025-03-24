@@ -14,6 +14,7 @@ import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import PaidIcon from '@mui/icons-material/Paid';
 import ReceiptLong from '@mui/icons-material/ReceiptLong';
+import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import { DrawerMenuRoutes } from './types';
 import List from '@mui/material/List';
 import Link from 'next/link';
@@ -98,25 +99,30 @@ const routes: DrawerMenuRoutes[] = [
     route: '/clientes',
   },
   {
+    label: 'Usuarios',
+    icon: <SupervisorAccountOutlinedIcon />,
+    route: '/usuarios',
+  },
+  {
     label: 'Inventorio',
     icon: <ListAltIcon />,
   },
-  {
-    label: 'Libro Mayor',
-    icon: <LocalAtmIcon />,
-  },
-  {
-    label: 'Ordenes de Compra',
-    icon: <InventoryIcon />,
-  },
-  {
-    label: 'Cuentas por Pagar',
-    icon: <PaidIcon />,
-  },
-  {
-    label: 'Recibos',
-    icon: <ReceiptLong />,
-  },
+  // {
+  //   label: 'Libro Mayor',
+  //   icon: <LocalAtmIcon />,
+  // },
+  // {
+  //   label: 'Ordenes de Compra',
+  //   icon: <InventoryIcon />,
+  // },
+  // {
+  //   label: 'Cuentas por Pagar',
+  //   icon: <PaidIcon />,
+  // },
+  // {
+  //   label: 'Recibos',
+  //   icon: <ReceiptLong />,
+  // },
   {
     label: 'Reportes',
     icon: <AssessmentIcon />,

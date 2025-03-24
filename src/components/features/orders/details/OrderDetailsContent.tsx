@@ -1,26 +1,42 @@
 'use client';
 
-import { capitalizeFirstLetter, getStaleTime } from "@/helpers/utils";
-import { Order } from "@/types/orders";
-import { useRouter } from "next/navigation";
-import { createOrderSchema, defaultValues, updateOrderSchema, getUserInputsForOrderRequest, contractInputsSectionOne, contractInputsSectionTwo, CreateOrderSchema, UpdateCustomerSchema, getUserAddressInputsForOrderRequest } from "../helpers";
-import { useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
-import { createOrder, updateOrder } from "@/services/actions/orders";
-import { Box, Button, Grid2, Typography } from "@mui/material";
-import GridInputs from "@/components/ui/GridInputs/GridInputs";
-import { useQuery } from "@tanstack/react-query";
-import { FormModeEnum } from "@/components/layout/FormData/helpers";
-import { QueryKeysEnum } from "@/services/config";
-import { getOrderById } from "@/services/orders";
+import { capitalizeFirstLetter, getStaleTime } from '@/helpers/utils';
+import { CreateOrderRequest, Order, UpdateOrderRequest } from '@/types/orders';
+import { useRouter } from 'next/navigation';
+import {
+  createOrderSchema,
+  defaultValues,
+  updateOrderSchema,
+  getUserInputsForOrderRequest,
+  contractInputsSectionOne,
+  contractInputsSectionTwo,
+  getUserAddressInputsForOrderRequest,
+} from '../helpers';
+import { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FormProvider, useForm } from 'react-hook-form';
+import { Box, Button, Grid2, Typography } from '@mui/material';
+import GridInputs from '@/components/ui/GridInputs/GridInputs';
+import { useQuery } from '@tanstack/react-query';
+import { FormModeEnum } from '@/components/layout/FormData/helpers';
+import { QueryKeysEnum } from '@/services/config';
+import OrderForm from './OrderForm/OrderForm';
+import InnerPageTabs from '@/components/layout/InnerPageTabs/InnerPageTabs';
+import { enumToTabsArray } from '@/components/layout/InnerPageTabs/helpers';
+import { TabsIdentifierEnum } from '@/components/layout/InnerPageTabs/types';
+import { OrderPayments } from './OrderPayments';
+import { createOrderAction, updateOrderAction } from '@/services/actions/orderActions';
+import { orderService } from '@/services/orderService';
 
 type OrderDetailsContentProps = {
   initialOrder?: Order;
   mode: FormModeEnum;
-}
+};
 
-type FormData<T extends FormModeEnum> = T extends FormModeEnum.CREATE ? CreateOrderSchema : UpdateCustomerSchema;
+export enum OrdersTabsEnum {
+  Details = 'General',
+  Payments = 'Pagos',
+}
 
 export default function OrderDetailsContent({ initialOrder, mode }: OrderDetailsContentProps) {
   const router = useRouter();
@@ -33,15 +49,25 @@ export default function OrderDetailsContent({ initialOrder, mode }: OrderDetails
   const schema = isCreate ? createOrderSchema : updateOrderSchema;
 
   // Configuración de React Hook Form
-  const methods = useForm<FormData<typeof mode>>({
+  const methods = useForm<CreateOrderRequest | UpdateOrderRequest>({
     resolver: zodResolver(schema),
     defaultValues: initialOrder || defaultValues,
   });
-  const { register, handleSubmit, reset, formState: { errors, isDirty, isValid } } = methods;
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isDirty, isValid },
+  } = methods;
 
-  const { data: order, isLoading, error } = useQuery<Order>({
+  const {
+    data: order,
+    isLoading,
+    error,
+  } = useQuery<Order>({
     queryKey: [QueryKeysEnum.ORDERS, id],
-    queryFn: () => getOrderById(id!),
+    queryFn: () => orderService.getById(id!),
+    // queryFn: () => getOrderById(id!),
     initialData: initialOrder || undefined,
     staleTime: getStaleTime(),
     enabled: !!id && (isRead || isUpdate), // Solo fetch si hay ID y es READ o UPDATE
@@ -55,13 +81,21 @@ export default function OrderDetailsContent({ initialOrder, mode }: OrderDetails
   }, [initialOrder, order, reset]);
 
   // Manejo del envío del formulario
-  const onSubmit = async (data: FormData<typeof mode>) => {
-    console.log('data', data);
-    if (isUpdate && id) {
-      await updateOrder(id, data as Order);
+  const onSubmit = async (data: any) => {
+    console.log(data);
+    if (data.customer.birthdate) {
+      const date = new Date(data.customer.birthdate);
+      data.customer.birthdate = date.toISOString();
+    }
+    if (data.customer.licenseExpiration) {
+      const date = new Date(data.customer.licenseExpiration);
+      data.customer.licenseExpiration = date.toISOString();
+    }
+    if (!isCreate && initialOrder) {
+      await updateOrderAction(id || '', data as Order);
       router.push('/cobranza');
     } else if (isCreate) {
-      await createOrder(data as Order);
+      await createOrderAction(data as Order);
       router.push('/cobranza');
 
       // TODO: Implementar lógica para crear una orden si corresponde
@@ -82,47 +116,17 @@ export default function OrderDetailsContent({ initialOrder, mode }: OrderDetails
 
   return (
     <>
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)} id={'contractForm'} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-          <Box sx={{ flex: '1 0 auto' }}>
-            <Typography variant='h2' sx={{ mb: 5 }}>
-              {title || initialOrder?.number || capitalizeFirstLetter(FormModeEnum.CREATE)}
-            </Typography>
-            <Typography variant='h4' sx={{ pb: '24px' }}>
-              Registro
-            </Typography>
-            {/* <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}> */}
-            <Grid2 container spacing={6} alignItems='start' justifyContent='space-between'>
-              <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }} >
-                <GridInputs inputs={getUserInputsForOrderRequest()} />
-              </Grid2>
-              <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }} >
-                <GridInputs inputs={getUserAddressInputsForOrderRequest()} />
-              </Grid2>
-            </Grid2>
-            <Typography variant='h4' sx={{ pb: '24px', pt: '24px' }}>
-              Información adicional
-            </Typography>
-            <Grid2 container spacing={6} alignItems='start' justifyContent='space-between'>
-              <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
-                <GridInputs inputs={contractInputsSectionOne} />
-              </Grid2>
-              <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
-                <GridInputs inputs={contractInputsSectionTwo} />
-              </Grid2>
-            </Grid2>
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 3, mt: 5, flexShrink: 0, }}>
-            <Button
-              variant='outlined'
-              size='large'
-              onClick={() => reset()}
-              disabled={!isDirty}
-            >Cancelar</Button>
-            <Button variant='contained' size='large' type='submit'>{isCreate ? 'Crear' : 'Actualizar'}</Button>
-          </Box>
-        </form>
-      </FormProvider >
+      <InnerPageTabs tabsArray={enumToTabsArray(OrdersTabsEnum)} id={TabsIdentifierEnum.ordersTab}>
+        <FormProvider {...methods}>
+          <OrderForm
+            title={title}
+            initialOrder={initialOrder}
+            isCreate={isCreate}
+            onSubmit={onSubmit}
+          />
+          <OrderPayments />
+        </FormProvider>
+      </InnerPageTabs>
     </>
-  )
+  );
 }

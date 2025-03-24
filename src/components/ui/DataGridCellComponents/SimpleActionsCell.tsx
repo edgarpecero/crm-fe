@@ -8,36 +8,28 @@ import DeleteButton from '../IconButtons/DeleteButton';
 import { ButtonTypeEnum } from '../IconButtons/types';
 import ViewButton from '../IconButtons/ViewButton';
 
+interface SimpleActionsCellProps {
+  onEdit?: () => void;
+  onView?: () => void;
+  onDelete?: () => void;
+}
 
-const SimpleActionsCell = ({ row }: GridRenderCellParams) => {
-  const onReset = useCallback(() => {
-  }, []);
-
-  const onDeleteClick = useCallback(() => {
-  }, [row]);
-
-  // const openEditMode: MouseEventHandler<HTMLButtonElement> = useCallback(
-  //   (e) => {
-  //     e.stopPropagation();
-  //     selectRow(row);
-  //   },
-  //   [selectRow, row],
-  // );
-
+const SimpleActionsCell = ({ onEdit, onDelete, onView }: SimpleActionsCellProps) => {
   return (
     <Box
       sx={{
         display: 'flex',
         flex: 1,
         height: '100%', // Asegura que ocupe todo el alto de la celda
-        width: '100%',  // Asegura que ocupe todo el ancho de la celda
-        alignItems: 'center',     // Centra verticalmente
+        width: '100%', // Asegura que ocupe todo el ancho de la celda
+        alignItems: 'center', // Centra verticalmente
         justifyContent: 'center', // Centra horizontalmente (cambiado de flex-end)
-        gap: '5px'
+        gap: '5px',
       }}
     >
-      <ViewButton />
-      <DeleteButton buttonType={ButtonTypeEnum.CellButton} onClick={onDeleteClick} />
+      <ViewButton onClick={onView} />
+      <EditButton onClick={onEdit} />
+      <DeleteButton buttonType={ButtonTypeEnum.CellButton} onClick={onDelete} />
     </Box>
   );
 };

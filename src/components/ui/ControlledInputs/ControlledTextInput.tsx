@@ -1,6 +1,7 @@
 import { Control, Controller, FieldValues } from 'react-hook-form';
 import TextField, { StandardTextFieldProps } from '@mui/material/TextField';
 import React from 'react';
+import TextInput from './TextInput';
 
 export interface ControlledTextInputProps extends Omit<StandardTextFieldProps, 'name'> {
   control: Control<FieldValues> | undefined;
@@ -17,7 +18,6 @@ const ControlledTextInput = ({
   id,
   ...props
 }: ControlledTextInputProps) => {
-  console.log('control', control);
   return (
     <Controller
       name={name}
@@ -33,26 +33,20 @@ const ControlledTextInput = ({
           }
         };
         return (
-          <TextField
+          <TextInput
             error={!!error}
             helperText={error?.message || ''}
-            id={id || name}
+            id={name}
             type={type}
-            fullWidth
-            slotProps={{
-              htmlInput: {
-                maxLength,
-              },
-            }}
-            {...field}
+            field={field}
             onChange={handleChange} // Usar nuestro manejador personalizado
-            value={field.value ?? ''} // Asegurar que el valor sea controlado
+            value={field.value ?? ''} 
             {...props}
           />
-        )
+        );
       }}
     />
-  )
+  );
 };
 
 export default React.memo(ControlledTextInput);

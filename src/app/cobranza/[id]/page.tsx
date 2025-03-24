@@ -1,8 +1,8 @@
-import OrderDetailsContent from "@/components/features/orders/details/OrderDetailsContent";
-import { FormModeEnum } from "@/components/layout/FormData/helpers";
-import CircularIndeterminate from "@/components/ui/Progress/CircularIndeterminate";
-import { getOrderById } from "@/services/orders";
-import { Suspense } from "react";
+import OrderDetailsContent from '@/components/features/orders/details/OrderDetailsContent';
+import { FormModeEnum } from '@/components/layout/FormData/helpers';
+import CircularIndeterminate from '@/components/ui/Progress/CircularIndeterminate';
+import { orderService } from '@/services/orderService';
+import { Suspense } from 'react';
 
 export default async function OrderDetailsPage({
   params,
@@ -15,13 +15,13 @@ export default async function OrderDetailsPage({
   const query = await searchParams;
 
   const queryMode = query.mode as FormModeEnum | undefined;
-  const isCreateMode = id === FormModeEnum.CREATE; 
+  const isCreateMode = id === FormModeEnum.CREATE;
   const mode = isCreateMode ? FormModeEnum.CREATE : queryMode || FormModeEnum.READ;
-  const order = !isCreateMode ? await getOrderById(id) : undefined;
+  const order = !isCreateMode ? await orderService.getById(id) : undefined;
 
   return (
-    <Suspense fallback={<CircularIndeterminate />} >
+    <Suspense fallback={<CircularIndeterminate />}>
       <OrderDetailsContent initialOrder={order} mode={mode} />
     </Suspense>
-  )
+  );
 }

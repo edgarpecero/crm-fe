@@ -12,7 +12,7 @@ const EditButton = ({ buttonType = ButtonTypeEnum.CellButton, sx, ...props }: Ed
   const styles = { ...buttonStylesMap[buttonType], ...sx };
 
   return (
-    <Tooltip title='Edit'>
+    <Tooltip title='Editar'>
       <IconButton aria-label='edit' size='small' sx={styles} {...props}>
         <EditIcon />
       </IconButton>

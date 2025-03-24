@@ -1,31 +1,32 @@
 'use client';
 
-import DataGridPage from "@/components/layout/DataGridPage/DataGridPage";
-import IconCell from "@/components/ui/DataGridCellComponents/IconCell";
-import SimpleActionsCell from "@/components/ui/DataGridCellComponents/SimpleActionsCell";
-import { dateFormatter, formatToPrice, getStaleTime } from "@/helpers/utils";
-import { QueryKeysEnum } from "@/services/config";
-import { getAllOrders } from "@/services/orders";
-import { theme } from "@/styles/Theme";
-import { Order } from "@/types/orders";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { useCallback } from "react";
+import IconCell from '@/components/ui/DataGridCellComponents/IconCell';
+import { dateFormatter, formatToPrice } from '@/helpers/utils';
+import { QueryKeysEnum } from '@/services/config';
+import { theme } from '@/styles/Theme';
+import { ListOrdersResponse, Order } from '@/types/orders';
+import { GridColDef } from '@mui/x-data-grid';
+import ChipCell from '@/components/ui/DataGridCellComponents/ChipCell';
+import { orderService } from '@/services/orderService';
+import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
+import { useDataGrid } from '@/hooks/useDataGrid';
 
-export default function OrdersTable({ initialOrders }: { initialOrders: Order[] }) {
-  const aColumns: GridColDef<Order>[] = [
-    ...columns,
-    {
-      field: 'actions',
-      headerName: '',
-      sortable: false,
-      align: 'right',
-      maxWidth: 100,
-      renderCell: (params: GridRenderCellParams) => <SimpleActionsCell {...params} />,
-    },
-  ];
-  const dataGridProp = {
-    columns: aColumns,
-    rowData: initialOrders,
+export default function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
+  const gridMethods = useDataGrid<ListOrdersResponse>({
+    queryKey: QueryKeysEnum.ORDERS,
+    fetchFn: () => orderService.getAll(),
+    initialData,
+  });
+  const { data, ...rest } = gridMethods;
+
+  const pageProps = { ...rest };
+  const dataGridHeaderProps = {
+    buttonProps: { text: 'Crear nuevo contrato', href: 'cobranza/crear' },
+    handleSearch: () => { },
+  };
+  const dataGridProps = {
+    columns: columns,
+    rowData: data?.orders,
     toolbar: true,
     initialState: {
       columns: {
@@ -47,26 +48,13 @@ export default function OrdersTable({ initialOrders }: { initialOrders: Order[] 
     },
   };
 
-  const dataGridHeaderProps = {
-    handleSearch: (value: string) => console.log(value),
-    buttonProps: { text: 'Crear nuevo contrato', href: 'cobranza/crear' }
-  }
-
-  const queryProps = {
-    queryKey: [QueryKeysEnum.ORDERS],
-    queryFn: getAllOrders,
-    initialData: initialOrders,
-    staleTime: getStaleTime()
-  }
-
-
   return (
-    <DataGridPage<Order[]>
+    <DataGridLayout<Order>
+      pageProps={pageProps}
+      dataGridProps={dataGridProps}
       dataGridHeaderProps={dataGridHeaderProps}
-      dataGridProps={dataGridProp}
-      queryProps={queryProps}
     />
-  );
+  )
 }
 
 const columns: GridColDef<Order>[] = [
@@ -74,14 +62,14 @@ const columns: GridColDef<Order>[] = [
     field: 'number',
     headerName: 'Folio',
     minWidth: 100,
-    flex: 1
+    flex: 1,
   },
   {
     field: 'status',
     headerName: 'Status',
     flex: 1,
     minWidth: 100,
-
+    renderCell: (props) => <ChipCell {...props} />,
   },
   { field: 'userName', headerName: 'Vendedor', flex: 1 },
   {

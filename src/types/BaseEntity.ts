@@ -7,9 +7,9 @@ export enum EntityTypeEnum {
 
 export interface BaseEntity {
   id: string;
-  number: string;                   // Unique identifier
+  number: string; // Unique identifier
   status: string;
-  createdAt: string;                // Timestamp of creation (ISO 8601 string)
-  lastModifiedAt: string;           // Timestamp of last modification (ISO 8601 string)
-  lastModifiedBy: string;           // Who last modified the order
+  createdAt: string; // Timestamp of creation (ISO 8601 string)
+  lastModifiedAt: string; // Timestamp of last modification (ISO 8601 string)
+  lastModifiedBy: string; // Who last modified the order
 }

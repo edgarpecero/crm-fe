@@ -1,14 +1,10 @@
-import OrdersTable from "@/components/features/orders/OrdersTable";
-import CircularIndeterminate from "@/components/ui/Progress/CircularIndeterminate";
-import { getAllOrders } from "@/services/orders";
-import { Suspense } from "react";
+import OrdersTable from '@/components/features/orders/OrdersTable';
+import { orderService } from '@/services/orderService';
 
 export default async function OrdersTablePage() {
-  const initialOrders = await getAllOrders();
+  const initialData = await orderService.getAll();
 
   return (
-    <Suspense fallback={<CircularIndeterminate />} >
-      <OrdersTable initialOrders={initialOrders} />
-    </Suspense>
-  )
+    <OrdersTable initialData={initialData} />
+  );
 }

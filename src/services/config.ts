@@ -1,8 +1,8 @@
-import { EntityTypeEnum } from "@/types/BaseEntity";
-import { revalidatePath } from "next/cache";
+import { EntityTypeEnum } from '@/types/BaseEntity';
+import { revalidatePath } from 'next/cache';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
+// const API_BASE_URL = 'http://localhost:5000/api'
 const defaultHeaders = {
   'Content-Type': 'application/json',
   // Placeholder para autenticación (ej. token desde cookies o localStorage en cliente)
@@ -14,7 +14,6 @@ const defaultHeaders = {
 export const apiFetch = async <T>(
   endpoint: string,
   options: RequestInit = {},
-  shouldRevalidate: boolean = false
 ): Promise<T> => {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
@@ -27,10 +26,6 @@ export const apiFetch = async <T>(
   if (!response.ok) {
     throw new Error(`Error ${response.status}: ${response.statusText}`);
   }
-
-  // Revalidate cache if needed
-  // shouldRevalidate && revalidatePath(endpoint);
-
   return response.json();
 };
 

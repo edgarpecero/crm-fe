@@ -1,7 +1,7 @@
-import OrderDetailsContent from "@/components/features/orders/details/OrderDetailsContent";
-import { FormModeEnum } from "@/components/layout/FormData/helpers";
-import CircularIndeterminate from "@/components/ui/Progress/CircularIndeterminate";
-import { Suspense } from "react";
+import OrderDetailsContent from '@/components/features/orders/details/OrderDetailsContent';
+import { FormModeEnum } from '@/components/layout/FormData/helpers';
+import CircularIndeterminate from '@/components/ui/Progress/CircularIndeterminate';
+import { Suspense } from 'react';
 
 export default async function OrderDetailsPage() {
   //TODO: Add request to get customers
@@ -9,8 +9,8 @@ export default async function OrderDetailsPage() {
   // const customers = await getAllCustomers();
 
   return (
-    <Suspense fallback={<CircularIndeterminate />} >
+    <Suspense fallback={<CircularIndeterminate />}>
       <OrderDetailsContent mode={FormModeEnum.CREATE} />
     </Suspense>
-  )
+  );
 }

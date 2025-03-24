@@ -1,19 +1,17 @@
-import { DataGridHeaderProps } from "@/components/ui/DataGridWrapper/DataGridHeader";
-import { DataGridWrapperProps } from "@/components/ui/DataGridWrapper/DataGridWrapper";
-import { UseQueryOptions } from "@tanstack/react-query";
-
+import { DataGridHeaderProps } from '@/components/ui/DataGridWrapper/DataGridHeader';
+import { DataGridWrapperProps } from '@/components/ui/DataGridWrapper/DataGridWrapper';
+import { UseQueryOptions } from '@tanstack/react-query';
 
 interface PageProps {
-  pathname?: string;
   title?: string;
 }
 interface DetailPageProps<T> extends PageProps {
   entity?: T;
 }
-type GenericDataGridPageProps<T> = {
-  queryProps: UseQueryOptions<T>;
+type DataGridLayoutProps<T> = {
+  // queryProps: UseQueryOptions<T>;
   dataGridProps: DataGridWrapperProps;
-  dataGridHeaderProps: DataGridHeaderProps;
+  dataGridHeaderProps?: DataGridHeaderProps;
   pageProps?: PageProps;
 };
 interface GenericPageProps<T> {
@@ -22,11 +20,6 @@ interface GenericPageProps<T> {
 }
 
 // interface GenericPageProps<T>
-//   extends Omit<GenericDataGridPageProps<T>, "dataGridProps" | "dataGridHeaderProps"> { }
+//   extends Omit<DataGridLayoutProps<T>, "dataGridProps" | "dataGridHeaderProps"> { }
 
-export type {
-  GenericDataGridPageProps,
-  PageProps,
-  GenericPageProps,
-  DetailPageProps,
-};
+export type { DataGridLayoutProps, PageProps, GenericPageProps, DetailPageProps };

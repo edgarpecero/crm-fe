@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 
 export enum TabsIdentifierEnum {
   customerTab = 'customerTab',
+  ordersTab = 'ordersTab',
   reportsTabs = 'reportsTabs',
 }
 

@@ -104,6 +104,7 @@ const DataGridWrapper = ({
   //   return () => clearInterval(timeoutIndex);
   // }, [data]);
   /* eslint-enable @typescript-eslint/no-explicit-any */
+  console.log('DataGridWrapper', dataGridWrapperColumns);
   return (
     <ThemeProvider theme={createTheme(dataGridTheme)}>
       <DataGrid

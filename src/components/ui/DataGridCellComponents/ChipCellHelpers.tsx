@@ -9,7 +9,7 @@ import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 export enum ChipTypesEnum {
   Active = 'Activo',
   Deactivated = 'Desactivado',
-
+  Unconfirmed = 'UNCONFIRMED',
   Inactive = 'Inactive',
   Hold = 'En progreso',
   WriteOff = 'Write Off',
@@ -51,7 +51,7 @@ export const holdChipStyle = {
   height: '2.5rem',
 
   // backgroundColor: theme.palette.grey[400],
-  color: theme.palette.grey[900],
+  color: 'yellow',
   // '& svg path': {
   // fill: theme.palette.grey[900],
   // },
@@ -85,12 +85,14 @@ export const getStyleByType = (value: ChipTypesEnum): SxProps<Theme> => {
   if (value === ChipTypesEnum.Active) return successStyle;
   if (value === ChipTypesEnum.Deactivated) return errorStyle;
   if (value === ChipTypesEnum.Hold) return holdStyle;
+  if (value === ChipTypesEnum.Unconfirmed) return holdStyle;
   return successChipStyle;
 };
 
 export const getChipStyleByType = (value: ChipTypesEnum): SxProps<Theme> => {
   if (value === ChipTypesEnum.Auto) return errorChipStyle;
   if (value === ChipTypesEnum.Light) return mainChipStyle;
+  if (value === ChipTypesEnum.Unconfirmed) return mainChipStyle;
   return successChipStyle;
 };
 
@@ -107,6 +109,8 @@ export const getChipIcon = (status: ChipTypesEnum) => {
       return <CategoryIcon fontSize='small' />;
     case ChipTypesEnum.Light:
       return <TipsAndUpdatesIcon fontSize='small' />;
+    case ChipTypesEnum.Unconfirmed:
+      return <PauseRoundedIcon fontSize='small' />;
     default:
       return <CheckRoundedIcon fontSize='small' />;
   }
@@ -143,6 +147,10 @@ export const getStylesByCashDrawerStatus = (value: string): SxProps<Theme> => {
     default: {
       ...fontStyle,
       backgroundColor: theme.palette.grey[300],
+    },
+    [ChipTypesEnum.Unconfirmed]: {
+      ...fontStyle,
+      backgroundColor: theme.palette.warning.light,
     },
   };
 
