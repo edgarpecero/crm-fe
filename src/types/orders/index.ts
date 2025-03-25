@@ -38,9 +38,10 @@ interface Order extends BaseEntity {
 }
 type CreateOrderRequest = z.infer<typeof schemas.createOrderSchema>;
 type UpdateOrderRequest = z.infer<typeof schemas.updateOrderSchema>;
+type OrderRequest = z.infer<typeof schemas.createOrderSchema>;
 interface ListOrdersResponse {
   orders: Order[];
   count: number;
 }
 
-export type { Order, ListOrdersResponse, CreateOrderRequest, UpdateOrderRequest };
+export type { Order, ListOrdersResponse, CreateOrderRequest, UpdateOrderRequest, OrderRequest };

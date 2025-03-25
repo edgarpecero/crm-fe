@@ -1,7 +1,9 @@
 import OrderDetailsContent from '@/components/features/orders/details/OrderDetailsContent';
-import { FormModeEnum } from '@/components/layout/FormData/helpers';
 import CircularIndeterminate from '@/components/ui/Progress/CircularIndeterminate';
+import { updateOrderAction } from '@/services/actions/orderActions';
 import { orderService } from '@/services/orderService';
+import { PageModeEnum } from '@/types/enums';
+import { OrderRequest } from '@/types/orders';
 import { Suspense } from 'react';
 
 export default async function OrderDetailsPage({
@@ -13,15 +15,14 @@ export default async function OrderDetailsPage({
 }) {
   const { id } = await params;
   const query = await searchParams;
-
-  const queryMode = query.mode as FormModeEnum | undefined;
-  const isCreateMode = id === FormModeEnum.CREATE;
-  const mode = isCreateMode ? FormModeEnum.CREATE : queryMode || FormModeEnum.READ;
-  const order = !isCreateMode ? await orderService.getById(id) : undefined;
-
+  const order = await orderService.getById(id);
+  const mode = query.mode === PageModeEnum.READONLY ? PageModeEnum.READONLY : PageModeEnum.UPDATE;
+  const handleSubmit = async (data: OrderRequest) => {
+    await updateOrderAction(id, data);
+  };
   return (
     <Suspense fallback={<CircularIndeterminate />}>
-      <OrderDetailsContent initialOrder={order} mode={mode} />
+      <OrderDetailsContent initialOrder={order} mode={mode} onSubmit={handleSubmit} />
     </Suspense>
   );
 }

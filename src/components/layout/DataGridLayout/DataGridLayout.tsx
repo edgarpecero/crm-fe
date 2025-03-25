@@ -7,17 +7,7 @@ import { Typography } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { DataGridHeaderProps } from '@/components/ui/DataGridWrapper/DataGridHeader';
 import { DataGridWrapperProps } from '@/components/ui/DataGridWrapper/DataGridWrapper';
-import CircularIndeterminate from '@/components/ui/Progress/CircularIndeterminate';
 import { BaseEntity } from '@/types/BaseEntity';
-
-// interface DetailPageProps<T> extends PageProps {
-//   entity?: T;
-// }
-// interface GenericPageProps<T> {
-//   queryProps: UseQueryOptions<T>;
-//   pageProps: DetailPageProps<T>;
-// }
-
 interface PageProps {
   title?: string;
   error?: Error | null;
@@ -35,9 +25,6 @@ function DataGridLayout<T extends BaseEntity>({
   pageProps,
 }: DataGridLayoutProps<T>) {
   const pathname = usePathname()?.split('/').pop();
-
-  // if (pageProps?.isLoading) return <CircularIndeterminate />;
-  // if (pageProps?.error) return <div>Error: {pageProps?.error?.message}</div>;
 
   return (
     <>

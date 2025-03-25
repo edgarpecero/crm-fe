@@ -1,6 +1,6 @@
-export enum FormModeEnum {
+export enum PageModeEnum {
   CREATE = 'crear',
-  READ = 'observar',
+  READONLY = 'ver',
   UPDATE = 'editar',
   DELETE = 'eliminar',
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { FormModeEnum } from '@/components/features/orders/details/OrderForm/OrderForm';
+import { PageModeEnum } from '@/components/features/orders/details/OrderForm/OrderForm';
 import { capitalizeFirstLetter } from '@/helpers/utils';
 import { BaseEntity } from '@/types/BaseEntity';
 import { GenericPageProps } from '@/types/pageprops';
@@ -22,7 +22,7 @@ export default function EntityDetailsPage<T extends BaseEntity>({
   return (
     <>
       <Typography variant='h2' sx={{ mb: 2 }}>
-        {title || entity?.number || capitalizeFirstLetter(FormModeEnum.CREATE)}
+        {title || entity?.number || capitalizeFirstLetter(PageModeEnum.CREATE)}
       </Typography>
       {children}
     </>

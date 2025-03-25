@@ -19,6 +19,7 @@ const Content = styled(Box, {
   backgroundColor: theme.palette.grey[50],
   flex: 1,
   padding: 20,
+  overflow: 'auto',
   [theme.breakpoints.down('sm')]: {
     border: hideBorderOnMobile ? 'none' : `2px solid ${theme.palette.grey[400]}`,
   },

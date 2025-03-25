@@ -10,11 +10,11 @@ import { GridColDef } from '@mui/x-data-grid';
 import ChipCell from '@/components/ui/DataGridCellComponents/ChipCell';
 import { orderService } from '@/services/orderService';
 import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
-import { useQueryDataGrid } from '@/components/ui/DataGridWrapper/hooks/useQueryDataGrid';
+import { useQueryData } from '@/hooks/useQueryData';
 import { Typography } from '@mui/material';
 
 function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
-  const gridMethods = useQueryDataGrid<ListOrdersResponse>({
+  const gridMethods = useQueryData<ListOrdersResponse>({
     queryKey: QueryKeysEnum.ORDERS,
     fetchFn: () => orderService.getAll(),
     initialData,

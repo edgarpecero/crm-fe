@@ -34,9 +34,6 @@ function DataGridWrapped<T extends BaseEntity>({
         getRowId={(row) => row.id || row.tableIndex}
         slotProps={{
           loadingOverlay: {
-            //   variant: 'linear-progress',
-            //   noRowsVariant: 'linear-progress',
-            // },
             variant: 'skeleton',
             noRowsVariant: 'skeleton',
           },
@@ -52,6 +49,7 @@ function DataGridWrapped<T extends BaseEntity>({
         initialState={{
           columns: {
             columnVisibilityModel: {
+              ...props?.initialState?.columns?.columnVisibilityModel,
               tableIndex: true,
             },
           },

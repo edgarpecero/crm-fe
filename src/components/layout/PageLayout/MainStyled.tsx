@@ -18,7 +18,7 @@ const MainStyled = styled('main', { shouldForwardProp: (prop) => prop !== 'open'
     position: 'relative',
     height: '100vh',
     overflow: 'hidden',
-    padding: '40px !important',
+    padding: '40px',
     backgroundColor: theme.palette.grey[300],
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
@@ -27,6 +27,10 @@ const MainStyled = styled('main', { shouldForwardProp: (prop) => prop !== 'open'
     [theme.breakpoints.down('sm')]: {
       marginLeft: `-${drawerwidth}`,
       backgroundColor: theme.palette.grey[50],
+      padding: '0 !important',
+    },
+    [theme.breakpoints.down('md')]: {
+      padding: '40px',
     },
     ...(open && {
       transition: theme.transitions.create('margin', {

@@ -10,14 +10,12 @@ import {
 } from '../../helpers';
 import { Box, Button, Grid2, Typography } from '@mui/material';
 import GridInputs from '@/components/ui/GridInputs/GridInputs';
-import { FormModeEnum } from '@/components/layout/FormData/helpers';
+import { PageModeEnum } from '@/types/enums';
 
 type OrderFormBodyProps = {
   title?: string;
   initialOrder?: Order | null;
-  isCreate?: boolean;
-  isModalView?: boolean;
-  readonly?: boolean;
+  mode: PageModeEnum;
 };
 
 export default function OrderFormBody({
@@ -30,7 +28,7 @@ export default function OrderFormBody({
     < Box sx={{ flex: '1 0 auto' }}>
       {title && (
         <Typography variant='h2' sx={{ mb: 5 }}>
-          {title || initialOrder?.number || capitalizeFirstLetter(FormModeEnum.CREATE)}
+          {title || initialOrder?.number || capitalizeFirstLetter(PageModeEnum.CREATE)}
         </Typography>
       )}
       <Typography variant='h4' sx={{ pb: '24px' }}>

@@ -1,6 +1,6 @@
 'use client';
 
-import { CreateOrderRequest, Order, UpdateOrderRequest } from '@/types/orders';
+import { CreateOrderRequest, Order, OrderRequest, UpdateOrderRequest } from '@/types/orders';
 import {
   orderSchema,
   defaultValues,
@@ -14,14 +14,16 @@ import { getTabContentStyle } from '@/components/layout/InnerPageTabs/helpers';
 import OrderFormInputs from './OrderFormBody';
 import { zodResolver } from '@hookform/resolvers/zod';
 import OrderFormFooter from './OrderFormFooter';
+import { PageModeEnum } from '@/types/enums';
 
 type OrderFormProps = {
   title?: string;
   initialOrder?: Order | null;
   isCreate?: boolean;
   isModalView?: boolean;
-  onSubmit?: (data: any) => void;
+  onSubmit: (data: OrderRequest) => void;
   readonly?: boolean;
+  mode: PageModeEnum;
 };
 
 export default function OrderForm({
@@ -31,6 +33,7 @@ export default function OrderForm({
   isModalView,
   title,
   readonly,
+  mode = PageModeEnum.CREATE,
 }: OrderFormProps) {
   const { innerPageTab } = useInnerPageTabs(TabsIdentifierEnum.ordersTab);
   const wrapperStyles = useMemo(
@@ -43,16 +46,10 @@ export default function OrderForm({
     defaultValues: initialOrder || defaultValues,
   });
 
-  const handleSubmit = (data: CreateOrderRequest | UpdateOrderRequest) => {
-    if (onSubmit) {
-      onSubmit(data);
-    }
-  }
-
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={methods.handleSubmit(handleSubmit)}
+        onSubmit={methods.handleSubmit(onSubmit)}
         id={'contractForm'}
         style={{
           display: 'flex',
@@ -65,7 +62,7 @@ export default function OrderForm({
         <OrderFormInputs readonly={readonly} />
 
         {/* Button Section */}
-        <OrderFormFooter isCreate={isCreate} isModalView={isModalView} />
+        <OrderFormFooter mode={mode} isModalView={isModalView} />
       </form>
     </FormProvider>
   );
