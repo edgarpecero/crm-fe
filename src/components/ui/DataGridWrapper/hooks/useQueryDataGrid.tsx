@@ -41,7 +41,7 @@ export function useQueryDataGrid<T>({
     staleTime,
   };
 
-  const { data, isLoading, error, refetch } = useQuery(queryProps);
+  const { data, isFetching, error, refetch } = useQuery(queryProps);
 
   // Handler para la búsqueda
   const handleSearch = (text: string) => {
@@ -50,7 +50,7 @@ export function useQueryDataGrid<T>({
 
   return {
     data,
-    isLoading,
+    isFetching,
     error,
     refetch,
     searchText,

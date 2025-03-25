@@ -23,9 +23,9 @@ const SimpleActionsCell = ({ onEdit, onDelete, onView }: SimpleActionsCellProps)
         gap: '5px',
       }}
     >
-      <ViewButton onClick={onView} />
-      <EditButton onClick={onEdit} />
-      <DeleteButton onClick={onDelete} />
+      {!!onView && <ViewButton onClick={onView} />}
+      {!!onEdit && <EditButton onClick={onEdit} />}
+      {!!onDelete && <DeleteButton onClick={onDelete} />}
     </Box>
   );
 };

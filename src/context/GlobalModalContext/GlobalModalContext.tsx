@@ -11,7 +11,7 @@ interface GlobalModalProps extends Omit<ModalProps, 'children' | 'open' | 'onClo
   onClose?: () => void;
   closeCallback?: () => void;
 }
-interface OpenModalParams extends Omit<GlobalModalProps, 'open' | 'onClose'> { }
+export interface OpenModalParams extends Omit<GlobalModalProps, 'open' | 'onClose'> { }
 type ModalStateContextType = GlobalModalProps;
 type ModalActionContextType = {
   openModal: (params: OpenModalParams) => void;

@@ -1,12 +1,13 @@
 import { memo } from "react";
 import BaseIconButton, { BaseIconButtonProps } from "./BaseIconButton"
-import EditIcon from '@mui/icons-material/Edit';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 const EditButton = (props: BaseIconButtonProps) => {
   return (
     <BaseIconButton
       {...props}
       tooltip='Editar'
-      icon={<EditIcon />}
+      color="primary"
+      icon={<EditOutlinedIcon />}
     />
   );
 };

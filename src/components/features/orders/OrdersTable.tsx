@@ -1,77 +1,34 @@
 'use client';
 
+import React from 'react';
 import IconCell from '@/components/ui/DataGridCellComponents/IconCell';
 import { dateFormatter, formatToPrice } from '@/helpers/utils';
 import { QueryKeysEnum } from '@/services/config';
 import { theme } from '@/styles/Theme';
 import { ListOrdersResponse, Order } from '@/types/orders';
-import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
 import ChipCell from '@/components/ui/DataGridCellComponents/ChipCell';
 import { orderService } from '@/services/orderService';
 import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
-import { useQueryDataGrid } from '@/hooks/useQueryDataGrid';
-import React, { useCallback, useMemo } from 'react';
-import SimpleActionsCell from '@/components/ui/DataGridCellComponents/SimpleActionsCell';
-import { Button, Typography } from '@mui/material';
-import { useModal } from '@/context/GlobalModalContext/GlobalModalContext';
-// import { useRouter } from 'next/navigate';
+import { useQueryDataGrid } from '@/components/ui/DataGridWrapper/hooks/useQueryDataGrid';
+import { Typography } from '@mui/material';
 
 function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
-  const { openModal } = useModal();
-  // const router = useRouter();
-
-  console.log('ORDER TABLE');
-
   const gridMethods = useQueryDataGrid<ListOrdersResponse>({
     queryKey: QueryKeysEnum.ORDERS,
     fetchFn: () => orderService.getAll(),
     initialData,
   });
-  const { data, ...rest } = gridMethods;
-  const renderActionsCell = useCallback(
-    (params: GridRenderCellParams) => {
-      const rowId = params.row.id;
-      const description = params.row.description;
+  const { data, ..._pageProps } = gridMethods;
 
-      const onDelete = () => {
-        // selectRole({ name: name, description: description, values: [] });
-        // openDeleteModal();
-      };
-
-      const onEdit = () => {
-        // router.push(`/cobranza/${rowId}`);
-      };
-      const onView = async () => {
-        openModal({
-          body: <Typography>Order Placeholder</Typography>,
-          title: 'Orden',
-        })
-      };
-
-      return <SimpleActionsCell onDelete={onDelete} onEdit={onEdit} onView={onView} />;
-    },
-    [openModal]
-  );
-  const resultCustomColumns = useMemo(() => {
-    return [
-      ...columns,
-      {
-        field: 'actions',
-        headerName: 'Acciones',
-        width: 150,
-        renderCell: renderActionsCell,
-      },
-    ];
-  }, [columns, renderActionsCell]);
-
-  const pageProps = { ...rest };
+  const pageProps = { ..._pageProps };
   const dataGridHeaderProps = {
     buttonProps: { text: 'Crear nuevo contrato', href: 'cobranza/crear' },
     handleSearch: () => { },
   };
   const dataGridProps = {
-    columns: resultCustomColumns,
-    rowData: data?.orders,
+    columns: _columns,
+    rows: data?.orders || [],
     toolbar: true,
     initialState: {
       columns: {
@@ -91,6 +48,12 @@ function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
         },
       },
     },
+    actionButtonsProps: {
+      modalProps: {
+        body: <Typography>Order Placeholder</Typography>,
+        title: 'Orden',
+      },
+    },
   };
 
   return (
@@ -104,7 +67,7 @@ function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
 
 export default React.memo(OrdersTable);
 
-const columns: GridColDef<Order>[] = [
+const _columns: GridColDef<Order>[] = [
   {
     field: 'number',
     headerName: 'Folio',
@@ -184,12 +147,6 @@ const columns: GridColDef<Order>[] = [
     valueFormatter: (value) => formatToPrice(value),
   },
   {
-    field: 'secondPayment',
-    headerName: '2DA',
-    flex: 1,
-    valueFormatter: (value) => formatToPrice(value),
-  },
-  {
     field: 'dailyInterest',
     headerName: 'INT Diario',
     flex: 1,
@@ -205,6 +162,12 @@ const columns: GridColDef<Order>[] = [
   {
     field: 'amountPaid',
     headerName: 'Pagado',
+    flex: 1,
+    valueFormatter: (value) => formatToPrice(value),
+  },
+  {
+    field: 'secondPayment',
+    headerName: '2DA',
     flex: 1,
     valueFormatter: (value) => formatToPrice(value),
   },
