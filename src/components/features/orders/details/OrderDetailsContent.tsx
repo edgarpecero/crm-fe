@@ -1,7 +1,7 @@
 'use client';
 
 import { CreateOrderRequest, Order, OrderRequest } from '@/types/orders';
-import { defaultValues, orderSchema, OrdersTabsEnum, trasformOrderToOrderSchema } from '../helpers';
+import { orderSchema, OrdersTabsEnum } from '../helpers';
 import { useEffect, useMemo, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -37,7 +37,7 @@ export default function OrderDetailsContent({
 
   const wrapperStyles = useMemo(
     () => getTabContentStyle(mode === PageModeEnum.CREATE || innerPageTab === OrdersTabsEnum.Details),
-    [innerPageTab],
+    [innerPageTab, mode],
   );
 
   useEffect(() => {
