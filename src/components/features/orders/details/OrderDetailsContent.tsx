@@ -36,7 +36,7 @@ export default function OrderDetailsContent({
   const { innerPageTab } = useInnerPageTabs(TabsIdentifierEnum.ordersTab);
 
   const wrapperStyles = useMemo(
-    () => getTabContentStyle(innerPageTab === OrdersTabsEnum.Details),
+    () => getTabContentStyle(mode === PageModeEnum.CREATE || innerPageTab === OrdersTabsEnum.Details),
     [innerPageTab],
   );
 
