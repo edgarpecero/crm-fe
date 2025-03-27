@@ -19,6 +19,7 @@ export const userSchema = z.object({
   country: z.string().optional().nullable(), // Cambiado a opcional
   zip: z.string().optional().nullable(), // Cambiado a opcional
   nationalId: z.string().optional().nullable(), // Cambiado a opcional
+  lastModifiedBy: z.string().max(100).optional().nullable(),
 });
 
 export const customerSchema = userSchema.extend({
@@ -75,6 +76,10 @@ export type CreateCustomerSchema = z.infer<typeof createCustomerSchema>;
 export type UpdateCustomerSchema = z.infer<typeof updateCustomerSchema>;
 
 export const defaultValues: OrderSchema = {
+  userId: 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f',
+  userName: 'Admin',
+  itemName: 'Toyota Prius 2021',
+  itemId: 'Admin',
   accumulatedAmount: 0,
   actualContribution: 0,
   advancedPayments: 0,
@@ -101,6 +106,7 @@ export const defaultValues: OrderSchema = {
     taxNumber: '',
     licenseNumber: '',
     licenseExpiration: '',
+    lastModifiedBy: 'Admin',
   },
   dailyInterest: 0,
   description: '',
@@ -109,9 +115,7 @@ export const defaultValues: OrderSchema = {
   fifthPayment: 0,
   fourthPayment: 0,
   interestRate: 0,
-  itemId: '',
-  itemName: '',
-  lastModifiedBy: '',
+  lastModifiedBy: 'Admin',
   mark: '',
   monthlyPayment: 0,
   onTimePayments: 0,
@@ -123,8 +127,6 @@ export const defaultValues: OrderSchema = {
   thirdPayment: 0,
   totalAmount: 0,
   totalPayments: 0,
-  userId: '',
-  userName: 'Admin',
 };
 
 export const userAttributesInputs = (
@@ -425,6 +427,10 @@ export enum OrdersTabsEnum {
 export const trasformOrderToOrderSchema = (initialOrder?: Order): OrderSchema => {
   if (!initialOrder) return defaultValues;
   return {
+    userId: 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f',
+    userName: 'Admin',
+    itemName: 'Toyota Prius 2021',
+    itemId: 'Admin',
     accumulatedAmount: initialOrder.accumulatedAmount,
     actualContribution: initialOrder.actualContribution,
     advancedPayments: initialOrder.advancedPayments,
@@ -451,6 +457,7 @@ export const trasformOrderToOrderSchema = (initialOrder?: Order): OrderSchema =>
       taxNumber: initialOrder.customer.taxNumber,
       licenseNumber: initialOrder.customer.licenseNumber,
       licenseExpiration: initialOrder.customer.licenseExpiration,
+      lastModifiedBy: 'Admin',
     },
     dailyInterest: initialOrder.dailyInterest,
     description: initialOrder.description,
@@ -459,9 +466,7 @@ export const trasformOrderToOrderSchema = (initialOrder?: Order): OrderSchema =>
     fifthPayment: initialOrder.fifthPayment,
     fourthPayment: initialOrder.fourthPayment,
     interestRate: initialOrder.interestRate,
-    itemId: initialOrder.itemId,
-    itemName: initialOrder.itemName,
-    lastModifiedBy: initialOrder.lastModifiedBy,
+    lastModifiedBy: 'Admin',
     mark: initialOrder.mark,
     monthlyPayment: initialOrder.monthlyPayment,
     onTimePayments: initialOrder.onTimePayments,
@@ -473,7 +478,5 @@ export const trasformOrderToOrderSchema = (initialOrder?: Order): OrderSchema =>
     thirdPayment: initialOrder.thirdPayment,
     totalAmount: initialOrder.totalAmount,
     totalPayments: initialOrder.totalPayments,
-    userId: initialOrder.userId,
-    userName: initialOrder.userName,
   };
 };

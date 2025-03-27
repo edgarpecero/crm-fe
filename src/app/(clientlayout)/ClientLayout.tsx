@@ -8,7 +8,7 @@ import { Box } from '@mui/material';
 import { memo, PropsWithChildren, useCallback, useState } from 'react';
 
 const ClientLayout = ({ children }: PropsWithChildren) => {
-  const [isNavDrawerOpen, setNavDrawerOpen] = useState(false);
+  const [isNavDrawerOpen, setNavDrawerOpen] = useState(true);
   const drawerWidth = useDrawerWidth();
 
   const handleDrawerOpen = useCallback(() => {

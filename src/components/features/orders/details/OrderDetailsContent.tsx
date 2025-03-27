@@ -1,7 +1,7 @@
 'use client';
 
 import { CreateOrderRequest, Order, OrderRequest } from '@/types/orders';
-import { orderSchema, OrdersTabsEnum } from '../helpers';
+import { defaultValues, orderSchema, OrdersTabsEnum, trasformOrderToOrderSchema } from '../helpers';
 import { useEffect, useMemo, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -44,7 +44,6 @@ export default function OrderDetailsContent({
     const fetchData = async () => {
       try {
         const resp = await orderService.getById(initialData?.id);
-        console.log('resp', resp);
         methods.reset(resp);
         return resp;
       } catch (error) {
@@ -64,11 +63,10 @@ export default function OrderDetailsContent({
   //TODO: FIX HERE
   //eslint-disable-next-line
   const handleSubmitOrder = async (data: any) => {
-    data.customerId = initialData.customerId;
     startTransition(async () => {
       if (mode === PageModeEnum.UPDATE && initialData?.id) {
+        data.customerId = initialData.customerId;
         // Edit mode: Call updateOrderAction
-        console.log('Updating order:', data);
         const result = await updateOrderAction(initialData.id, data);
         if (result) {
           alert('Orden actualizada exitosamente');
@@ -78,7 +76,15 @@ export default function OrderDetailsContent({
         }
       } else if (mode === PageModeEnum.CREATE) {
         // Create mode: Call createOrderAction
+        data.lastModifiedBy = 'Admin';
+        data.userName = 'Admin';
+        data.itemId = 'Admin';
+        data.itemName = 'Toyota Prius 2021';
+        data.userId = 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f';
+        data.customer.lastModifiedBy = 'Admin';
+        data.customer.lastModifiedBy = 'Admin';
         const result = await createOrderAction(data as CreateOrderRequest);
+        
         if (result.success && result.data) {
           alert(result.message);
           methods.reset();

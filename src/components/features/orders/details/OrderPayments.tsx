@@ -1,7 +1,7 @@
 'use client';
 
 import { CreateOrderRequest, Order, OrderRequest } from '@/types/orders';
-import { getAddInfoInputs1, getAddInfoInputs2, orderSchema, OrdersTabsEnum } from '../helpers';
+import { getAddInfoInputs1, getAddInfoInputs2, orderSchema, OrdersTabsEnum, trasformOrderToOrderSchema } from '../helpers';
 import { useEffect, useMemo, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -26,7 +26,7 @@ export default function OrderPayments({ initialData, mode, orderId }: OrderDetai
   const router = useRouter();
   const methods = useForm<OrderRequest>({
     resolver: zodResolver(orderSchema),
-    defaultValues: initialData,
+    defaultValues: trasformOrderToOrderSchema(initialData),
   });
   const { innerPageTab } = useInnerPageTabs(TabsIdentifierEnum.ordersTab);
 
@@ -39,7 +39,6 @@ export default function OrderPayments({ initialData, mode, orderId }: OrderDetai
     const fetchData = async () => {
       try {
         const resp = await orderService.getById(initialData?.id);
-        console.log('resp', resp);
         methods.reset(resp);
         return resp;
       } catch (error) {
@@ -63,7 +62,6 @@ export default function OrderPayments({ initialData, mode, orderId }: OrderDetai
     startTransition(async () => {
       if (mode === PageModeEnum.UPDATE && initialData?.id) {
         // Edit mode: Call updateOrderAction
-        console.log('Updating order:', data);
         const result = await updateOrderAction(initialData.id, data);
         if (result) {
           alert('Orden actualizada exitosamente');
