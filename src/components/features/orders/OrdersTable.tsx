@@ -11,7 +11,8 @@ import ChipCell from '@/components/ui/DataGridCellComponents/ChipCell';
 import { orderService } from '@/services/orderService';
 import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
 import { useQueryData } from '@/hooks/useQueryData';
-import { Typography } from '@mui/material';
+import OrderDetailsContent from './details/OrderDetailsContent';
+import { PageModeEnum } from '@/types/enums';
 
 function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
   const gridMethods = useQueryData<ListOrdersResponse>({
@@ -50,8 +51,8 @@ function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
     },
     actionButtonsProps: {
       modalProps: {
-        body: <Typography>Order Placeholder</Typography>,
-        title: 'Orden',
+        body: <OrderDetailsContent mode={PageModeEnum.READONLY} />,
+        title: 'Detalles del contrato: ',
       },
     },
   };

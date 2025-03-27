@@ -4,9 +4,9 @@ import { capitalizeFirstLetter } from '@/helpers/utils';
 import { Order } from '@/types/orders';
 import {
   getUserInputsForOrderRequest,
-  contractInputsSectionOne,
-  contractInputsSectionTwo,
   getUserAddressInputsForOrderRequest,
+  getContractInputsSectionOne,
+  getContractInputsSectionTwo,
 } from '../../helpers';
 import { Box, Grid2, Typography } from '@mui/material';
 import GridInputs from '@/components/ui/GridInputs/GridInputs';
@@ -18,7 +18,7 @@ type OrderFormBodyProps = {
   mode: PageModeEnum;
 };
 
-export default function OrderFormBody({ title, initialOrder }: OrderFormBodyProps) {
+export default function OrderFormBody({ title, initialOrder, mode }: OrderFormBodyProps) {
   {
     /* Grid Section */
   }
@@ -34,10 +34,10 @@ export default function OrderFormBody({ title, initialOrder }: OrderFormBodyProp
       </Typography>
       <Grid2 container spacing={6} alignItems='start' justifyContent='space-between'>
         <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
-          <GridInputs inputs={getUserInputsForOrderRequest()} />
+          <GridInputs inputs={getUserInputsForOrderRequest(mode)} />
         </Grid2>
         <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
-          <GridInputs inputs={getUserAddressInputsForOrderRequest()} />
+          <GridInputs inputs={getUserAddressInputsForOrderRequest(mode)} />
         </Grid2>
       </Grid2>
       <Typography variant='h4' sx={{ pb: '24px', pt: '24px' }}>
@@ -45,10 +45,10 @@ export default function OrderFormBody({ title, initialOrder }: OrderFormBodyProp
       </Typography>
       <Grid2 container spacing={6} alignItems='start' justifyContent='space-between'>
         <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
-          <GridInputs inputs={contractInputsSectionOne} />
+          <GridInputs inputs={getContractInputsSectionOne(mode)} />
         </Grid2>
         <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
-          <GridInputs inputs={contractInputsSectionTwo} />
+          <GridInputs inputs={getContractInputsSectionTwo(mode)} />
         </Grid2>
       </Grid2>
     </Box>

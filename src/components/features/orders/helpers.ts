@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { InputsProps } from '@/components/ui/GridInputs/types';
 import { Order } from '@/types/orders';
+import { PageModeEnum } from '@/types/enums';
 
 export const userSchema = z.object({
   id: z.string().optional().nullable(),
@@ -126,56 +127,300 @@ export const defaultValues: OrderSchema = {
   userName: 'Admin',
 };
 
-export const userAttributesInputs = (parent: string = 'user'): InputsProps[] => [
-  { name: `${parent}.name`, label: 'Nombre', required: true },
-  { name: `${parent}.lastName`, label: 'Apellido', required: true },
-  { name: `${parent}.email`, label: 'Email', required: true },
-  { name: `${parent}.birthdate`, label: 'Fecha de nacimiento', required: true },
-  { name: `${parent}.phone`, label: 'Teléfono principal', required: true },
-  { name: `${parent}.phoneSecondary`, label: 'Teléfono secundario' },
-  { name: `${parent}.nationalId`, label: 'ID' },
-  { name: `${parent}.taxNumber`, label: 'RFC' },
-  { name: `${parent}.licenseNumber`, label: 'Número de licencia' },
-  { name: `${parent}.licenseExpiration`, label: 'Fecha de expiración de la licencia' },
-  // slice(10, 16) to get address inputs
-  { name: `${parent}.address`, label: 'Dirección', gridSize: { xs: 12, sm: 12 }, required: true },
-  {
-    name: `${parent}.addressSecondary`,
-    label: 'Colonia',
-    gridSize: { xs: 12, sm: 12 },
-    required: true,
-  },
-  { name: `${parent}.city`, label: 'Ciudad', required: true },
-  { name: `${parent}.state`, label: 'Estado', required: true },
-  { name: `${parent}.country`, label: 'País', required: true },
-  { name: `${parent}.zip`, label: 'Código postal', required: true },
-];
+export const userAttributesInputs = (
+  parent: string = 'user',
+  mode: PageModeEnum = PageModeEnum.CREATE,
+): InputsProps[] => {
+  const isReadOnly = mode === PageModeEnum.READONLY;
+
+  return [
+    {
+      name: `${parent}.name`,
+      label: 'Nombre',
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.lastName`,
+      label: 'Apellido',
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.email`,
+      label: 'Email',
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.birthdate`,
+      label: 'Fecha de nacimiento',
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.phone`,
+      label: 'Teléfono principal',
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.phoneSecondary`,
+      label: 'Teléfono secundario',
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.nationalId`,
+      label: 'ID',
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.taxNumber`,
+      label: 'RFC',
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.licenseNumber`,
+      label: 'Número de licencia',
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.licenseExpiration`,
+      label: 'Fecha de expiración de la licencia',
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.address`,
+      label: 'Dirección',
+      gridSize: { xs: 12, sm: 12 },
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.addressSecondary`,
+      label: 'Colonia',
+      gridSize: { xs: 12, sm: 12 },
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.city`,
+      label: 'Ciudad',
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.state`,
+      label: 'Estado',
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.country`,
+      label: 'País',
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}.zip`,
+      label: 'Código postal',
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+  ];
+};
 export const getUserInputsForOrderRequest = (
+  mode: PageModeEnum = PageModeEnum.CREATE,
   isLicense: boolean = true,
   parent: string = 'customer',
 ) =>
-  isLicense ? userAttributesInputs(parent).slice(0, 10) : userAttributesInputs(parent).slice(0, 8);
-export const getUserAddressInputsForOrderRequest = (parent: string = 'customer') =>
-  userAttributesInputs(parent).slice(10, 16);
+  isLicense
+    ? userAttributesInputs(parent, mode).slice(0, 10)
+    : userAttributesInputs(parent, mode).slice(0, 8);
+export const getUserAddressInputsForOrderRequest = (
+  mode: PageModeEnum = PageModeEnum.CREATE,
+  parent: string = 'customer',
+) => userAttributesInputs(parent, mode).slice(10, 16);
 
 const paymentCommonProps = { gridSize: { xs: 12, sm: 3 }, disabled: false, type: 'number' };
 const paymentInputCommonProps = { gridSize: { xs: 12, sm: 9 }, required: true, type: 'number' };
-export const contractInputs: InputsProps[] = [
-  { name: 'totalAmount', label: 'Saldo Mensual', ...paymentInputCommonProps },
-  { name: 'totalPayments', label: 'Mens Pag', ...paymentCommonProps },
-  { name: 'interestRate', label: 'Tasa', ...paymentInputCommonProps },
-  { name: 'onTimePayments', label: 'Mens Punt', ...paymentCommonProps },
-  { name: 'termMonths', label: '# No. Adjud', ...paymentInputCommonProps },
-  { name: 'advancedPayments', label: 'Mens Adela', ...paymentCommonProps },
-  { name: 'monthlyPayment', label: 'Mensualidad', ...paymentInputCommonProps },
-  { name: 'overduePayments', label: 'Mens Venci', ...paymentCommonProps },
-  { name: 'agreementNumber', label: 'Convenio' },
-  { name: 'agreementType', label: 'Tipo de Convenio' },
-  { name: 'contracts', label: 'Contratos', type: 'number' },
-  { name: 'mark', label: 'Azul' },
-];
-export const contractInputsSectionOne = contractInputs.slice(0, 8);
-export const contractInputsSectionTwo = contractInputs.slice(8, 12);
+export const contractInputs = (mode: PageModeEnum = PageModeEnum.CREATE): InputsProps[] => {
+  const isReadOnly = mode === PageModeEnum.READONLY;
+
+  return [
+    {
+      name: 'totalAmount',
+      label: 'Saldo Mensual',
+      ...paymentInputCommonProps,
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'totalPayments',
+      label: 'Mens Pag',
+      ...paymentCommonProps,
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'interestRate',
+      label: 'Tasa',
+      ...paymentInputCommonProps,
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'onTimePayments',
+      label: 'Mens Punt',
+      ...paymentCommonProps,
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'termMonths',
+      label: '# No. Adjud',
+      ...paymentInputCommonProps,
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'advancedPayments',
+      label: 'Mens Adela',
+      ...paymentCommonProps,
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'monthlyPayment',
+      label: 'Mensualidad',
+      ...paymentInputCommonProps,
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'overduePayments',
+      label: 'Mens Venci',
+      ...paymentCommonProps,
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'agreementNumber',
+      label: 'Convenio',
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'agreementType',
+      label: 'Tipo de Convenio',
+      disabled: isReadOnly,
+    },
+    {
+      name: 'contracts',
+      label: 'Contratos',
+      type: 'number',
+      disabled: isReadOnly,
+    },
+    {
+      name: 'mark',
+      label: 'Azul',
+      disabled: isReadOnly,
+    },
+
+    // New fields from OrderSchema
+    {
+      name: 'itemName',
+      label: 'Nombre del Ítem',
+      required: !isReadOnly,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'description',
+      label: 'Descripción',
+      disabled: isReadOnly,
+    },
+    {
+      name: 'saleDate',
+      label: 'Fecha de Venta',
+      disabled: isReadOnly,
+    },
+    {
+      name: 'accumulatedAmount',
+      label: 'Monto Acumulado',
+      disabled: isReadOnly,
+    },
+    {
+      name: 'actualContribution',
+      label: 'Contribución Actual',
+      disabled: isReadOnly,
+    },
+    {
+      name: 'amountPaid',
+      label: 'Monto Pagado',
+      disabled: isReadOnly,
+    },
+    {
+      name: 'dailyInterest',
+      label: 'Interés Diario',
+      disabled: isReadOnly,
+    },
+    {
+      name: 'excessAmount',
+      label: 'Monto Excedente',
+      disabled: isReadOnly,
+    },
+    {
+      name: 'downPayment',
+      label: 'Pago Inicial',
+      ...paymentCommonProps,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'secondPayment',
+      label: 'Segundo Pago',
+      ...paymentCommonProps,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'thirdPayment',
+      label: 'Tercer Pago',
+      ...paymentCommonProps,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'fourthPayment',
+      label: 'Cuarto Pago',
+      ...paymentCommonProps,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'fifthPayment',
+      label: 'Quinto Pago',
+      ...paymentCommonProps,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'sixthPayment',
+      label: 'Sexto Pago',
+      ...paymentCommonProps,
+      disabled: isReadOnly,
+    },
+  ];
+};
+
+export const getContractInputsSectionOne = (mode: PageModeEnum = PageModeEnum.CREATE) =>
+  contractInputs(mode).slice(0, 8);
+export const getContractInputsSectionTwo = (mode: PageModeEnum = PageModeEnum.CREATE) =>
+  contractInputs(mode).slice(8, 12);
+export const getAddInfoInputs1 = (mode: PageModeEnum = PageModeEnum.CREATE) =>
+  contractInputs(mode).slice(12, 20);
+export const getAddInfoInputs2 = (mode: PageModeEnum = PageModeEnum.CREATE) =>
+  contractInputs(mode).slice(20);
+
+export enum OrdersTabsEnum {
+  Details = 'General',
+  Payments = 'Pagos',
+}
 
 export const trasformOrderToOrderSchema = (initialOrder?: Order): OrderSchema => {
   if (!initialOrder) return defaultValues;

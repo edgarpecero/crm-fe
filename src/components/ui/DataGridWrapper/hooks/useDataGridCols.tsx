@@ -34,7 +34,6 @@ function useDataGridCols<T extends GridValidRowModel>({
   const renderActionsCell = useCallback(
     (params: GridRenderCellParams) => {
       const rowId = params.row.id;
-
       const onDelete = () => {
         if (onDeleteCb) {
           onDeleteCb(params.row);
@@ -53,7 +52,12 @@ function useDataGridCols<T extends GridValidRowModel>({
           onViewCb(params.row);
         }
         if (modalProps?.body) {
-          openModal(modalProps);
+          const props = {
+            ...modalProps,
+            title: modalProps.title + params.row.number,
+            initialData: params.row,
+          };
+          openModal(props);
         }
       };
 

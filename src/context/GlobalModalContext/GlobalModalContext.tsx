@@ -8,6 +8,8 @@ interface GlobalModalProps extends Omit<ModalProps, 'children' | 'open' | 'onClo
   body: ReactNode | null;
   open: boolean;
   title?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initialData?: any;
   onClose?: () => void;
   closeCallback?: () => void;
 }

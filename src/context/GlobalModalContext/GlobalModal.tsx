@@ -1,13 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { cloneElement } from 'react';
 import { useModalState } from '@/context/GlobalModalContext/GlobalModalContext';
 import { Box, IconButton, Modal, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 export const GlobalModal = () => {
   // important to extract body and title from modalProps
-  const { body, title, ...rest } = useModalState();
+  const { body, title, initialData, ...rest } = useModalState();
+  const enhancedBody =
+    body && React.isValidElement(body)
+      ? //eslint-disable-next-line @typescript-eslint/no-explicit-any
+        cloneElement(body, { initialData: initialData } as any)
+      : body;
   return (
     <Modal {...rest} aria-labelledby='modal-title'>
       <Box
@@ -16,7 +21,6 @@ export const GlobalModal = () => {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 400,
           bgcolor: 'background.paper',
           boxShadow: 24,
           p: 4,
@@ -40,7 +44,7 @@ export const GlobalModal = () => {
             <CloseIcon />
           </IconButton>
         </Box>
-        <Box id='modal-description'>{body}</Box>
+        <Box id='modal-description'>{enhancedBody}</Box>
       </Box>
     </Modal>
   );

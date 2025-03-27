@@ -1,3 +1,4 @@
+'use client';
 import { SyntheticEvent, useMemo, memo, useCallback } from 'react';
 import { StyledTabs, StyledTab } from './styles';
 import { NestedTabsProvider, useInnerPageTabs } from './NestedTabsProvider';

@@ -3,7 +3,6 @@
 import { Order, OrderRequest } from '@/types/orders';
 import { orderService } from '../orderService';
 import { createAction, updateAction, deleteAction } from './createApiActions';
-import { orderSchema } from '@/components/features/orders/helpers';
 import { z } from 'zod';
 
 export const createOrderAction = async (data: OrderRequest) => {
@@ -42,7 +41,7 @@ export const deleteOrderAction = async (id: string): Promise<void> => {
 };
 
 const processData = (data: OrderRequest): OrderRequest => {
-  const validatedData = orderSchema.parse(data);
+  const validatedData = data;
 
   if (validatedData?.customer?.birthdate) {
     const date = new Date(validatedData.customer.birthdate);
@@ -52,6 +51,5 @@ const processData = (data: OrderRequest): OrderRequest => {
     const date = new Date(validatedData.customer.licenseExpiration);
     validatedData.customer.licenseExpiration = date.toISOString();
   }
-
   return validatedData;
 };

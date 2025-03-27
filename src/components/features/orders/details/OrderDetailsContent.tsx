@@ -1,53 +1,75 @@
 'use client';
 
 import { CreateOrderRequest, Order, OrderRequest } from '@/types/orders';
-import { orderSchema } from '../helpers';
-import { useEffect, useTransition } from 'react';
+import { orderSchema, OrdersTabsEnum } from '../helpers';
+import { useEffect, useMemo, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Typography } from '@mui/material';
-import InnerPageTabs from '@/components/layout/InnerPageTabs/InnerPageTabs';
-import { enumToTabsArray } from '@/components/layout/InnerPageTabs/helpers';
-import { TabsIdentifierEnum } from '@/components/layout/InnerPageTabs/types';
+import { Box, Typography } from '@mui/material';
 import { createOrderAction, updateOrderAction } from '@/services/actions/orderActions';
 import { PageModeEnum } from '@/types/enums';
 import OrderFormFooter from './OrderForm/OrderFormFooter';
 import OrderFormBody from './OrderForm/OrderFormBody';
 import { useRouter } from 'next/navigation';
-export enum OrdersTabsEnum {
-  Details = 'General',
-  Payments = 'Pagos',
-}
+import { orderService } from '@/services/orderService';
+import { getTabContentStyle } from '@/components/layout/InnerPageTabs/helpers';
+import { useInnerPageTabs } from '@/components/layout/InnerPageTabs/NestedTabsProvider';
+import { TabsIdentifierEnum } from '@/components/layout/InnerPageTabs/types';
 
-type OrderDetailsContentProps = {
-  initialOrder?: Order;
+export type OrderDetailsContentProps = {
+  initialData?: Order;
   mode: PageModeEnum;
+  orderId?: string;
 };
-export default function OrderDetailsContent({ initialOrder, mode }: OrderDetailsContentProps) {
+export default function OrderDetailsContent({
+  initialData,
+  mode,
+  orderId,
+}: OrderDetailsContentProps) {
   const [isPending, startTransition] = useTransition();
+  const readonly = mode === PageModeEnum.READONLY;
   const router = useRouter();
   const methods = useForm<OrderRequest>({
     resolver: zodResolver(orderSchema),
-    defaultValues: initialOrder,
+    defaultValues: initialData,
   });
+  const { innerPageTab } = useInnerPageTabs(TabsIdentifierEnum.ordersTab);
+
+  const wrapperStyles = useMemo(
+    () => getTabContentStyle(innerPageTab === OrdersTabsEnum.Details),
+    [innerPageTab],
+  );
 
   useEffect(() => {
-    if (initialOrder) {
-      methods.reset(initialOrder);
+    const fetchData = async () => {
+      try {
+        const resp = await orderService.getById(initialData?.id);
+        console.log('resp', resp);
+        methods.reset(resp);
+        return resp;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    if (initialData?.id) {
+      fetchData();
     }
-  }, [initialOrder, methods]);
+  }, [initialData?.id, methods]);
 
-  // Título dinámico
   const title =
     mode === PageModeEnum.CREATE
       ? 'Crea un nuevo contrato'
-      : `Detalles de la Orden ${initialOrder?.number}`;
+      : `Detalles de la Orden ${initialData?.number || orderId || ''}`;
 
-  const handleSubmitOrder = async (data: OrderRequest) => {
+  //TODO: FIX HERE
+  //eslint-disable-next-line
+  const handleSubmitOrder = async (data: any) => {
+    data.customerId = initialData.customerId;
     startTransition(async () => {
-      if (mode === PageModeEnum.UPDATE && initialOrder?.id) {
+      if (mode === PageModeEnum.UPDATE && initialData?.id) {
         // Edit mode: Call updateOrderAction
-        const result = await updateOrderAction(initialOrder.id, data);
+        console.log('Updating order:', data);
+        const result = await updateOrderAction(initialData.id, data);
         if (result) {
           alert('Orden actualizada exitosamente');
           methods.reset(result); // Reset form with updated data
@@ -70,29 +92,40 @@ export default function OrderDetailsContent({ initialOrder, mode }: OrderDetails
     });
   };
   return (
-    <>
-      <Typography variant='h2' sx={{ mb: 2 }}>
-        {title}
-      </Typography>
-      <InnerPageTabs tabsArray={enumToTabsArray(OrdersTabsEnum)} id={TabsIdentifierEnum.ordersTab}>
-        <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(handleSubmitOrder)}
+    <Box sx={wrapperStyles}>
+      {!readonly && (
+        <Typography variant='h2' sx={{ mb: 2 }}>
+          {title}
+        </Typography>
+      )}
+      <FormProvider {...methods}>
+        <form
+          onSubmit={methods.handleSubmit(handleSubmitOrder)}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+          }}
+        >
+          <div
             style={{
+              width: readonly ? '100%' : '80%',
+              height: '100%', // Takes full height of the form
               display: 'flex',
-              flexDirection: 'column',
-              flex: 1,
-              // ...(initialOrder ? {} : wrapperStyles),
+              flexDirection: 'column', // Maintains column layout for content
+              justifyContent: 'center', // Centers content vertically
+              alignItems: 'center', // Centers content horizontally
+              boxSizing: 'border-box', // Ensures padding doesn't increase the size
             }}
           >
             {/* Grid Section */}
             <OrderFormBody mode={mode} />
 
             {/* Button Section */}
-            <OrderFormFooter mode={mode} modalView={false} isPending={isPending} />
-          </form>
-        </FormProvider>
-      </InnerPageTabs>
-    </>
+          </div>
+          {!readonly && <OrderFormFooter mode={mode} modalView={false} isPending={isPending} />}
+        </form>
+      </FormProvider>
+    </Box>
   );
 }

@@ -1,12 +1,11 @@
 'use client';
 
 import { CreateOrderRequest, Order, OrderRequest, UpdateOrderRequest } from '@/types/orders';
-import { orderSchema, defaultValues } from '../../helpers';
+import { orderSchema, defaultValues, OrdersTabsEnum } from '../../helpers';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useInnerPageTabs } from '@/components/layout/InnerPageTabs/NestedTabsProvider';
 import { TabsIdentifierEnum } from '@/components/layout/InnerPageTabs/types';
 import { useMemo } from 'react';
-import { OrdersTabsEnum } from '../OrderDetailsContent';
 import { getTabContentStyle } from '@/components/layout/InnerPageTabs/helpers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PageModeEnum } from '@/types/enums';

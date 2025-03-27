@@ -3,6 +3,11 @@ import CircularIndeterminate from '@/components/ui/Progress/CircularIndeterminat
 import { orderService } from '@/services/orderService';
 import { PageModeEnum } from '@/types/enums';
 import { Suspense } from 'react';
+import InnerPageTabs from '@/components/layout/InnerPageTabs/InnerPageTabs';
+import { enumToTabsArray } from '@/components/layout/InnerPageTabs/helpers';
+import { TabsIdentifierEnum } from '@/components/layout/InnerPageTabs/types';
+import OrderPayments from '@/components/features/orders/details/OrderPayments';
+import { OrdersTabsEnum } from '@/components/features/orders/helpers';
 
 export default async function OrderDetailsPage({
   params,
@@ -15,7 +20,10 @@ export default async function OrderDetailsPage({
 
   return (
     <Suspense fallback={<CircularIndeterminate />}>
-      <OrderDetailsContent initialOrder={order} mode={PageModeEnum.UPDATE} />
+      <InnerPageTabs tabsArray={enumToTabsArray(OrdersTabsEnum)} id={TabsIdentifierEnum.ordersTab}>
+        <OrderDetailsContent initialData={order} mode={PageModeEnum.UPDATE} />
+        <OrderPayments initialData={order} mode={PageModeEnum.UPDATE} />
+      </InnerPageTabs>
     </Suspense>
   );
 }
