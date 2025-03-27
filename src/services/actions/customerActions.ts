@@ -8,7 +8,10 @@ export const createCustomerAction = async (data: Customer): Promise<Customer> =>
   return createAction(customerService, data);
 };
 
-export const updateCustomerAction = async (id: string, data: Partial<Customer>): Promise<Customer> => {
+export const updateCustomerAction = async (
+  id: string,
+  data: Partial<Customer>,
+): Promise<Customer> => {
   return updateAction(customerService, id, data);
 };
 

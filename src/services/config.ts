@@ -11,10 +11,7 @@ const defaultHeaders = {
   }),
 };
 
-export const apiFetch = async <T>(
-  endpoint: string,
-  options: RequestInit = {},
-): Promise<T> => {
+export const apiFetch = async <T>(endpoint: string, options: RequestInit = {}): Promise<T> => {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
     headers: {

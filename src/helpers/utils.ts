@@ -53,7 +53,7 @@ export const replaceNulls = <T>(obj: T): T => {
   if (obj === null) return undefined as T;
 
   // Casos base: si no es un objeto o es un array, lo devolvemos tal cual
-  if (typeof obj !== "object" || Array.isArray(obj)) return obj;
+  if (typeof obj !== 'object' || Array.isArray(obj)) return obj;
 
   const result: any = {};
   for (const [key, value] of Object.entries(obj)) {
@@ -63,17 +63,17 @@ export const replaceNulls = <T>(obj: T): T => {
       const valueType = typeof originalValue;
 
       // Asignamos valores por defecto según el tipo
-      if (valueType === "string") {
-        result[key] = "";
-      } else if (valueType === "number") {
+      if (valueType === 'string') {
+        result[key] = '';
+      } else if (valueType === 'number') {
         result[key] = 0;
-      } else if (valueType === "boolean") {
+      } else if (valueType === 'boolean') {
         result[key] = false;
       } else {
         // Por defecto, si no podemos inferir el tipo, usamos undefined
         result[key] = undefined;
       }
-    } else if (typeof value === "object" && value !== null) {
+    } else if (typeof value === 'object' && value !== null) {
       // Recursión para objetos anidados
       result[key] = replaceNulls(value);
     } else {

@@ -8,7 +8,10 @@ export const createInventoryAction = async (data: Inventory): Promise<Inventory>
   return createAction(inventoryService, data);
 };
 
-export const updateInventoryAction = async (id: string, data: Partial<Inventory>): Promise<Inventory> => {
+export const updateInventoryAction = async (
+  id: string,
+  data: Partial<Inventory>,
+): Promise<Inventory> => {
   return updateAction(inventoryService, id, data);
 };
 

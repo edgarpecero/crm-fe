@@ -2,7 +2,6 @@
 import { useMemo } from 'react';
 import { BaseEntity } from '@/types/BaseEntity';
 
-
 // Define the props interface with proper generic type
 interface UseDataGridRowsParams<T extends BaseEntity> {
   rows: T[];

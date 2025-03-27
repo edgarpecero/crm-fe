@@ -22,9 +22,9 @@ function useDataGridCols<T extends GridValidRowModel>({
 }: UseDataGridColsParams<T>): GridColDef<T>[] {
   const hasActionButtons = Boolean(
     actionButtonsProps &&
-    Object.keys(actionButtonsProps).some(key =>
-      actionButtonsProps[key as keyof DataGridActionButtonsProps<T>] !== undefined
-    )
+      Object.keys(actionButtonsProps).some(
+        (key) => actionButtonsProps[key as keyof DataGridActionButtonsProps<T>] !== undefined,
+      ),
   );
   const { modalProps, onDeleteCb, onEditCb, onViewCb } = actionButtonsProps || {};
   const { openModal } = useModal();
@@ -52,7 +52,7 @@ function useDataGridCols<T extends GridValidRowModel>({
 
       return <SimpleActionsCell onDelete={onDelete} onEdit={onEdit} onView={onView} />;
     },
-    [openModal]
+    [openModal],
   );
 
   const columns: GridColDef<T>[] = useMemo(() => {

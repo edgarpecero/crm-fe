@@ -26,9 +26,7 @@ export default function RootLayout({
             <ThemeProvider theme={theme}>
               <GlobalModalProvider>
                 <CssBaseline />
-                <ClientLayout>
-                  {children}
-                </ClientLayout>
+                <ClientLayout>{children}</ClientLayout>
               </GlobalModalProvider>
             </ThemeProvider>
           </AppRouterCacheProvider>

@@ -40,7 +40,7 @@ const ControlledTextInput = ({
             type={type}
             field={field}
             onChange={handleChange} // Usar nuestro manejador personalizado
-            value={field.value ?? ''} 
+            value={field.value ?? ''}
             {...props}
           />
         );

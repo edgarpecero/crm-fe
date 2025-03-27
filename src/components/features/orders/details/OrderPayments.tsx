@@ -6,9 +6,7 @@ import { useMemo } from 'react';
 import { OrdersTabsEnum } from './OrderDetailsContent';
 import { Box, Grid2, Typography } from '@mui/material';
 import GridInputs from '@/components/ui/GridInputs/GridInputs';
-import {
-
-} from '../helpers';
+import {} from '../helpers';
 
 export function OrderPayments() {
   const { innerPageTab } = useInnerPageTabs(TabsIdentifierEnum.ordersTab);

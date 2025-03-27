@@ -10,7 +10,7 @@ export function createApiService<T, ListResponse, R>(endpoint: string) {
       const url = queryParams
         ? `${endpoint}/${id}?${new URLSearchParams(queryParams).toString()}`
         : `${endpoint}/${id}`;
-        return apiFetch<T>(url);;
+      return apiFetch<T>(url);
     },
     create: async (data: R): Promise<T> => {
       const response = await apiFetch<T>(endpoint, {
@@ -32,4 +32,3 @@ export function createApiService<T, ListResponse, R>(endpoint: string) {
     endpoint,
   };
 }
-

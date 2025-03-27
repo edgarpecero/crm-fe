@@ -25,7 +25,7 @@ interface FormWrapperProps<T extends BaseEntity, R extends FieldValues> {
     mapToRequest: (data?: T) => DefaultValues<R>;
     onSubmit: (data: R) => void;
     title?: string;
-  }
+  };
 }
 
 export default function FormWrapper<T extends BaseEntity, R extends FieldValues>({
@@ -48,17 +48,20 @@ export default function FormWrapper<T extends BaseEntity, R extends FieldValues>
     }
   }, [initialData, methods]);
 
-  const handleSubmitOrder = useCallback(async (data: R) => {
-    startTransition(async () => {
-      onSubmit(data);
-    });
-  }, [onSubmit, startTransition]);
+  const handleSubmitOrder = useCallback(
+    async (data: R) => {
+      startTransition(async () => {
+        onSubmit(data);
+      });
+    },
+    [onSubmit, startTransition],
+  );
 
   const contextValue = useMemo(() => ({ isPending, mode }), [isPending, mode]);
   return (
     <>
       {title && (
-        <Typography variant="h2" sx={{ mb: 2 }}>
+        <Typography variant='h2' sx={{ mb: 2 }}>
           {title}
         </Typography>
       )}
@@ -72,9 +75,7 @@ export default function FormWrapper<T extends BaseEntity, R extends FieldValues>
               flex: 1,
             }}
           >
-            <FormContext.Provider value={contextValue}>
-              {children}
-            </FormContext.Provider>
+            <FormContext.Provider value={contextValue}>{children}</FormContext.Provider>
           </form>
         </FormProvider>
       </InnerPageTabs>

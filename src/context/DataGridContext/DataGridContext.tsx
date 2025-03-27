@@ -2,9 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 
-interface DataGridContextType {
-
-}
+interface DataGridContextType {}
 
 interface Props {
   children: React.ReactNode;
@@ -26,9 +24,5 @@ export const useDataGrid = () => {
 };
 
 const useDataGridProvider = () => {
-
-
-  return { 
-
-  };
+  return {};
 };

@@ -10,12 +10,12 @@ type OrderFormProps = {
   isPending?: boolean;
 };
 
-export default function OrderFormFooter({
-  mode,
-  modalView,
-  isPending
-}: OrderFormProps) {
-  const { reset, formState: { isDirty }, getValues } = useFormContext();
+export default function OrderFormFooter({ mode, modalView, isPending }: OrderFormProps) {
+  const {
+    reset,
+    formState: { isDirty },
+    getValues,
+  } = useFormContext();
 
   return (
     <>
@@ -47,8 +47,10 @@ export default function OrderFormFooter({
                   {mode === PageModeEnum.CREATE ? 'Crear' : 'Actualizar'}
                 </span>
               </>
+            ) : mode === PageModeEnum.CREATE ? (
+              'Crear'
             ) : (
-              mode === PageModeEnum.CREATE ? 'Crear' : 'Actualizar'
+              'Actualizar'
             )}
           </Button>
         </Box>

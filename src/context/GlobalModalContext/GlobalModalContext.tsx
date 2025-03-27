@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { ModalProps } from "@mui/material";
-import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react";
-import { GlobalModal } from "./GlobalModal";
+import { ModalProps } from '@mui/material';
+import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
+import { GlobalModal } from './GlobalModal';
 
 interface GlobalModalProps extends Omit<ModalProps, 'children' | 'open' | 'onClose'> {
   body: ReactNode | null;
@@ -11,7 +11,7 @@ interface GlobalModalProps extends Omit<ModalProps, 'children' | 'open' | 'onClo
   onClose?: () => void;
   closeCallback?: () => void;
 }
-export interface OpenModalParams extends Omit<GlobalModalProps, 'open' | 'onClose'> { }
+export interface OpenModalParams extends Omit<GlobalModalProps, 'open' | 'onClose'> {}
 type ModalStateContextType = GlobalModalProps;
 type ModalActionContextType = {
   openModal: (params: OpenModalParams) => void;
@@ -34,9 +34,9 @@ export const GlobalModalProvider = ({ children }: ModalContextProviderProps) => 
   });
   const cleanUp = () => {
     setModalProps({ open: false, onClose: undefined, body: null, title: undefined });
-  }
+  };
   const closeModal = useCallback((callback?: () => void) => {
-    cleanUp()
+    cleanUp();
     if (typeof callback === 'function') {
       callback();
     }
@@ -65,7 +65,7 @@ export const GlobalModalProvider = ({ children }: ModalContextProviderProps) => 
 export const useModalState = () => {
   const context = useContext(ModalStateContext);
   if (context === undefined) {
-    throw new Error("useModal must be used within a ModalContextProvider");
+    throw new Error('useModal must be used within a ModalContextProvider');
   }
   return context;
 };
@@ -73,7 +73,7 @@ export const useModalState = () => {
 export const useModal = () => {
   const context = useContext(ModalActionContext);
   if (context === undefined) {
-    throw new Error("useModalAction must be used within a ModalContextProvider");
+    throw new Error('useModalAction must be used within a ModalContextProvider');
   }
   return context;
 };

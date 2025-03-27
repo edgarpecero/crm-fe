@@ -28,4 +28,10 @@ interface ListInventoryResponse {
   count: number;
 }
 
-export type { Inventory, ListInventoryResponse, CreateInventoryRequest, UpdateInventoryRequest, InventoryRequest };
+export type {
+  Inventory,
+  ListInventoryResponse,
+  CreateInventoryRequest,
+  UpdateInventoryRequest,
+  InventoryRequest,
+};

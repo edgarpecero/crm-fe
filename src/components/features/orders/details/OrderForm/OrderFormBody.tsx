@@ -18,14 +18,12 @@ type OrderFormBodyProps = {
   mode: PageModeEnum;
 };
 
-export default function OrderFormBody({
-  title,
-  initialOrder,
-}: OrderFormBodyProps) {
-
-  {/* Grid Section */ }
+export default function OrderFormBody({ title, initialOrder }: OrderFormBodyProps) {
+  {
+    /* Grid Section */
+  }
   return (
-    < Box sx={{ flex: '1 0 auto' }}>
+    <Box sx={{ flex: '1 0 auto' }}>
       {title && (
         <Typography variant='h2' sx={{ mb: 5 }}>
           {title || initialOrder?.number || capitalizeFirstLetter(PageModeEnum.CREATE)}
@@ -53,6 +51,6 @@ export default function OrderFormBody({
           <GridInputs inputs={contractInputsSectionTwo} />
         </Grid2>
       </Grid2>
-    </Box >
+    </Box>
   );
 }

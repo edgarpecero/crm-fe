@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React from 'react';
 import { useModalState } from '@/context/GlobalModalContext/GlobalModalContext';
@@ -9,10 +9,7 @@ export const GlobalModal = () => {
   // important to extract body and title from modalProps
   const { body, title, ...rest } = useModalState();
   return (
-    <Modal
-      {...rest}
-      aria-labelledby="modal-title"
-    >
+    <Modal {...rest} aria-labelledby='modal-title'>
       <Box
         sx={{
           position: 'absolute',
@@ -26,25 +23,24 @@ export const GlobalModal = () => {
           borderRadius: 2,
         }}
       >
-        <Box sx={{
-          display: 'flex',
-          justifyContent: title ? 'space-between' : 'flex-end',
-          alignItems: 'center',
-          mb: 2
-        }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: title ? 'space-between' : 'flex-end',
+            alignItems: 'center',
+            mb: 2,
+          }}
+        >
           {title && (
-            <Typography id="modal-title" variant="h4" component="h2">
+            <Typography id='modal-title' variant='h4' component='h2'>
               {title}
             </Typography>
           )}
-          <IconButton
-            onClick={rest.onClose}
-            aria-label="cerrar"
-          >
+          <IconButton onClick={rest.onClose} aria-label='cerrar'>
             <CloseIcon />
           </IconButton>
         </Box>
-        <Box id="modal-description">{body}</Box>
+        <Box id='modal-description'>{body}</Box>
       </Box>
     </Modal>
   );

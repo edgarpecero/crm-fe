@@ -1,13 +1,15 @@
 'use client';
 
-import { memo, ReactNode } from "react";
+import { memo, ReactNode } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getDataGridTheme } from './DataGridTheme';
-import { DataGrid, DataGridProps, GridToolbar } from "@mui/x-data-grid";
-import { BaseEntity } from "@/types/BaseEntity";
-import useDataGridRows from "@/components/ui/DataGridWrapper/hooks/useDataGridRows";
-import useDataGridCols, { DataGridActionButtonsProps } from "@/components/ui/DataGridWrapper/hooks/useDataGridCols";
-import NoResults from "../IconButtons/NoResults/NoResults";
+import { DataGrid, DataGridProps, GridToolbar } from '@mui/x-data-grid';
+import { BaseEntity } from '@/types/BaseEntity';
+import useDataGridRows from '@/components/ui/DataGridWrapper/hooks/useDataGridRows';
+import useDataGridCols, {
+  DataGridActionButtonsProps,
+} from '@/components/ui/DataGridWrapper/hooks/useDataGridCols';
+import NoResults from '../IconButtons/NoResults/NoResults';
 
 export interface DataGridWrapperProps<T extends BaseEntity> extends DataGridProps {
   rows: T[];
@@ -30,7 +32,7 @@ function DataGridWrapped<T extends BaseEntity>({
         rows={_rows}
         columns={cols}
         {...props}
-        density={props?.density || "compact"}
+        density={props?.density || 'compact'}
         getRowId={(row) => row.id || row.tableIndex}
         slotProps={{
           loadingOverlay: {
@@ -44,7 +46,7 @@ function DataGridWrapped<T extends BaseEntity>({
         slots={{
           toolbar: GridToolbar,
           noResultsOverlay: () => <NoResults />,
-          noRowsOverlay: () => <NoResults />
+          noRowsOverlay: () => <NoResults />,
         }}
         initialState={{
           columns: {
@@ -60,10 +62,8 @@ function DataGridWrapped<T extends BaseEntity>({
 }
 
 // Exporta el componente memoizado
-const DataGridWrapper = memo(DataGridWrapped) as <
-  T extends BaseEntity
->(
-  props: DataGridWrapperProps<T>
+const DataGridWrapper = memo(DataGridWrapped) as <T extends BaseEntity>(
+  props: DataGridWrapperProps<T>,
 ) => ReactNode;
 
 export default DataGridWrapper;

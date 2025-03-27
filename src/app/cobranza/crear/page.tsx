@@ -6,9 +6,7 @@ import { Suspense } from 'react';
 export default async function OrderDetailsPage() {
   return (
     <Suspense fallback={<CircularIndeterminate />}>
-      <OrderDetailsContent 
-        mode={PageModeEnum.CREATE} 
-        />
+      <OrderDetailsContent mode={PageModeEnum.CREATE} />
     </Suspense>
   );
 }

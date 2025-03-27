@@ -13,7 +13,7 @@ export const createOrderAction = async (data: OrderRequest) => {
       success: true,
       message: 'Orden creada con éxito',
       data: res as Order,
-    }
+    };
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
@@ -52,6 +52,6 @@ const processData = (data: OrderRequest): OrderRequest => {
     const date = new Date(validatedData.customer.licenseExpiration);
     validatedData.customer.licenseExpiration = date.toISOString();
   }
-  
+
   return validatedData;
-}
+};

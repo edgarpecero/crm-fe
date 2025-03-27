@@ -1,10 +1,7 @@
 'use client';
 
 import { CreateOrderRequest, Order, OrderRequest } from '@/types/orders';
-import {
-  defaultValues,
-  orderSchema,
-} from '../helpers';
+import { defaultValues, orderSchema } from '../helpers';
 import { useEffect, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -41,12 +38,12 @@ export default function OrderDetailsContent({ initialOrder, mode }: OrderDetails
   }, [initialOrder, methods]);
 
   // Título dinámico
-  const title = mode === PageModeEnum.CREATE
-    ? 'Crea un nuevo contrato'
-    : `Detalles de la Orden ${initialOrder?.number}`;
+  const title =
+    mode === PageModeEnum.CREATE
+      ? 'Crea un nuevo contrato'
+      : `Detalles de la Orden ${initialOrder?.number}`;
 
   const handleSubmitOrder = async (data: OrderRequest) => {
-
     startTransition(async () => {
       if (mode === PageModeEnum.UPDATE && initialOrder?.id) {
         // Edit mode: Call updateOrderAction
@@ -74,7 +71,7 @@ export default function OrderDetailsContent({ initialOrder, mode }: OrderDetails
   };
   return (
     <>
-      <Typography variant="h2" sx={{ mb: 2 }}>
+      <Typography variant='h2' sx={{ mb: 2 }}>
         {title}
       </Typography>
       <InnerPageTabs tabsArray={enumToTabsArray(OrdersTabsEnum)} id={TabsIdentifierEnum.ordersTab}>

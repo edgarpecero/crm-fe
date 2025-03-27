@@ -33,12 +33,10 @@ function DataGridLayout<TData>({
 
   return (
     <>
-      <Typography variant="h2" sx={{ mb: 2 }}>
+      <Typography variant='h2' sx={{ mb: 2 }}>
         {pageProps?.title || capitalizeFirstLetter(pathname)}
       </Typography>
-      {dataGridHeaderProps && (
-        <DataGridHeader {...dataGridHeaderProps} />
-      )}
+      {dataGridHeaderProps && <DataGridHeader {...dataGridHeaderProps} />}
       <DataGridWrapper {...dataGridProps} />
     </>
   );

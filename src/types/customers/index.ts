@@ -14,4 +14,10 @@ interface ListCustomersResponse {
   customers: Customer[];
   count: number;
 }
-export type { Customer, ListCustomersResponse, CreateCustomerRequest, UpdateCustomerRequest, CustomerRequest };
+export type {
+  Customer,
+  ListCustomersResponse,
+  CreateCustomerRequest,
+  UpdateCustomerRequest,
+  CustomerRequest,
+};
