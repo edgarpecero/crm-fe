@@ -1,4 +1,4 @@
-import { ListUsersResponse, User } from '@/types/users';
+import { ListUsersResponse, User, UserRequest } from '@/types/users';
 import { createApiService } from './createApiService';
 
-export const userService = createApiService<User, ListUsersResponse>('/users');
+export const userService = createApiService<User, ListUsersResponse, UserRequest>('/users');

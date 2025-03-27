@@ -48,6 +48,42 @@ export const removeNullFields = (obj: Record<string, any>) =>
     .filter(([_, v]) => v != null)
     .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
 
+export const replaceNulls = <T>(obj: T): T => {
+  // Caso base: si el objeto entero es null, devolvemos undefined
+  if (obj === null) return undefined as T;
+
+  // Casos base: si no es un objeto o es un array, lo devolvemos tal cual
+  if (typeof obj !== "object" || Array.isArray(obj)) return obj;
+
+  const result: any = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (value === null) {
+      // Inferimos el tipo del valor original usando el tipo de la propiedad
+      const originalValue = (obj as any)[key];
+      const valueType = typeof originalValue;
+
+      // Asignamos valores por defecto según el tipo
+      if (valueType === "string") {
+        result[key] = "";
+      } else if (valueType === "number") {
+        result[key] = 0;
+      } else if (valueType === "boolean") {
+        result[key] = false;
+      } else {
+        // Por defecto, si no podemos inferir el tipo, usamos undefined
+        result[key] = undefined;
+      }
+    } else if (typeof value === "object" && value !== null) {
+      // Recursión para objetos anidados
+      result[key] = replaceNulls(value);
+    } else {
+      // Valor primitivo no null
+      result[key] = value;
+    }
+  }
+  return result as T;
+};
+
 export const formatUSD = (value?: number | string): string => {
   // Recommended for MUI inputs
 
@@ -114,23 +150,6 @@ export const formatToTime = (date?: string) => {
 export const capitalizeFirstLetter = (text?: string): string => {
   if (!text) return '';
   return text.charAt(0).toUpperCase() + text.slice(1);
-};
-
-export const processPageProps = <T>(
-  queryProps: UseQueryOptions<T>,
-  pageProps?: PageProps,
-  currPathname?: string,
-): PageProps => {
-  const { pathname, title } = pageProps ?? {};
-  const queryKey = queryProps.queryKey[0] as string;
-  const result = currPathname !== queryKey ? currPathname : queryKey;
-
-  if (!result) throw new Error('Entity not found in pathname or queryKey');
-
-  return {
-    pathname: pathname ?? result,
-    title: title ?? capitalizeFirstLetter(result),
-  };
 };
 
 /* VALIDATORS */

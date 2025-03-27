@@ -1,6 +1,7 @@
 import * as schemas from '@/components/features/orders/helpers';
 import { BaseEntity } from '../BaseEntity';
 import { z } from 'zod';
+import { Customer } from '../customers';
 
 interface Order extends BaseEntity {
   userId: string; // Vendedor
@@ -9,7 +10,7 @@ interface Order extends BaseEntity {
   itemName: string; // Producto
   customerId: string; // Cliente
   customerName: string; // Cliente
-
+  customer: Customer;
   description: string; // Descripcion
   totalAmount: number; // Monto
   actualContribution: number; // AP REAL
@@ -36,9 +37,9 @@ interface Order extends BaseEntity {
   fifthPayment: number; // 5TA
   sixthPayment: number; // 6TA
 }
+type OrderRequest = z.infer<typeof schemas.createOrderSchema>;
 type CreateOrderRequest = z.infer<typeof schemas.createOrderSchema>;
 type UpdateOrderRequest = z.infer<typeof schemas.updateOrderSchema>;
-type OrderRequest = z.infer<typeof schemas.createOrderSchema>;
 interface ListOrdersResponse {
   orders: Order[];
   count: number;

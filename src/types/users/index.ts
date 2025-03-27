@@ -22,9 +22,10 @@ interface User extends BaseEntity {
 }
 type CreateUserRequest = z.infer<typeof schemas.createOrderSchema>;
 type UpdateUserRequest = z.infer<typeof schemas.updateOrderSchema>;
+type UserRequest = z.infer<typeof schemas.updateOrderSchema>;
 interface ListUsersResponse {
   users: User[];
   count: number;
 }
 
-export type { User, ListUsersResponse, CreateUserRequest, UpdateUserRequest };
+export type { User, ListUsersResponse, CreateUserRequest, UpdateUserRequest, UserRequest };

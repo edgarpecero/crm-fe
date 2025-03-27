@@ -1,67 +1,68 @@
 import { z } from 'zod';
 import { InputsProps } from '@/components/ui/GridInputs/types';
 import { CreateOrderRequest, Order, UpdateOrderRequest } from '@/types/orders';
+import { DefaultValues } from 'react-hook-form';
+
 
 const userSchema = z.object({
-  id: z.string().optional(),
-  username: z.string().optional(),
-  name: z.string().optional(), // Cambiado a opcional
-  lastName: z.string().optional(), // Cambiado a opcional
-  email: z.string().email().optional(), // Cambiado a opcional
-  birthdate: z.string().optional(), // Cambiado a opcional
-  phone: z.string().optional(), // Cambiado a opcional
-  phoneSecondary: z.string().optional(), // Cambiado a opcional
-  address: z.string().optional(), // Cambiado a opcional
-  addressSecondary: z.string().optional(), // Cambiado a opcional
-  city: z.string().optional(), // Cambiado a opcional
-  state: z.string().optional(), // Cambiado a opcional
-  country: z.string().optional(), // Cambiado a opcional
-  zip: z.string().optional(), // Cambiado a opcional
-  nationalId: z.string().optional(), // Cambiado a opcional
+  id: z.string().optional().nullable(),
+  username: z.string().optional().nullable(),
+  name: z.string().optional().nullable(), // Cambiado a opcional
+  lastName: z.string().optional().nullable(), // Cambiado a opcional
+  email: z.string().email().optional().nullable(), // Cambiado a opcional
+  birthdate: z.string().optional().nullable(), // Cambiado a opcional
+  phone: z.string().optional().nullable(), // Cambiado a opcional
+  phoneSecondary: z.string().optional().nullable(), // Cambiado a opcional
+  address: z.string().optional().nullable(), // Cambiado a opcional
+  addressSecondary: z.string().optional().nullable(), // Cambiado a opcional
+  city: z.string().optional().nullable(), // Cambiado a opcional
+  state: z.string().optional().nullable(), // Cambiado a opcional
+  country: z.string().optional().nullable(), // Cambiado a opcional
+  zip: z.string().optional().nullable(), // Cambiado a opcional
+  nationalId: z.string().optional().nullable(), // Cambiado a opcional
 });
 
 const customerSchema = userSchema.extend({
-  taxNumber: z.string().max(50).optional(),
-  licenseNumber: z.string().max(50).optional(),
-  licenseExpiration: z.string().optional(),
+  taxNumber: z.string().max(50).optional().nullable(),
+  licenseNumber: z.string().max(50).optional().nullable(),
+  licenseExpiration: z.string().optional().nullable(),
 });
 
-export const orderSchema = z
-  .object({
-    userId: z.string(), // ID del vendedor
-    userName: z.string(), // Nombre del vendedor
-    itemId: z.string(), // ID del producto
-    itemName: z.string(), // Nombre del producto
-    customer: customerSchema, // Referencia al schema del cliente
-    description: z.string().max(500),
+export const orderSchema = z.object({
+  accumulatedAmount: z.number().optional().nullable(), // ACUMULADO
+  actualContribution: z.number().optional().nullable(), // AP REAL
+  advancedPayments: z.number().int().nonnegative().optional().nullable(), // PAGOS ADELANTADOS
+  agreementNumber: z.string().max(50).optional().nullable(), // Número de acuerdo
+  agreementType: z.string().max(50).optional().nullable(), // Tipo de acuerdo
+  amountPaid: z.number().optional().nullable(), // PAGADO
+  contracts: z.number().int().positive().optional().nullable(), // Contratos (entero positivo)
+  customer: customerSchema.optional().nullable(), // Referencia al schema del cliente
+  dailyInterest: z.number().optional().nullable(), // INT DIARIO
+  description: z.string().max(500).optional().nullable(),
+  downPayment: z.number().optional().nullable(), // ENGANCHE
+  excessAmount: z.number().optional().nullable(), // EXCEDENTE
+  fifthPayment: z.number().optional().nullable(), // 5TA
+  fourthPayment: z.number().optional().nullable(), // 4TA
+  interestRate: z.number().optional().nullable(), // TASA DE INTERÉS
+  itemId: z.string().optional().nullable(), // ID del producto
+  itemName: z.string().optional().nullable(), // Nombre del producto
+  lastModifiedBy: z.string().max(100).optional().nullable(),
+  mark: z.string().max(50).optional().nullable(), // Marca
+  monthlyPayment: z.number().optional().nullable(), // Mensual
+  onTimePayments: z.number().optional().nullable(), // PAGO PUNTUAL
+  overduePayments: z.number().optional().nullable(), // PAGO VENCIDO
+  saleDate: z.string().datetime().optional().nullable(), // Instant como ISO string
+  secondPayment: z.number().optional().nullable(), // 2DA
+  sixthPayment: z.number().optional().nullable(), // 6TA
+  termMonths: z.number().int().positive().optional().nullable(), // PLAZO (entero positivo)
+  thirdPayment: z.number().optional().nullable(), // 3RA
+  totalAmount: z.number().optional().nullable(), // BigDecimal como number en JS
+  totalPayments: z.number().int().nonnegative().optional().nullable(), // PAGOS (entero no negativo)
+  userId: z.string().optional().nullable(), // ID del vendedor
+  userName: z.string().optional().nullable(), // Nombre del vendedor
+});
+export type OrderSchema = z.infer<typeof orderSchema>;
 
-    totalAmount: z.number(), // BigDecimal como number en JS
-    totalPayments: z.number().int().nonnegative(), // PAGOS (entero no negativo)
-    interestRate: z.number(), // TASA DE INTERÉS
-    onTimePayments: z.number().optional(), // PAGO PUNTUAL
-    termMonths: z.number().int().positive().optional(), // PLAZO (entero positivo)
-    advancedPayments: z.number().int().nonnegative(), // PAGOS ADELANTADOS
-    monthlyPayment: z.number().optional(), // Mensual
-    overduePayments: z.number().optional(), // PAGO VENCIDO
-    agreementType: z.string().max(50), // Tipo de acuerdo
-    agreementNumber: z.string().max(50), // Número de acuerdo
-    mark: z.string().max(50), // Marca
-    contracts: z.number().int().positive().optional(), // Contratos (entero positivo)
-    actualContribution: z.number(), // AP REAL
-    downPayment: z.number(), // ENGANCHE
-    excessAmount: z.number(), // EXCEDENTE
-    saleDate: z.string().datetime(), // Instant como ISO string
-    dailyInterest: z.number(), // INT DIARIO
-    accumulatedAmount: z.number(), // ACUMULADO
-    amountPaid: z.number(), // PAGADO
-    secondPayment: z.number(), // 2DA
-    thirdPayment: z.number(), // 3RA
-    fourthPayment: z.number(), // 4TA
-    fifthPayment: z.number(), // 5TA
-    sixthPayment: z.number(), // 6TA
-    lastModifiedBy: z.string().max(100),
-  })
-  .partial();
 export const createOrderSchema = orderSchema;
 export const updateOrderSchema = orderSchema;
 export const createUserSchema = userSchema;
@@ -69,59 +70,62 @@ export const updateUserSchema = userSchema;
 export const createCustomerSchema = customerSchema;
 export const updateCustomerSchema = customerSchema;
 
-export type OrderSchema = z.infer<typeof orderSchema>;
 export type CreateUserSchema = z.infer<typeof createUserSchema>;
 export type UpdateUserSchema = z.infer<typeof updateUserSchema>;
 export type CreateCustomerSchema = z.infer<typeof createCustomerSchema>;
 export type UpdateCustomerSchema = z.infer<typeof updateCustomerSchema>;
 
-export const trasformOrderToOrderSchema = (
-  order?: Order,
-): Partial<CreateOrderRequest | UpdateOrderRequest> => ({
-  ...order,
-  customer: {
-    id: order?.customerId || '',
-    name: order?.customerName || '',
-  },
-});
-
-export const defaultValues: Partial<CreateOrderRequest | UpdateOrderRequest> = {
-  userId: 'Edgar',
-  userName: 'Edgar',
-  itemId: '123',
-  itemName: '123',
-  customer: {
-    id: '',
-    name: '',
-    lastName: '',
-    email: '',
-    birthdate: '',
-    phone: '',
-    phoneSecondary: '',
-    address: '',
-    addressSecondary: '',
-    city: '',
-    state: '',
-    country: '',
-    zip: '',
-    nationalId: '',
-    taxNumber: '',
-    licenseNumber: '',
-    licenseExpiration: '',
-  },
-  totalAmount: 0,
-  totalPayments: 1,
-  interestRate: 0,
-  onTimePayments: 0,
-  termMonths: 0,
+export const defaultValues: OrderSchema = {
+  accumulatedAmount: 0,
+  actualContribution: 0,
   advancedPayments: 0,
-  monthlyPayment: 0,
-  overduePayments: 0,
-  agreementNumber: '',
-  agreementType: '',
+  agreementNumber: "",
+  agreementType: "",
+  amountPaid: 0,
   contracts: 0,
-  mark: '',
-  lastModifiedBy: 'Edgar',
+  customer: {
+    id: "",
+    username: "",
+    name: "",
+    lastName: "",
+    email: "",
+    birthdate: "",
+    phone: "",
+    phoneSecondary: "",
+    address: "",
+    addressSecondary: "",
+    city: "",
+    state: "",
+    country: "",
+    zip: "",
+    nationalId: "",
+    taxNumber: "",
+    licenseNumber: "",
+    licenseExpiration: "",
+  },
+  dailyInterest: 0,
+  description: "",
+  downPayment: 0,
+  excessAmount: 0,
+  fifthPayment: 0,
+  fourthPayment: 0,
+  interestRate: 0,
+  itemId: "",
+  itemName: "",
+  lastModifiedBy: "",
+  mark: "",
+  monthlyPayment: 0,
+  onTimePayments: 0,
+  overduePayments: 0,
+  saleDate: "",
+  secondPayment: 0,
+  sixthPayment: 0,
+  termMonths: 0,
+  thirdPayment: 0,
+  totalAmount: 0,
+  totalPayments: 0,
+  userId: "",
+  userName: "Admin",
 };
 
 export const userAttributesInputs = (parent: string = 'user'): InputsProps[] => [
@@ -174,3 +178,59 @@ export const contractInputs: InputsProps[] = [
 ];
 export const contractInputsSectionOne = contractInputs.slice(0, 8);
 export const contractInputsSectionTwo = contractInputs.slice(8, 12);
+
+export const trasformOrderToOrderSchema = (initialOrder?: Order): OrderSchema => {
+  if (!initialOrder) return defaultValues;
+  return {
+    accumulatedAmount: initialOrder.accumulatedAmount,
+    actualContribution: initialOrder.actualContribution,
+    advancedPayments: initialOrder.advancedPayments,
+    agreementNumber: initialOrder.agreementNumber,
+    agreementType: initialOrder.agreementType,
+    amountPaid: initialOrder.amountPaid,
+    contracts: initialOrder.contracts,
+    customer: {
+      id: initialOrder.customer.id,
+      username: initialOrder.customer.username,
+      name: initialOrder.customer.name,
+      lastName: initialOrder.customer.lastName,
+      email: initialOrder.customer.email,
+      birthdate: initialOrder.customer.birthdate,
+      phone: initialOrder.customer.phone,
+      phoneSecondary: initialOrder.customer.phoneSecondary,
+      address: initialOrder.customer.address,
+      addressSecondary: initialOrder.customer.addressSecondary,
+      city: initialOrder.customer.city,
+      state: initialOrder.customer.state,
+      country: initialOrder.customer.country,
+      zip: initialOrder.customer.zip,
+      nationalId: initialOrder.customer.nationalId,
+      taxNumber: initialOrder.customer.taxNumber,
+      licenseNumber: initialOrder.customer.licenseNumber,
+      licenseExpiration: initialOrder.customer.licenseExpiration,
+    },
+    dailyInterest: initialOrder.dailyInterest,
+    description: initialOrder.description,
+    downPayment: initialOrder.downPayment,
+    excessAmount: initialOrder.excessAmount,
+    fifthPayment: initialOrder.fifthPayment,
+    fourthPayment: initialOrder.fourthPayment,
+    interestRate: initialOrder.interestRate,
+    itemId: initialOrder.itemId,
+    itemName: initialOrder.itemName,
+    lastModifiedBy: initialOrder.lastModifiedBy,
+    mark: initialOrder.mark,
+    monthlyPayment: initialOrder.monthlyPayment,
+    onTimePayments: initialOrder.onTimePayments,
+    overduePayments: initialOrder.overduePayments,
+    saleDate: initialOrder.saleDate,
+    secondPayment: initialOrder.secondPayment,
+    sixthPayment: initialOrder.sixthPayment,
+    termMonths: initialOrder.termMonths,
+    thirdPayment: initialOrder.thirdPayment,
+    totalAmount: initialOrder.totalAmount,
+    totalPayments: initialOrder.totalPayments,
+    userId: initialOrder.userId,
+    userName: initialOrder.userName,
+  };
+};

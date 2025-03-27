@@ -9,8 +9,9 @@ interface Customer extends User {
 }
 type CreateCustomerRequest = z.infer<typeof schemas.createOrderSchema>;
 type UpdateCustomerRequest = z.infer<typeof schemas.updateOrderSchema>;
+type CustomerRequest = z.infer<typeof schemas.updateOrderSchema>;
 interface ListCustomersResponse {
   customers: Customer[];
   count: number;
 }
-export type { Customer, ListCustomersResponse, CreateCustomerRequest, UpdateCustomerRequest };
+export type { Customer, ListCustomersResponse, CreateCustomerRequest, UpdateCustomerRequest, CustomerRequest };

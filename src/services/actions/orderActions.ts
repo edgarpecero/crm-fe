@@ -12,7 +12,7 @@ export const createOrderAction = async (data: OrderRequest) => {
     return {
       success: true,
       message: 'Orden creada con éxito',
-      data: res,
+      data: res as Order,
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -32,7 +32,9 @@ export const createOrderAction = async (data: OrderRequest) => {
 };
 
 export const updateOrderAction = async (id: string, data: OrderRequest): Promise<Order> => {
-  return updateAction(orderService, id, processData(data));
+  const resp = await updateAction(orderService, id, processData(data) as Order);
+  console.log('resp', resp);
+  return resp;
 };
 
 export const deleteOrderAction = async (id: string): Promise<void> => {

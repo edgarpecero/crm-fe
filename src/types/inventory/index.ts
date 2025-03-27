@@ -22,9 +22,10 @@ interface Inventory extends BaseEntity {
 }
 type CreateInventoryRequest = z.infer<typeof schemas.createOrderSchema>;
 type UpdateInventoryRequest = z.infer<typeof schemas.updateOrderSchema>;
+type InventoryRequest = z.infer<typeof schemas.updateOrderSchema>;
 interface ListInventoryResponse {
   items: Inventory[];
   count: number;
 }
 
-export type { Inventory, ListInventoryResponse, CreateInventoryRequest, UpdateInventoryRequest };
+export type { Inventory, ListInventoryResponse, CreateInventoryRequest, UpdateInventoryRequest, InventoryRequest };

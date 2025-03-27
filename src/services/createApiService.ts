@@ -1,3 +1,4 @@
+import { replaceNulls } from '@/helpers/utils';
 import { apiFetch } from '@/services/config';
 
 export function createApiService<T, ListResponse, R>(endpoint: string) {
@@ -9,19 +10,21 @@ export function createApiService<T, ListResponse, R>(endpoint: string) {
       const url = queryParams
         ? `${endpoint}/${id}?${new URLSearchParams(queryParams).toString()}`
         : `${endpoint}/${id}`;
-      return apiFetch<T>(url);
+        return apiFetch<T>(url);;
     },
     create: async (data: R): Promise<T> => {
-      return apiFetch<T>(endpoint, {
+      const response = await apiFetch<T>(endpoint, {
         method: 'POST',
         body: JSON.stringify(data),
       });
+      return replaceNulls<T>(response);
     },
     update: async (id: string, data: R): Promise<T> => {
-      return apiFetch<T>(`${endpoint}/${id}`, {
+      const response = await apiFetch<T>(`${endpoint}/${id}`, {
         method: 'PUT',
         body: JSON.stringify(data),
       });
+      return replaceNulls<T>(response);
     },
     delete: async (id: string): Promise<void> => {
       await apiFetch<void>(`${endpoint}/${id}`, { method: 'DELETE' });
@@ -29,3 +32,4 @@ export function createApiService<T, ListResponse, R>(endpoint: string) {
     endpoint,
   };
 }
+
