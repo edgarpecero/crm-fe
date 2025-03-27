@@ -4,8 +4,7 @@ import { useInnerPageTabs } from '@/components/layout/InnerPageTabs/NestedTabsPr
 import { TabsIdentifierEnum } from '@/components/layout/InnerPageTabs/types';
 import { useMemo } from 'react';
 import { OrdersTabsEnum } from './OrderDetailsContent';
-import { Box, Grid2, Typography } from '@mui/material';
-import GridInputs from '@/components/ui/GridInputs/GridInputs';
+import { Box, Typography } from '@mui/material';
 import {} from '../helpers';
 
 export function OrderPayments() {

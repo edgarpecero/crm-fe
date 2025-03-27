@@ -1,9 +1,8 @@
 import { z } from 'zod';
 import { InputsProps } from '@/components/ui/GridInputs/types';
-import { CreateOrderRequest, Order, UpdateOrderRequest } from '@/types/orders';
-import { DefaultValues } from 'react-hook-form';
+import { Order } from '@/types/orders';
 
-const userSchema = z.object({
+export const userSchema = z.object({
   id: z.string().optional().nullable(),
   username: z.string().optional().nullable(),
   name: z.string().optional().nullable(), // Cambiado a opcional
@@ -21,7 +20,7 @@ const userSchema = z.object({
   nationalId: z.string().optional().nullable(), // Cambiado a opcional
 });
 
-const customerSchema = userSchema.extend({
+export const customerSchema = userSchema.extend({
   taxNumber: z.string().max(50).optional().nullable(),
   licenseNumber: z.string().max(50).optional().nullable(),
   licenseExpiration: z.string().optional().nullable(),

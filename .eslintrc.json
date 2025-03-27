@@ -36,11 +36,12 @@
     "spaced-comment": "error",
     "quotes": ["error", "single"],
     "no-duplicate-imports": "error",
-    "react/display-name": 1,
+    "react/display-name": "off",
     "no-prototype-builtins": 1,
     "no-async-promise-executor": 1,
     "react/no-children-prop": 1,
-    "react/prop-types": 1
+    "react/prop-types": 1,
+    "@typescript-eslint/no-unused-expressions": "off",
   },
   "settings": {
     "import/resolver": {

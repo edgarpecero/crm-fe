@@ -1,7 +1,7 @@
 'use client';
 
-import { Customer } from '@/components/features/customer/types';
 import { fetchCustomersData } from '@/services/customerServices';
+import { Customer } from '@/types/customers';
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 
 interface CustomerContextType {

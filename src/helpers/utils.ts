@@ -1,9 +1,6 @@
 import { format } from 'date-fns';
 import { datePickerFormat } from './constants';
 import { GridRowParams } from '@mui/x-data-grid';
-import { UseQueryOptions } from '@tanstack/react-query';
-import { th } from 'date-fns/locale';
-import { PageProps } from '@/types/pageprops';
 
 export const filterData = <T>(data: T[], searchInput: string, ...keys: (keyof T)[]): T[] => {
   if (!searchInput) return data; // Return all data if search input is empty
@@ -41,13 +38,6 @@ export const formatToPrice = (value?: number | string): string => {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(numValue);
 };
 
-//eslint-disable-next-line
-export const removeNullFields = (obj: Record<string, any>) =>
-  Object.entries(obj)
-    //eslint-disable-next-line
-    .filter(([_, v]) => v != null)
-    .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
-
 export const replaceNulls = <T>(obj: T): T => {
   // Caso base: si el objeto entero es null, devolvemos undefined
   if (obj === null) return undefined as T;
@@ -55,10 +45,12 @@ export const replaceNulls = <T>(obj: T): T => {
   // Casos base: si no es un objeto o es un array, lo devolvemos tal cual
   if (typeof obj !== 'object' || Array.isArray(obj)) return obj;
 
+  //eslint-disable-next-line
   const result: any = {};
   for (const [key, value] of Object.entries(obj)) {
     if (value === null) {
       // Inferimos el tipo del valor original usando el tipo de la propiedad
+      //eslint-disable-next-line
       const originalValue = (obj as any)[key];
       const valueType = typeof originalValue;
 

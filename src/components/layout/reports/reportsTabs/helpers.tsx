@@ -1,6 +1,5 @@
 import ReportsEnterPage from '../reportsEnterPage/EnterPage';
 import { NavigatorNode } from '@/components/ui/Navigator/Navigator';
-import CashDrawerCheckout from '../reportsTables/cashDrawerCheckout/CashDrawerCheckout';
 
 export enum ReportTabsEnum {
   all = 'Todos',
@@ -125,7 +124,7 @@ export const node: NavigatorNode = {
     {
       label: 'Ventas por empleado',
       index: ReportsNodeIndexEnum.salesRep,
-      element: <CashDrawerCheckout />,
+      element: null,
     },
     {
       index: ReportsNodeIndexEnum.customerPayments,

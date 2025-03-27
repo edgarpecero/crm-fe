@@ -31,6 +31,7 @@ interface NavigatorTabsProps {
   tabs: string[];
   value: number;
   defaultIndex?: number;
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange: (event: any, newValue: number) => void;
 }
 
@@ -103,6 +104,7 @@ export const NavigatorTabs = React.memo(
     );
   },
 );
+NavigatorTabs.displayName = 'NavigatorTabs';
 
 export const NodeTabPanels = ({ node }: { node: NavigatorNode }) => {
   const { selectedTab } = useTabs();
@@ -160,7 +162,9 @@ const BackNavigationButtonComponent = ({
   );
 
   const handleGoBack = useCallback(() => {
-    onClick && onClick();
+    if (onClick) {
+      onClick();
+    }
     if (nodeParent !== null) {
       changeTab(nodeParent.index);
     }

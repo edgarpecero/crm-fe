@@ -1,7 +1,7 @@
 'use client';
 
 import { CreateOrderRequest, Order, OrderRequest } from '@/types/orders';
-import { defaultValues, orderSchema } from '../helpers';
+import { orderSchema } from '../helpers';
 import { useEffect, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';

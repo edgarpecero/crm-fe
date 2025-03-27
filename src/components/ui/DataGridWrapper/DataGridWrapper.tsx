@@ -2,7 +2,6 @@
 
 import { memo, ReactNode } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getDataGridTheme } from './DataGridTheme';
 import { DataGrid, DataGridProps, GridToolbar } from '@mui/x-data-grid';
 import { BaseEntity } from '@/types/BaseEntity';
 import useDataGridRows from '@/components/ui/DataGridWrapper/hooks/useDataGridRows';
@@ -22,7 +21,8 @@ function DataGridWrapped<T extends BaseEntity>({
   actionButtonsProps,
   ...props
 }: DataGridWrapperProps<T>) {
-  const dataGridTheme = getDataGridTheme();
+  // const dataGridTheme = getDataGridTheme();
+  const dataGridTheme = createTheme({});
   const cols = useDataGridCols<T>({ cols: [...columns], actionButtonsProps });
   const _rows = useDataGridRows<T>({ rows });
 

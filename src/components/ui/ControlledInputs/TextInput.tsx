@@ -9,14 +9,7 @@ export interface TextInputProps extends Omit<StandardTextFieldProps, 'name'> {
   field?: ControllerRenderProps<FieldValues, string>;
 }
 
-const TextInput = ({
-  type = 'text',
-  maxLength = 40,
-  id,
-  controlError: error,
-  field,
-  ...props
-}: TextInputProps) => {
+const TextInput = ({ type = 'text', id, field, maxLength, ...props }: TextInputProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (type === 'number') {
@@ -30,6 +23,7 @@ const TextInput = ({
     <TextField
       type={type}
       fullWidth
+      id={id}
       slotProps={{
         htmlInput: {
           maxLength,

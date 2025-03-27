@@ -8,9 +8,7 @@ import { TabsIdentifierEnum } from '@/components/layout/InnerPageTabs/types';
 import { useMemo } from 'react';
 import { OrdersTabsEnum } from '../OrderDetailsContent';
 import { getTabContentStyle } from '@/components/layout/InnerPageTabs/helpers';
-import OrderFormInputs from './OrderFormBody';
 import { zodResolver } from '@hookform/resolvers/zod';
-import OrderFormFooter from './OrderFormFooter';
 import { PageModeEnum } from '@/types/enums';
 
 type OrderFormProps = {
@@ -23,15 +21,7 @@ type OrderFormProps = {
   mode: PageModeEnum;
 };
 
-export default function OrderForm({
-  initialOrder,
-  onSubmit,
-  isCreate,
-  isModalView,
-  title,
-  readonly,
-  mode = PageModeEnum.CREATE,
-}: OrderFormProps) {
+export default function OrderForm({ initialOrder, onSubmit }: OrderFormProps) {
   const { innerPageTab } = useInnerPageTabs(TabsIdentifierEnum.ordersTab);
   const wrapperStyles = useMemo(
     () => getTabContentStyle(innerPageTab === OrdersTabsEnum.Details),
@@ -56,10 +46,8 @@ export default function OrderForm({
         }}
       >
         {/* Grid Section */}
-        <OrderFormInputs readonly={readonly} />
 
         {/* Button Section */}
-        <OrderFormFooter mode={mode} isModalView={isModalView} />
       </form>
     </FormProvider>
   );

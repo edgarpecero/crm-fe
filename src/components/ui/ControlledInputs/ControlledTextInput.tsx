@@ -1,5 +1,5 @@
 import { Control, Controller, FieldValues } from 'react-hook-form';
-import TextField, { StandardTextFieldProps } from '@mui/material/TextField';
+import { StandardTextFieldProps } from '@mui/material/TextField';
 import React from 'react';
 import TextInput from './TextInput';
 
@@ -14,7 +14,6 @@ const ControlledTextInput = ({
   control,
   name,
   type = 'text',
-  maxLength = 40,
   id,
   ...props
 }: ControlledTextInputProps) => {
@@ -36,7 +35,7 @@ const ControlledTextInput = ({
           <TextInput
             error={!!error}
             helperText={error?.message || ''}
-            id={name}
+            id={name || id}
             type={type}
             field={field}
             onChange={handleChange} // Usar nuestro manejador personalizado

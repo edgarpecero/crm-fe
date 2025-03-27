@@ -20,7 +20,6 @@ interface FormWrapperProps<T extends BaseEntity, R extends FieldValues> {
   mode: PageModeEnum;
   children: React.ReactNode;
   formProps: {
-    //eslint-disable-next-line @typescript-eslint/no-explicit-any
     schema: ZodType<R>;
     mapToRequest: (data?: T) => DefaultValues<R>;
     onSubmit: (data: R) => void;
@@ -46,7 +45,7 @@ export default function FormWrapper<T extends BaseEntity, R extends FieldValues>
     if (initialData) {
       methods.reset(defaultValues);
     }
-  }, [initialData, methods]);
+  }, [initialData, methods, defaultValues]);
 
   const handleSubmitOrder = useCallback(
     async (data: R) => {

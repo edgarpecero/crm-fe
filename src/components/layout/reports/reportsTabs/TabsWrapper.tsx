@@ -3,7 +3,7 @@ import { node } from './helpers';
 import React from 'react';
 import { ProvideTabs, useTabs } from '@/context/TabsContext';
 import TabPanel from '@/components/ui/TabPanel';
-import { BackNavigationButton } from '@/components/ui/Navigator/Navigator';
+// import { BackNavigationButton } from '@/components/ui/Navigator/Navigator';
 
 const ReportTabs = React.memo(() => {
   const { selectedTab } = useTabs();
@@ -21,11 +21,11 @@ const ReportTabs = React.memo(() => {
     </>
   );
 });
-
+ReportTabs.displayName = 'ReportTabs';
 const ReportsTabsWrapper = () => {
   return (
     <ProvideTabs>
-      <BackNavigationButton node={node} />
+      {/* <BackNavigationButton node={node} /> */}
       <ReportTabs />
     </ProvideTabs>
   );

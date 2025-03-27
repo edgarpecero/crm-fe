@@ -1,6 +1,6 @@
 'use client';
 
-import { capitalizeFirstLetter, getStaleTime } from '@/helpers/utils';
+import { capitalizeFirstLetter } from '@/helpers/utils';
 import { Order } from '@/types/orders';
 import {
   getUserInputsForOrderRequest,
@@ -8,7 +8,7 @@ import {
   contractInputsSectionTwo,
   getUserAddressInputsForOrderRequest,
 } from '../../helpers';
-import { Box, Button, Grid2, Typography } from '@mui/material';
+import { Box, Grid2, Typography } from '@mui/material';
 import GridInputs from '@/components/ui/GridInputs/GridInputs';
 import { PageModeEnum } from '@/types/enums';
 

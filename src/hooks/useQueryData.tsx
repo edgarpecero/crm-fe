@@ -1,11 +1,6 @@
-import { debounce } from 'lodash';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { getStaleTime } from '@/helpers/utils';
-
-interface FilterParams {
-  searchText?: string;
-}
 
 export function useQueryData<T>({
   queryKey,

@@ -1,7 +1,7 @@
-import CustomerTabPanel from '@/components/features/customer/CustomerTabPanel';
+// import CustomerTabPanel from '@/components/features/customer/CustomerTabPanel';
 
 const CustomerPage = () => {
-  return <CustomerTabPanel />;
+  return null;
 };
 
 export default CustomerPage;

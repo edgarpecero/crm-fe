@@ -34,7 +34,7 @@ export const createOrderAction = async (data: OrderRequest) => {
 export const updateOrderAction = async (id: string, data: OrderRequest): Promise<Order> => {
   const resp = await updateAction(orderService, id, processData(data) as Order);
   console.log('resp', resp);
-  return resp;
+  return resp as Order;
 };
 
 export const deleteOrderAction = async (id: string): Promise<void> => {

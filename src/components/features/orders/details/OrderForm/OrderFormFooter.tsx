@@ -14,7 +14,6 @@ export default function OrderFormFooter({ mode, modalView, isPending }: OrderFor
   const {
     reset,
     formState: { isDirty },
-    getValues,
   } = useFormContext();
 
   return (

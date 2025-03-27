@@ -1,6 +1,6 @@
-import { Customer } from '@/components/features/customer/types';
+import { Customer } from '@/types/customers';
 
-export const fetchCustomerById = async (id: number) => {
+export const fetchCustomerById = async (id: string) => {
   try {
     const response = await fetch(`/data/customer${id}.json`);
     if (!response.ok) {

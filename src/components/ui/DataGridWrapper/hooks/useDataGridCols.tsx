@@ -36,23 +36,30 @@ function useDataGridCols<T extends GridValidRowModel>({
       const rowId = params.row.id;
 
       const onDelete = () => {
-        onDeleteCb && onDeleteCb(params.row);
-        // selectRole({ name: name, description: description, values: [] });
-        // openDeleteModal();
+        if (onDeleteCb) {
+          onDeleteCb(params.row);
+        }
       };
 
       const onEdit = () => {
-        onEditCb && onEditCb(params.row);
+        if (onEditCb) {
+          onEditCb(params.row);
+        }
         router.push(`${pathname}/${rowId}`);
       };
+
       const onView = async () => {
-        onViewCb && onViewCb(params.row);
-        modalProps?.body && openModal(modalProps);
+        if (onViewCb) {
+          onViewCb(params.row);
+        }
+        if (modalProps?.body) {
+          openModal(modalProps);
+        }
       };
 
       return <SimpleActionsCell onDelete={onDelete} onEdit={onEdit} onView={onView} />;
     },
-    [openModal],
+    [openModal, onDeleteCb, onEditCb, onViewCb, router, pathname, modalProps],
   );
 
   const columns: GridColDef<T>[] = useMemo(() => {

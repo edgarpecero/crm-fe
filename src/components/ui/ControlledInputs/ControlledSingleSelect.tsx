@@ -58,7 +58,9 @@ const ControlledSingleSelect = (props: ControlledSingleSelectProps) => {
             <TextField
               onChange={(changeValue) => {
                 fieldOnChange(changeValue);
-                onChange && onChange(changeValue);
+                if (onChange) {
+                  onChange(changeValue);
+                }
               }}
               error={!!error}
               id={props.id || props.name}

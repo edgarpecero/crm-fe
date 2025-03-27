@@ -11,7 +11,7 @@ interface GlobalModalProps extends Omit<ModalProps, 'children' | 'open' | 'onClo
   onClose?: () => void;
   closeCallback?: () => void;
 }
-export interface OpenModalParams extends Omit<GlobalModalProps, 'open' | 'onClose'> {}
+export type OpenModalParams = Omit<GlobalModalProps, 'open' | 'onClose'>;
 type ModalStateContextType = GlobalModalProps;
 type ModalActionContextType = {
   openModal: (params: OpenModalParams) => void;
@@ -41,15 +41,18 @@ export const GlobalModalProvider = ({ children }: ModalContextProviderProps) => 
       callback();
     }
   }, []);
-  const openModal = useCallback(({ closeCallback, body, ...rest }: OpenModalParams) => {
-    const modalProps: GlobalModalProps = {
-      ...rest,
-      open: true,
-      onClose: () => closeModal(closeCallback),
-      body,
-    };
-    setModalProps(modalProps);
-  }, []);
+  const openModal = useCallback(
+    ({ closeCallback, body, ...rest }: OpenModalParams) => {
+      const modalProps: GlobalModalProps = {
+        ...rest,
+        open: true,
+        onClose: () => closeModal(closeCallback),
+        body,
+      };
+      setModalProps(modalProps);
+    },
+    [closeModal],
+  );
   const stateValue = useMemo(() => modalProps, [modalProps]);
   const actionsValue = useMemo(() => ({ openModal, closeModal }), [openModal, closeModal]);
   return (
