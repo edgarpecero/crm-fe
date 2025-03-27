@@ -130,101 +130,101 @@ export const defaultValues: OrderSchema = {
 };
 
 export const userAttributesInputs = (
-  parent: string = 'user',
+  parent: string = 'user.',
   mode: PageModeEnum = PageModeEnum.CREATE,
 ): InputsProps[] => {
   const isReadOnly = mode === PageModeEnum.READONLY;
 
   return [
     {
-      name: `${parent}.name`,
+      name: `${parent}name`,
       label: 'Nombre',
       required: !isReadOnly,
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.lastName`,
+      name: `${parent}lastName`,
       label: 'Apellido',
       required: !isReadOnly,
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.email`,
+      name: `${parent}email`,
       label: 'Email',
       required: !isReadOnly,
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.birthdate`,
+      name: `${parent}birthdate`,
       label: 'Fecha de nacimiento',
       required: !isReadOnly,
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.phone`,
+      name: `${parent}phone`,
       label: 'Teléfono principal',
       required: !isReadOnly,
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.phoneSecondary`,
+      name: `${parent}phoneSecondary`,
       label: 'Teléfono secundario',
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.nationalId`,
+      name: `${parent}nationalId`,
       label: 'ID',
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.taxNumber`,
+      name: `${parent}taxNumber`,
       label: 'RFC',
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.licenseNumber`,
+      name: `${parent}licenseNumber`,
       label: 'Número de licencia',
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.licenseExpiration`,
+      name: `${parent}licenseExpiration`,
       label: 'Fecha de expiración de la licencia',
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.address`,
+      name: `${parent}address`,
       label: 'Dirección',
       gridSize: { xs: 12, sm: 12 },
       required: !isReadOnly,
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.addressSecondary`,
+      name: `${parent}addressSecondary`,
       label: 'Colonia',
       gridSize: { xs: 12, sm: 12 },
       required: !isReadOnly,
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.city`,
+      name: `${parent}city`,
       label: 'Ciudad',
       required: !isReadOnly,
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.state`,
+      name: `${parent}state`,
       label: 'Estado',
       required: !isReadOnly,
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.country`,
+      name: `${parent}country`,
       label: 'País',
       required: !isReadOnly,
       disabled: isReadOnly,
     },
     {
-      name: `${parent}.zip`,
+      name: `${parent}zip`,
       label: 'Código postal',
       required: !isReadOnly,
       disabled: isReadOnly,
@@ -233,15 +233,15 @@ export const userAttributesInputs = (
 };
 export const getUserInputsForOrderRequest = (
   mode: PageModeEnum = PageModeEnum.CREATE,
+  parent: string = 'customer.',
   isLicense: boolean = true,
-  parent: string = 'customer',
 ) =>
   isLicense
     ? userAttributesInputs(parent, mode).slice(0, 10)
     : userAttributesInputs(parent, mode).slice(0, 8);
 export const getUserAddressInputsForOrderRequest = (
   mode: PageModeEnum = PageModeEnum.CREATE,
-  parent: string = 'customer',
+  parent: string = 'customer.',
 ) => userAttributesInputs(parent, mode).slice(10, 16);
 
 const paymentCommonProps = { gridSize: { xs: 12, sm: 3 }, disabled: false, type: 'number' };

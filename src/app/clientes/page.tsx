@@ -1,16 +1,8 @@
-// import CustomerTable from '@/components/features/customer/CustomerTable';
-import Content from '@/components/layout/PageLayout/Content';
-import { Typography } from '@mui/material';
+import CustomersTable from '@/components/features/customers/CustomersTable';
+import { customerService } from '@/services/customerService';
 
-const CustomerPage = () => {
-  return (
-    <Content>
-      <Typography variant='h2' sx={{ mb: 2 }}>
-        Clientes
-      </Typography>
-      {/* <CustomerTable /> */}
-    </Content>
-  );
-};
+export default async function CustomersTablePage() {
+  const initialData = await customerService.getAll();
 
-export default CustomerPage;
+  return <CustomersTable initialData={initialData} />;
+}

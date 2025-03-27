@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 import EditButton from '../IconButtons/EditButton';
 import DeleteButton from '../IconButtons/DeleteButton';
 import ViewButton from '../IconButtons/ViewButton';
+import { usePathname } from 'next/navigation';
 
 interface SimpleActionsCellProps {
   onEdit?: () => void;
@@ -11,6 +12,8 @@ interface SimpleActionsCellProps {
 }
 
 const SimpleActionsCell = ({ onEdit, onDelete, onView }: SimpleActionsCellProps) => {
+  const pathname = usePathname();
+  const isOrder = pathname.includes('cobranza');
   return (
     <Box
       sx={{
@@ -24,7 +27,7 @@ const SimpleActionsCell = ({ onEdit, onDelete, onView }: SimpleActionsCellProps)
       }}
     >
       {!!onView && <ViewButton onClick={onView} />}
-      {!!onEdit && <EditButton onClick={onEdit} />}
+      {!!onEdit && isOrder && <EditButton onClick={onEdit} />}
       {!!onDelete && <DeleteButton onClick={onDelete} />}
     </Box>
   );

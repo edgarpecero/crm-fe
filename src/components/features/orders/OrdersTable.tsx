@@ -25,7 +25,7 @@ function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
   const pageProps = { ..._pageProps };
   const dataGridHeaderProps = {
     buttonProps: { text: 'Crear nuevo contrato', href: 'cobranza/crear' },
-    handleSearch: () => {},
+    // handleSearch: () => {},
   };
   const dataGridProps = {
     columns: _columns,

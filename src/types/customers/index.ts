@@ -11,7 +11,7 @@ type CreateCustomerRequest = z.infer<typeof schemas.createOrderSchema>;
 type UpdateCustomerRequest = z.infer<typeof schemas.updateOrderSchema>;
 type CustomerRequest = z.infer<typeof schemas.updateOrderSchema>;
 interface ListCustomersResponse {
-  customers: Customer[];
+  costumers: Customer[];
   count: number;
 }
 export type {

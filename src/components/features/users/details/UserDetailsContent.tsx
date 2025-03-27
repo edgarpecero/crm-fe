@@ -1,54 +1,39 @@
 'use client';
 
-import { CreateOrderRequest, Order, OrderRequest } from '@/types/orders';
-import { orderSchema, OrdersTabsEnum } from '../helpers';
+import { CreateUserRequest, User, UserRequest } from '@/types/users';
 import { useEffect, useMemo, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
-import { createOrderAction, updateOrderAction } from '@/services/actions/orderActions';
+import { createUserAction, updateUserAction } from '@/services/actions/userActions';
 import { PageModeEnum } from '@/types/enums';
-import OrderFormFooter from './OrderForm/OrderFormFooter';
-import OrderFormBody from './OrderForm/OrderFormBody';
 import { useRouter } from 'next/navigation';
-import { orderService } from '@/services/orderService';
+import { userService } from '@/services/userService';
 import { getTabContentStyle } from '@/components/layout/InnerPageTabs/helpers';
-import { useInnerPageTabs } from '@/components/layout/InnerPageTabs/NestedTabsProvider';
-import { TabsIdentifierEnum } from '@/components/layout/InnerPageTabs/types';
+import UserFormBody from './UserForm/UserFormBody';
+import UserFormFooter from './UserForm/UserFormFooter';
+import { userSchema } from '../../orders/helpers';
 
-export type OrderDetailsContentProps = {
-  initialData?: Order;
+export type UserDetailsContentProps = {
+  initialData?: User;
   mode: PageModeEnum;
-  orderId?: string;
+  userId?: string;
 };
-export default function OrderDetailsContent({
-  initialData,
-  mode,
-  orderId,
-}: OrderDetailsContentProps) {
+export default function UserDetailsContent({ initialData, mode, userId }: UserDetailsContentProps) {
   const [isPending, startTransition] = useTransition();
   const readonly = mode === PageModeEnum.READONLY;
   const router = useRouter();
-  const methods = useForm<OrderRequest>({
-    resolver: zodResolver(orderSchema),
+  const methods = useForm<UserRequest>({
+    resolver: zodResolver(userSchema),
     defaultValues: initialData,
   });
-  const { innerPageTab } = useInnerPageTabs(TabsIdentifierEnum.ordersTab);
 
-  const wrapperStyles = useMemo(
-    () =>
-      getTabContentStyle(
-        mode === PageModeEnum.CREATE ||
-          mode === PageModeEnum.READONLY ||
-          innerPageTab === OrdersTabsEnum.Details,
-      ),
-    [innerPageTab, mode],
-  );
+  const wrapperStyles = useMemo(() => getTabContentStyle(true), []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await orderService.getById(initialData?.id);
+        const resp = await userService.getById(initialData?.id);
         methods.reset(resp);
         return resp;
       } catch (error) {
@@ -63,37 +48,39 @@ export default function OrderDetailsContent({
   const title =
     mode === PageModeEnum.CREATE
       ? 'Crea un nuevo contrato'
-      : `Detalles de la Orden ${initialData?.number || orderId || ''}`;
+      : `Detalles de la Orden ${initialData?.number || userId || ''}`;
 
   //TODO: FIX HERE
   //eslint-disable-next-line
-  const handleSubmitOrder = async (data: any) => {
+  const handleSubmitUser = async (data: any) => {
     startTransition(async () => {
       if (mode === PageModeEnum.UPDATE && initialData?.id) {
-        data.customerId = initialData.customerId;
-        // Edit mode: Call updateOrderAction
-        const result = await updateOrderAction(initialData.id, data);
+        // data.customerId = initialData.customerId;
+        // Edit mode: Call updateUserAction
+        const result = await updateUserAction(initialData.id, data);
         if (result) {
-          alert('Orden actualizada exitosamente');
+          alert('Usuario actualizada exitosamente');
           methods.reset(result); // Reset form with updated data
         } else {
-          alert('Error al actualizar la orden');
+          alert('Error al actualizar el usuario');
         }
       } else if (mode === PageModeEnum.CREATE) {
-        // Create mode: Call createOrderAction
+        // Create mode: Call createUserAction
+        // data.lastModifiedBy = 'Admin';
+        // data.userName = 'Admin';
+        // data.itemId = 'Admin';
+        // data.itemName = 'Toyota Prius 2021';
+        // data.userId = 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f';
+        // data.customer.lastModifiedBy = 'Admin';
+        // data.customer.lastModifiedBy = 'Admin';
         data.lastModifiedBy = 'Admin';
-        data.userName = 'Admin';
-        data.itemId = 'Admin';
-        data.itemName = 'Toyota Prius 2021';
-        data.userId = 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f';
-        data.customer.lastModifiedBy = 'Admin';
-        data.customer.lastModifiedBy = 'Admin';
-        const result = await createOrderAction(data as CreateOrderRequest);
-
+        data.username = 'Admin';
+        console.log('result', data);
+        const result = await createUserAction(data as CreateUserRequest);
         if (result.success && result.data) {
           alert(result.message);
           methods.reset();
-          router.push(`/cobranza/${result.data.id}`);
+          router.push(`/usuarios`);
         } else if (result.errors) {
           console.log('Errores de validación:', result.errors);
         } else {
@@ -111,7 +98,7 @@ export default function OrderDetailsContent({
       )}
       <FormProvider {...methods}>
         <form
-          onSubmit={methods.handleSubmit(handleSubmitOrder)}
+          onSubmit={methods.handleSubmit(handleSubmitUser)}
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -126,15 +113,14 @@ export default function OrderDetailsContent({
               flexDirection: 'column', // Maintains column layout for content
               justifyContent: 'center', // Centers content vertically
               alignItems: 'center', // Centers content horizontally
-              boxSizing: 'border-box', // Ensures padding doesn't increase the size
             }}
           >
             {/* Grid Section */}
-            <OrderFormBody mode={mode} />
+            <UserFormBody mode={mode} />
 
             {/* Button Section */}
           </div>
-          {!readonly && <OrderFormFooter mode={mode} modalView={false} isPending={isPending} />}
+          {!readonly && <UserFormFooter mode={mode} modalView={false} isPending={isPending} />}
         </form>
       </FormProvider>
     </Box>
