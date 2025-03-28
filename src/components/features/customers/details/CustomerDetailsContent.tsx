@@ -69,12 +69,6 @@ export default function CustomerDetailsContent({
           alert('Error al actualizar el usuario');
         }
       } else if (mode === PageModeEnum.CREATE) {
-        // Create mode: Call createCustomerAction
-        // data.lastModifiedBy = 'Admin';
-        // data.customerName = 'Admin';
-        // data.itemId = 'Admin';
-        // data.itemName = 'Toyota Prius 2021';
-        // data.customerId = 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f';
         data.lastModifiedBy = 'Admin';
         data.username = 'Admin';
         // data.customer.lastModifiedBy = 'Admin';

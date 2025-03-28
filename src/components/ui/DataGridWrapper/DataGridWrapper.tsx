@@ -8,7 +8,7 @@ import useDataGridRows from '@/components/ui/DataGridWrapper/hooks/useDataGridRo
 import useDataGridCols, {
   DataGridActionButtonsProps,
 } from '@/components/ui/DataGridWrapper/hooks/useDataGridCols';
-import NoResults from '../IconButtons/NoResults/NoResults';
+import NoResults from '@/components/ui/IconButtons/NoResults/NoResults';
 
 export interface DataGridWrapperProps<T extends BaseEntity> extends DataGridProps {
   rows: T[];
@@ -61,7 +61,6 @@ function DataGridWrapped<T extends BaseEntity>({
   );
 }
 
-// Exporta el componente memoizado
 const DataGridWrapper = memo(DataGridWrapped) as <T extends BaseEntity>(
   props: DataGridWrapperProps<T>,
 ) => ReactNode;
