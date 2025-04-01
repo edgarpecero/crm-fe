@@ -5,7 +5,7 @@ import { Customer } from '@/types/customers';
 
 import { Box, Grid2, Typography } from '@mui/material';
 import GridInputs from '@/components/ui/GridInputs/GridInputs';
-import { PageModeEnum } from '@/types/enums';
+import { PageActionsEnum } from '@/types/enums';
 import {
   getUserInputsForOrderRequest,
   getUserAddressInputsForOrderRequest,
@@ -14,7 +14,7 @@ import {
 type CustomerFormBodyProps = {
   title?: string;
   initialCustomer?: Customer | null;
-  mode: PageModeEnum;
+  mode: PageActionsEnum;
 };
 
 export default function CustomerFormBody({ title, initialCustomer, mode }: CustomerFormBodyProps) {
@@ -25,7 +25,7 @@ export default function CustomerFormBody({ title, initialCustomer, mode }: Custo
     <Box sx={{ flex: '1 0 auto' }}>
       {title && (
         <Typography variant='h2' sx={{ mb: 5 }}>
-          {title || initialCustomer?.number || capitalizeFirstLetter(PageModeEnum.CREATE)}
+          {title || initialCustomer?.number || capitalizeFirstLetter(PageActionsEnum.CREATE)}
         </Typography>
       )}
       <Typography variant='h4' sx={{ pb: '24px' }}>

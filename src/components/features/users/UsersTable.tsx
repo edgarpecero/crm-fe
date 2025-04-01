@@ -9,8 +9,9 @@ import ChipCell from '@/components/ui/DataGridCellComponents/ChipCell';
 import { userService } from '@/services/userService';
 import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
 import { useQueryData } from '@/hooks/useQueryData';
-import { PageModeEnum } from '@/types/enums';
+import { PageActionsEnum } from '@/types/enums';
 import UserDetailsContent from './details/UserDetailsContent';
+import { deleteUserAction } from '@/services/actions/userActions';
 
 function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
   const gridMethods = useQueryData<ListUsersResponse>({
@@ -36,8 +37,13 @@ function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
     },
     actionButtonsProps: {
       modalProps: {
-        body: <UserDetailsContent mode={PageModeEnum.READONLY} />,
+        body: <UserDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
         title: 'Detalles del usuario: ',
+      },
+      onDeleteCb: async (user: User) => {
+        await deleteUserAction(user.id);
+        alert('Usuario eliminado');
+        gridMethods.refetch();
       },
     },
   };

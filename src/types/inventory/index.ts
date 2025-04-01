@@ -1,4 +1,4 @@
-import * as schemas from '@/components/features/orders/helpers';
+import { orderSchema } from '@/helpers/schemas';
 import { BaseEntity } from '../BaseEntity';
 import { z } from 'zod';
 
@@ -20,9 +20,9 @@ interface Inventory extends BaseEntity {
   kilometers: number;
   color: string;
 }
-type CreateInventoryRequest = z.infer<typeof schemas.createOrderSchema>;
-type UpdateInventoryRequest = z.infer<typeof schemas.updateOrderSchema>;
-type InventoryRequest = z.infer<typeof schemas.updateOrderSchema>;
+type CreateInventoryRequest = z.infer<typeof orderSchema>;
+type UpdateInventoryRequest = z.infer<typeof orderSchema>;
+type InventoryRequest = z.infer<typeof orderSchema>;
 interface ListInventoryResponse {
   items: Inventory[];
   count: number;

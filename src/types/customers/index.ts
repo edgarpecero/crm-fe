@@ -1,15 +1,15 @@
-import * as schemas from '@/components/features/orders/helpers';
 import { z } from 'zod';
 import { User } from '../users';
+import { orderSchema } from '@/helpers/schemas';
 
 interface Customer extends User {
   taxNumber: string;
   licenseNumber: string;
   licenseExpiration: string;
 }
-type CreateCustomerRequest = z.infer<typeof schemas.createOrderSchema>;
-type UpdateCustomerRequest = z.infer<typeof schemas.updateOrderSchema>;
-type CustomerRequest = z.infer<typeof schemas.updateOrderSchema>;
+type CreateCustomerRequest = z.infer<typeof orderSchema>;
+type UpdateCustomerRequest = z.infer<typeof orderSchema>;
+type CustomerRequest = z.infer<typeof orderSchema>;
 interface ListCustomersResponse {
   costumers: Customer[];
   count: number;

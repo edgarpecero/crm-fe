@@ -2,10 +2,10 @@
 
 import { useFormContext } from 'react-hook-form';
 import { Box, Button, CircularProgress } from '@mui/material';
-import { PageModeEnum } from '@/types/enums';
+import { PageActionsEnum } from '@/types/enums';
 
 type OrderFormProps = {
-  mode: PageModeEnum;
+  mode: PageActionsEnum;
   modalView?: boolean;
   isPending?: boolean;
 };
@@ -19,7 +19,15 @@ export default function OrderFormFooter({ mode, modalView, isPending }: OrderFor
   return (
     <>
       {!modalView && (
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 3, mt: 5, flexShrink: 0 }}>
+        <Box
+          sx={{
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+            gap: 3,
+          }}
+        >
           <Button variant='outlined' size='large' onClick={() => reset()} disabled={!isDirty}>
             Cancelar
           </Button>
@@ -43,10 +51,10 @@ export default function OrderFormFooter({ mode, modalView, isPending }: OrderFor
                   }}
                 />
                 <span style={{ visibility: 'hidden' }}>
-                  {mode === PageModeEnum.CREATE ? 'Crear' : 'Actualizar'}
+                  {mode === PageActionsEnum.CREATE ? 'Crear' : 'Actualizar'}
                 </span>
               </>
-            ) : mode === PageModeEnum.CREATE ? (
+            ) : mode === PageActionsEnum.CREATE ? (
               'Crear'
             ) : (
               'Actualizar'

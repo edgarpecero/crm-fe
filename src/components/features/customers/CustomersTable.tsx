@@ -9,7 +9,7 @@ import ChipCell from '@/components/ui/DataGridCellComponents/ChipCell';
 import { customerService } from '@/services/customerService';
 import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
 import { useQueryData } from '@/hooks/useQueryData';
-import { PageModeEnum } from '@/types/enums';
+import { PageActionsEnum } from '@/types/enums';
 import CustomerDetailsContent from './details/CustomerDetailsContent';
 
 function CustomersTable({ initialData }: { initialData: ListCustomersResponse }) {
@@ -36,7 +36,7 @@ function CustomersTable({ initialData }: { initialData: ListCustomersResponse })
     },
     actionButtonsProps: {
       modalProps: {
-        body: <CustomerDetailsContent mode={PageModeEnum.READONLY} />,
+        body: <CustomerDetailsContent mode={PageActionsEnum.READONLY} />,
         title: 'Detalles del cliente: ',
       },
     },

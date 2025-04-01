@@ -10,12 +10,12 @@ import {
 } from '../../helpers';
 import { Box, Grid2, Typography } from '@mui/material';
 import GridInputs from '@/components/ui/GridInputs/GridInputs';
-import { PageModeEnum } from '@/types/enums';
+import { PageActionsEnum } from '@/types/enums';
 
 type OrderFormBodyProps = {
   title?: string;
   initialOrder?: Order | null;
-  mode: PageModeEnum;
+  mode: PageActionsEnum;
 };
 
 export default function OrderFormBody({ title, initialOrder, mode }: OrderFormBodyProps) {
@@ -23,10 +23,10 @@ export default function OrderFormBody({ title, initialOrder, mode }: OrderFormBo
     /* Grid Section */
   }
   return (
-    <Box sx={{ flex: '1 0 auto' }}>
+    <Box sx={{ margin: 'o auto' }}>
       {title && (
         <Typography variant='h2' sx={{ mb: 5 }}>
-          {title || initialOrder?.number || capitalizeFirstLetter(PageModeEnum.CREATE)}
+          {title || initialOrder?.number || capitalizeFirstLetter(PageActionsEnum.CREATE)}
         </Typography>
       )}
       <Typography variant='h4' sx={{ pb: '24px' }}>

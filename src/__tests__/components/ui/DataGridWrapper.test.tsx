@@ -18,7 +18,7 @@ jest.mock('@/components/ui/DataGridWrapper/hooks/useDataGridCols', () => ({
 
 jest.mock('@/components/ui/IconButtons/NoResults/NoResults', () => {
   return function MockNoResults() {
-    return <div data-testid="no-results">No Results</div>;
+    return <div data-testid='no-results'>No Results</div>;
   };
 });
 
@@ -28,56 +28,47 @@ interface Test extends BaseEntity {
 
 describe('DataGridWrapper', () => {
   const mockColumns = [
-    { field: "id", headerName: "ID", width: 200 },
-    { field: "number", headerName: "Order Number", width: 180 },
-    { field: "status", headerName: "Status", width: 120 },
-    { field: "createdAt", headerName: "Created At", width: 200 },
-    { field: "lastModifiedAt", headerName: "Last Modified At", width: 200 },
-    { field: "lastModifiedBy", headerName: "Last Modified By", width: 150 },
-    { field: "userName", headerName: "User Name", width: 150 }
+    { field: 'id', headerName: 'ID', width: 200 },
+    { field: 'number', headerName: 'Order Number', width: 180 },
+    { field: 'status', headerName: 'Status', width: 120 },
+    { field: 'createdAt', headerName: 'Created At', width: 200 },
+    { field: 'lastModifiedAt', headerName: 'Last Modified At', width: 200 },
+    { field: 'lastModifiedBy', headerName: 'Last Modified By', width: 150 },
+    { field: 'userName', headerName: 'User Name', width: 150 },
   ];
 
   const mockRows: Test[] = [
     {
-      id: "123abc",
-      number: "ORD-20240327-001",
-      status: "Pending",
+      id: '123abc',
+      number: 'ORD-20240327-001',
+      status: 'Pending',
       createdAt: new Date().toISOString(),
       lastModifiedAt: new Date().toISOString(),
-      lastModifiedBy: "AdminUser",
-      userName: "AdminUser",
+      lastModifiedBy: 'AdminUser',
+      userName: 'AdminUser',
     },
     {
-      id: "456def",
-      number: "ORD-20240327-002",
-      status: "Shipped",
+      id: '456def',
+      number: 'ORD-20240327-002',
+      status: 'Shipped',
       createdAt: new Date().toISOString(),
       lastModifiedAt: new Date().toISOString(),
-      lastModifiedBy: "ManagerUser",
-      userName: "ManagerUser",
+      lastModifiedBy: 'ManagerUser',
+      userName: 'ManagerUser',
     },
     {
-      id: "789ghi",
-      number: "ORD-20240327-003",
-      status: "Delivered",
+      id: '789ghi',
+      number: 'ORD-20240327-003',
+      status: 'Delivered',
       createdAt: new Date().toISOString(),
       lastModifiedAt: new Date().toISOString(),
-      lastModifiedBy: "System",
-      userName: "ManagerUser",
+      lastModifiedBy: 'System',
+      userName: 'ManagerUser',
     },
   ];
 
-  const mockActionButtonsProps = {
-    onEdit: jest.fn(),
-    onDelete: jest.fn(),
-  };
-
   const renderWithTheme = (component) => {
-    return render(
-      <ThemeProvider theme={createTheme()}>
-        {component}
-      </ThemeProvider>
-    );
+    return render(<ThemeProvider theme={createTheme()}>{component}</ThemeProvider>);
   };
 
   beforeEach(() => {
@@ -85,23 +76,17 @@ describe('DataGridWrapper', () => {
   });
 
   it('renders without crashing', () => {
-    renderWithTheme(
-      <DataGridWrapper rows={mockRows} columns={mockColumns} />
-    );
+    renderWithTheme(<DataGridWrapper rows={mockRows} columns={mockColumns} />);
     expect(screen.getByRole('grid')).toBeInTheDocument();
   });
 
   it('displays data rows correctly', () => {
-    renderWithTheme(
-      <DataGridWrapper rows={mockRows} columns={mockColumns} />
-    );
+    renderWithTheme(<DataGridWrapper rows={mockRows} columns={mockColumns} />);
     expect(screen.getByText('ORD-20240327-003')).toBeInTheDocument();
   });
 
   it('shows NoResults overlay when rows are empty', () => {
-    renderWithTheme(
-      <DataGridWrapper rows={[]} columns={mockColumns} />
-    );
+    renderWithTheme(<DataGridWrapper rows={[]} columns={mockColumns} />);
     expect(screen.getByTestId('no-results')).toBeInTheDocument();
   });
 });

@@ -2,10 +2,10 @@
 
 import { useFormContext } from 'react-hook-form';
 import { Box, Button, CircularProgress } from '@mui/material';
-import { PageModeEnum } from '@/types/enums';
+import { PageActionsEnum } from '@/types/enums';
 
 type UserFormProps = {
-  mode: PageModeEnum;
+  mode: PageActionsEnum;
   modalView?: boolean;
   isPending?: boolean;
 };
@@ -43,10 +43,10 @@ export default function UserFormFooter({ mode, modalView, isPending }: UserFormP
                   }}
                 />
                 <span style={{ visibility: 'hidden' }}>
-                  {mode === PageModeEnum.CREATE ? 'Crear' : 'Actualizar'}
+                  {mode === PageActionsEnum.CREATE ? 'Crear' : 'Actualizar'}
                 </span>
               </>
-            ) : mode === PageModeEnum.CREATE ? (
+            ) : mode === PageActionsEnum.CREATE ? (
               'Crear'
             ) : (
               'Actualizar'

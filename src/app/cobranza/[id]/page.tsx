@@ -1,13 +1,13 @@
 import OrderDetailsContent from '@/components/features/orders/details/OrderDetailsContent';
 import CircularIndeterminate from '@/components/ui/Progress/CircularIndeterminate';
 import { orderService } from '@/services/orderService';
-import { PageModeEnum } from '@/types/enums';
+import { PageActionsEnum } from '@/types/enums';
 import { Suspense } from 'react';
 import InnerPageTabs from '@/components/layout/InnerPageTabs/InnerPageTabs';
 import { enumToTabsArray } from '@/components/layout/InnerPageTabs/helpers';
 import { TabsIdentifierEnum } from '@/components/layout/InnerPageTabs/types';
-import OrderPayments from '@/components/features/orders/details/OrderPayments';
 import { OrdersTabsEnum } from '@/components/features/orders/helpers';
+import OrderPayments from '@/components/features/orders/details/OrderPayments';
 
 export default async function OrderDetailsPage({
   params,
@@ -21,8 +21,8 @@ export default async function OrderDetailsPage({
   return (
     <Suspense fallback={<CircularIndeterminate />}>
       <InnerPageTabs tabsArray={enumToTabsArray(OrdersTabsEnum)} id={TabsIdentifierEnum.ordersTab}>
-        <OrderDetailsContent initialData={order} mode={PageModeEnum.UPDATE} />
-        <OrderPayments initialData={order} mode={PageModeEnum.UPDATE} />
+        <OrderDetailsContent initialData={order} id={id} mode={PageActionsEnum.UPDATE} />
+        <OrderPayments initialData={order} id={id} mode={PageActionsEnum.UPDATE} />
       </InnerPageTabs>
     </Suspense>
   );

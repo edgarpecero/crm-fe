@@ -1,4 +1,4 @@
-import * as schemas from '@/components/features/orders/helpers';
+import { orderSchema } from '@/helpers/schemas';
 import { BaseEntity } from '../BaseEntity';
 import { z } from 'zod';
 
@@ -20,9 +20,9 @@ interface User extends BaseEntity {
   nationalId: string;
   maritalStatus: string;
 }
-type CreateUserRequest = z.infer<typeof schemas.createOrderSchema>;
-type UpdateUserRequest = z.infer<typeof schemas.updateOrderSchema>;
-type UserRequest = z.infer<typeof schemas.updateOrderSchema>;
+type CreateUserRequest = z.infer<typeof orderSchema>;
+type UpdateUserRequest = z.infer<typeof orderSchema>;
+type UserRequest = z.infer<typeof orderSchema>;
 interface ListUsersResponse {
   users: User[];
   count: number;

@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     appIsrStatus: false,
     buildActivity: false, 
   },
+  reactStrictMode: false,
 };
 
 export default nextConfig;

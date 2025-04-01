@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 import { createCustomerAction, updateCustomerAction } from '@/services/actions/customerActions';
-import { PageModeEnum } from '@/types/enums';
+import { PageActionsEnum } from '@/types/enums';
 import { useRouter } from 'next/navigation';
 import { customerService } from '@/services/customerService';
 import { getTabContentStyle } from '@/components/layout/InnerPageTabs/helpers';
@@ -16,7 +16,7 @@ import CustomerFormFooter from './CustomerForm/CustomerFormFooter';
 
 export type CustomerDetailsContentProps = {
   initialData?: Customer;
-  mode: PageModeEnum;
+  mode: PageActionsEnum;
   customerId?: string;
 };
 export default function CustomerDetailsContent({
@@ -25,7 +25,7 @@ export default function CustomerDetailsContent({
   customerId,
 }: CustomerDetailsContentProps) {
   const [isPending, startTransition] = useTransition();
-  const readonly = mode === PageModeEnum.READONLY;
+  const readonly = mode === PageActionsEnum.READONLY;
   const router = useRouter();
   const methods = useForm<CustomerRequest>({
     resolver: zodResolver(customerSchema),
@@ -50,7 +50,7 @@ export default function CustomerDetailsContent({
   }, [initialData?.id, methods]);
 
   const title =
-    mode === PageModeEnum.CREATE
+    mode === PageActionsEnum.CREATE
       ? 'Dar de alta nuevo cliente'
       : `Detalles del cliente ${initialData?.number || customerId || ''}`;
 
@@ -58,7 +58,7 @@ export default function CustomerDetailsContent({
   //eslint-disable-next-line
   const handleSubmitCustomer = async (data: any) => {
     startTransition(async () => {
-      if (mode === PageModeEnum.UPDATE && initialData?.id) {
+      if (mode === PageActionsEnum.UPDATE && initialData?.id) {
         // data.customerId = initialData.customerId;
         // Edit mode: Call updateCustomerAction
         const result = await updateCustomerAction(initialData.id, data);
@@ -68,7 +68,7 @@ export default function CustomerDetailsContent({
         } else {
           alert('Error al actualizar el usuario');
         }
-      } else if (mode === PageModeEnum.CREATE) {
+      } else if (mode === PageActionsEnum.CREATE) {
         data.lastModifiedBy = 'Admin';
         data.username = 'Admin';
         // data.customer.lastModifiedBy = 'Admin';

@@ -12,7 +12,8 @@ import { orderService } from '@/services/orderService';
 import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
 import { useQueryData } from '@/hooks/useQueryData';
 import OrderDetailsContent from './details/OrderDetailsContent';
-import { PageModeEnum } from '@/types/enums';
+import { PageActionsEnum } from '@/types/enums';
+import { deleteOrderAction } from '@/services/actions/orderActions';
 
 function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
   const gridMethods = useQueryData<ListOrdersResponse>({
@@ -51,8 +52,13 @@ function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
     },
     actionButtonsProps: {
       modalProps: {
-        body: <OrderDetailsContent mode={PageModeEnum.READONLY} />,
+        body: <OrderDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
         title: 'Detalles del contrato: ',
+      },
+      onDeleteCb: async (order: Order) => {
+        await deleteOrderAction(order.id);
+        alert('Contrato eliminado');
+        gridMethods.refetch();
       },
     },
   };
@@ -82,7 +88,7 @@ const _columns: GridColDef<Order>[] = [
     minWidth: 100,
     renderCell: (props) => <ChipCell {...props} />,
   },
-  { field: 'userName', headerName: 'Vendedor', flex: 1 },
+  { field: 'username', headerName: 'Vendedor', flex: 1 },
   {
     field: 'itemName',
     headerName: 'Producto',

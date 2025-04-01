@@ -3,13 +3,21 @@
 import { revalidatePath } from 'next/cache';
 
 // Definimos una interfaz para los servicios compatibles
-interface ApiService<T> {
+export interface ApiService<T> {
   create: (data: T) => Promise<T>;
   update: (id: string, data: Partial<T>) => Promise<T>;
   delete: (id: string) => Promise<void>;
   endpoint: string;
 }
-
+export interface ActionResponse<T> {
+  success: boolean;
+  message?: string;
+  data?: T;
+  errors?: Array<{
+    field: string | number;
+    message: string;
+  }>;
+}
 type ActionOptions<T> = {
   mapCreateData?: (formData: T) => T;
   mapUpdateData?: (formData: Partial<T>) => Partial<T>;

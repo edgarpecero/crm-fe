@@ -26,7 +26,7 @@ const NavDrawerHeader = ({ open, onClose }: DrawerHeaderProps) => (
   <DrawerHeaderStyled>
     <span style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
       <Typography variant='h1' sx={{ paddingLeft: 1.7, color: 'white' }}>
-        {open ? 'EDGAR' : 'E'}
+        {open ? 'PrimeCar' : 'P'}
       </Typography>
       {/* <MenuWhiteLogo /> */}
     </span>

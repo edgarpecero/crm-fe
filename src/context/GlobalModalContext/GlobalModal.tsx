@@ -8,10 +8,11 @@ import CloseIcon from '@mui/icons-material/Close';
 export const GlobalModal = () => {
   // important to extract body and title from modalProps
   const { body, title, initialData, ...rest } = useModalState();
+  console.log('modal');
   const enhancedBody =
     body && React.isValidElement(body)
       ? //eslint-disable-next-line @typescript-eslint/no-explicit-any
-        cloneElement(body, { initialData: initialData } as any)
+        cloneElement(body, { id: initialData?.id } as any)
       : body;
   return (
     <Modal {...rest} aria-labelledby='modal-title'>

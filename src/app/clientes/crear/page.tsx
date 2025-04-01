@@ -1,12 +1,12 @@
 import CustomerDetailsContent from '@/components/features/customers/details/CustomerDetailsContent';
 import CircularIndeterminate from '@/components/ui/Progress/CircularIndeterminate';
-import { PageModeEnum } from '@/types/enums';
+import { PageActionsEnum } from '@/types/enums';
 import { Suspense } from 'react';
 
 export default async function CustomerDetailsPage() {
   return (
     <Suspense fallback={<CircularIndeterminate />}>
-      <CustomerDetailsContent mode={PageModeEnum.CREATE} />
+      <CustomerDetailsContent mode={PageActionsEnum.CREATE} />
     </Suspense>
   );
 }

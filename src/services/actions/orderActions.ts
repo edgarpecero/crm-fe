@@ -2,10 +2,14 @@
 
 import { Order, OrderRequest } from '@/types/orders';
 import { orderService } from '../orderService';
-import { createAction, updateAction, deleteAction } from './createApiActions';
+import { createAction, updateAction, deleteAction, ActionResponse } from './createApiActions';
 import { z } from 'zod';
 
-export const createOrderAction = async (data: OrderRequest) => {
+// Interface específica para la respuesta de creación de orden
+interface CreateOrderResponse extends ActionResponse<Order> {}
+interface UpdateOrderResponse extends ActionResponse<Order> {}
+
+export const createOrderAction = async (data: OrderRequest): Promise<CreateOrderResponse> => {
   try {
     const res = await createAction(orderService, processData(data));
     return {
@@ -30,10 +34,33 @@ export const createOrderAction = async (data: OrderRequest) => {
   }
 };
 
-export const updateOrderAction = async (id: string, data: OrderRequest): Promise<Order> => {
-  const resp = await updateAction(orderService, id, processData(data) as Order);
-  console.log('resp', resp);
-  return resp as Order;
+export const updateOrderAction = async (
+  id: string,
+  data: OrderRequest,
+): Promise<UpdateOrderResponse> => {
+  try {
+    const resp = await updateAction(orderService, id, processData(data) as Order);
+    console.log('resp', resp);
+    return {
+      success: true,
+      message: 'Orden actualizada con éxito',
+      data: resp as Order,
+    };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        errors: error.errors.map((err) => ({
+          field: err.path[0],
+          message: err.message,
+        })),
+      };
+    }
+    return {
+      success: false,
+      message: 'Error en el servidor',
+    };
+  }
 };
 
 export const deleteOrderAction = async (id: string): Promise<void> => {
