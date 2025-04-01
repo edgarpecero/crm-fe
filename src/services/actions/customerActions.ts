@@ -2,11 +2,11 @@
 
 import { Customer, CustomerRequest } from '@/types/customers';
 import { customerService } from '../customerService';
-import { createAction, updateAction, deleteAction } from './createApiActions';
+import { createAction, updateAction, deleteAction, ActionResponse } from './createApiActions';
 import { z } from 'zod';
-import { customerSchema } from '@/components/features/orders/helpers';
+import { customerSchema } from '@/helpers/schemas';
 
-export const createCustomerAction = async (data: CustomerRequest) => {
+export const createCustomerAction = async (data: CustomerRequest): Promise<ActionResponse<Customer>> => {
   try {
     const res = await createAction(customerService, processData(data));
     return {
@@ -34,10 +34,29 @@ export const createCustomerAction = async (data: CustomerRequest) => {
 export const updateCustomerAction = async (
   id: string,
   data: CustomerRequest,
-): Promise<Customer> => {
-  const resp = await updateAction(customerService, id, processData(data) as Customer);
-  console.log('resp', resp);
-  return resp as Customer;
+): Promise<ActionResponse<Customer>> => {
+  try {
+    const resp = await updateAction(customerService, id, processData(data) as Customer);
+    return {
+      success: true,
+      message: 'Cliente actualizado con éxito',
+      data: resp as Customer,
+    };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        errors: error.errors.map((err) => ({
+          field: err.path[0],
+          message: err.message,
+        })),
+      };
+    }
+    return {
+      success: false,
+      message: 'Error en el servidor',
+    };
+  }
 };
 
 export const deleteCustomerAction = async (id: string): Promise<void> => {

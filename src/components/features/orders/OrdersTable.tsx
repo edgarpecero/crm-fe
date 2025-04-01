@@ -53,7 +53,6 @@ function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
     actionButtonsProps: {
       modalProps: {
         body: <OrderDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
-        title: 'Detalles del contrato: ',
       },
       onDeleteCb: async (order: Order) => {
         await deleteOrderAction(order.id);

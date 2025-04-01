@@ -75,9 +75,6 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
 
   const handleSubmitOrder = useCallback(
     async (data: R) => {
-      console.log('data', data);
-      console.log('mode', mode);
-      console.log('id', id);
       startTransition(async () => {
         if (mode === PageActionsEnum.CREATE && createRequestAction) {
           const response = await createRequestAction(data as R);
@@ -93,8 +90,6 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
         }
 
         if (mode === PageActionsEnum.UPDATE && id) {
-          console.log('here');
-
           const response = await updateRequestAction(id, data as R);
           if (response.success && response.data) {
             alert(response.message);
@@ -119,13 +114,11 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
       pathname,
     ],
   );
-
   const contextValue = useMemo(() => ({ isPending, mode }), [isPending, mode]);
   return (
     <Box
       id={'form-container'}
       sx={{
-        // ...wrapperStyles,
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
@@ -133,11 +126,6 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
         alignItems: 'center',
       }}
     >
-      {title && !modalReadonly && (
-        <Typography variant='h2' sx={{ mb: 2 }}>
-          {title}
-        </Typography>
-      )}
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(handleSubmitOrder)}
@@ -150,7 +138,7 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
         >
           <FormContext.Provider value={contextValue}>
             {children}
-            {!readonly && <FormFooterLayout />}
+            {!readonly && !modalReadonly && <FormFooterLayout />}
           </FormContext.Provider>
         </form>
       </FormProvider>

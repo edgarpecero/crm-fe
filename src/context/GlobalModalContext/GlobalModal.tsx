@@ -4,15 +4,15 @@ import React, { cloneElement } from 'react';
 import { useModalState } from '@/context/GlobalModalContext/GlobalModalContext';
 import { Box, IconButton, Modal, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { BaseEntity } from '@/types/BaseEntity';
 
 export const GlobalModal = () => {
   // important to extract body and title from modalProps
   const { body, title, initialData, ...rest } = useModalState();
-  console.log('modal');
   const enhancedBody =
     body && React.isValidElement(body)
       ? //eslint-disable-next-line @typescript-eslint/no-explicit-any
-        cloneElement(body, { id: initialData?.id } as any)
+      cloneElement(body, { id: initialData?.id, initialData: initialData } as any)
       : body;
   return (
     <Modal {...rest} aria-labelledby='modal-title'>
@@ -33,7 +33,6 @@ export const GlobalModal = () => {
             display: 'flex',
             justifyContent: title ? 'space-between' : 'flex-end',
             alignItems: 'center',
-            mb: 2,
           }}
         >
           {title && (

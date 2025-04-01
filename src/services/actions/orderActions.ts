@@ -6,10 +6,7 @@ import { createAction, updateAction, deleteAction, ActionResponse } from './crea
 import { z } from 'zod';
 
 // Interface específica para la respuesta de creación de orden
-interface CreateOrderResponse extends ActionResponse<Order> {}
-interface UpdateOrderResponse extends ActionResponse<Order> {}
-
-export const createOrderAction = async (data: OrderRequest): Promise<CreateOrderResponse> => {
+export const createOrderAction = async (data: OrderRequest): Promise<ActionResponse<Order>> => {
   try {
     const res = await createAction(orderService, processData(data));
     return {
@@ -37,10 +34,9 @@ export const createOrderAction = async (data: OrderRequest): Promise<CreateOrder
 export const updateOrderAction = async (
   id: string,
   data: OrderRequest,
-): Promise<UpdateOrderResponse> => {
+): Promise<ActionResponse<Order>> => {
   try {
     const resp = await updateAction(orderService, id, processData(data) as Order);
-    console.log('resp', resp);
     return {
       success: true,
       message: 'Orden actualizada con éxito',

@@ -38,7 +38,6 @@ function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
     actionButtonsProps: {
       modalProps: {
         body: <UserDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
-        title: 'Detalles del usuario: ',
       },
       onDeleteCb: async (user: User) => {
         await deleteUserAction(user.id);

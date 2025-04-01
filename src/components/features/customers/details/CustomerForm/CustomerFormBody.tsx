@@ -23,7 +23,7 @@ export default function CustomerFormBody({ title, initialCustomer, mode }: Custo
   }
   return (
     <Box sx={{ flex: '1 0 auto' }}>
-      {title && (
+      {title && mode !== PageActionsEnum.MODALREADONLY && (
         <Typography variant='h2' sx={{ mb: 5 }}>
           {title || initialCustomer?.number || capitalizeFirstLetter(PageActionsEnum.CREATE)}
         </Typography>
@@ -33,10 +33,10 @@ export default function CustomerFormBody({ title, initialCustomer, mode }: Custo
       </Typography>
       <Grid2 container spacing={6} alignItems='start' justifyContent='space-between'>
         <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
-          <GridInputs inputs={getUserInputsForOrderRequest(mode, '')} />
+          <GridInputs inputs={getUserInputsForOrderRequest(mode, true)} />
         </Grid2>
         <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
-          <GridInputs inputs={getUserAddressInputsForOrderRequest(mode, '')} />
+          <GridInputs inputs={getUserAddressInputsForOrderRequest(mode)} />
         </Grid2>
       </Grid2>
     </Box>

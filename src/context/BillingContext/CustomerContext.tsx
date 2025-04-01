@@ -44,7 +44,6 @@ const useCustomerProvider = () => {
     if (error) {
       setError(error);
     } else {
-      console.log(data);
       setData(data);
     }
     setLoading(false);

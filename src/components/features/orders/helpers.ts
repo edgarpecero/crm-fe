@@ -59,7 +59,7 @@ export const userAttributesInputs = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
   parent: string = '',
 ): InputsProps[] => {
-  const isReadOnly = mode === PageActionsEnum.READONLY;
+  const isReadOnly = mode === PageActionsEnum.READONLY || mode === PageActionsEnum.MODALREADONLY;;
   const isCreate = mode === PageActionsEnum.CREATE;
 
   return [
@@ -181,10 +181,10 @@ export const getUserAddressInputsForOrderRequest = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
 ) => userAttributesInputs(mode, 'customer.').slice(11, 17);
 
-const paymentCommonProps = { gridSize: { xs: 12, sm: 3 }, disabled: false, type: 'number' };
+const paymentCommonProps = { gridSize: { xs: 12, sm: 6 }, disabled: false, type: 'number' };
 const paymentInputCommonProps = { gridSize: { xs: 12, sm: 9 }, required: true, type: 'number' };
 export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): InputsProps[] => {
-  const isReadOnly = mode === PageActionsEnum.READONLY;
+  const isReadOnly = mode === PageActionsEnum.READONLY || mode === PageActionsEnum.MODALREADONLY;
   const isCreate = mode === PageActionsEnum.CREATE;
   return [
     {
@@ -197,7 +197,8 @@ export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): 
     {
       name: 'totalPayments',
       label: 'Mens Pag',
-      ...paymentCommonProps,
+      type: 'number',
+      gridSize: { xs: 12, sm: 3 },
       required: isCreate,
       disabled: isReadOnly,
     },
@@ -211,7 +212,8 @@ export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): 
     {
       name: 'onTimePayments',
       label: 'Mens Punt',
-      ...paymentCommonProps,
+      type: 'number',
+      gridSize: { xs: 12, sm: 3 },
       required: isCreate,
       disabled: isReadOnly,
     },
@@ -225,13 +227,15 @@ export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): 
     {
       name: 'advancedPayments',
       label: 'Mens Adela',
-      ...paymentCommonProps,
+      type: 'number',
+      gridSize: { xs: 12, sm: 3 },
       required: isCreate,
       disabled: isReadOnly,
     },
     {
       name: 'monthlyPayment',
       label: 'Mensualidad',
+      type: 'number',
       ...paymentInputCommonProps,
       required: isCreate,
       disabled: isReadOnly,
@@ -239,7 +243,8 @@ export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): 
     {
       name: 'overduePayments',
       label: 'Mens Venci',
-      ...paymentCommonProps,
+      type: 'number',
+      gridSize: { xs: 12, sm: 3 },
       required: isCreate,
       disabled: isReadOnly,
     },

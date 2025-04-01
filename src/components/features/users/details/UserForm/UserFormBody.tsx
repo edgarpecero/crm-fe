@@ -1,12 +1,11 @@
 'use client';
 
-import { capitalizeFirstLetter } from '@/helpers/utils';
 import { User } from '@/types/users';
-
-import { Box, Grid2, Typography } from '@mui/material';
+import { Grid2, Typography } from '@mui/material';
 import GridInputs from '@/components/ui/GridInputs/GridInputs';
 import { PageActionsEnum } from '@/types/enums';
 import { getUserAddressInputs, getUserInputs } from '@/components/features/orders/helpers';
+import TitlePage from '@/components/layout/PageLayout/TitlePage';
 
 type UserFormBodyProps = {
   title?: string;
@@ -14,17 +13,14 @@ type UserFormBodyProps = {
   mode: PageActionsEnum;
 };
 
-export default function UserFormBody({ title, initialUser, mode }: UserFormBodyProps) {
+export default function UserFormBody({ title, mode }: UserFormBodyProps) {
   {
     /* Grid Section */
   }
   return (
-    <Box sx={{ flex: '1 0 auto' }}>
-      {title && (
-        <Typography variant='h2' sx={{ mb: 5 }}>
-          {title || initialUser?.number || capitalizeFirstLetter(PageActionsEnum.CREATE)}
-        </Typography>
-      )}
+    <>
+      <TitlePage title={title} />
+
       <Typography variant='h4' sx={{ pb: '24px' }}>
         Información
       </Typography>
@@ -36,6 +32,6 @@ export default function UserFormBody({ title, initialUser, mode }: UserFormBodyP
           <GridInputs inputs={getUserAddressInputs(mode)} />
         </Grid2>
       </Grid2>
-    </Box>
+    </>
   );
 }

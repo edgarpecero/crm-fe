@@ -54,7 +54,6 @@ function useDataGridCols<T extends GridValidRowModel>({
         if (modalProps?.body) {
           const props = {
             ...modalProps,
-            title: modalProps.title + params.row.number,
             initialData: params.row,
           };
           openModal(props);

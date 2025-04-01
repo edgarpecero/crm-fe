@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { datePickerFormat } from './constants';
 import { GridRowParams } from '@mui/x-data-grid';
+import { User } from '@/types/users';
 
 export const filterData = <T>(data: T[], searchInput: string, ...keys: (keyof T)[]): T[] => {
   if (!searchInput) return data; // Return all data if search input is empty
@@ -15,6 +16,7 @@ export const filterData = <T>(data: T[], searchInput: string, ...keys: (keyof T)
 export const getRowId = (row: GridRowParams) => row.id;
 
 /* FORMATTERS */
+export const getUserFullname = (user: User) => `${user.name} ${user.lastName}`;
 const extractNumberFromString = (str: string) => {
   // Regular expression to match a number (including decimal numbers)
   const regex = /-?\d+(\.\d+)?/;

@@ -20,6 +20,7 @@ interface Inventory extends BaseEntity {
   kilometers: number;
   color: string;
 }
+
 type CreateInventoryRequest = z.infer<typeof orderSchema>;
 type UpdateInventoryRequest = z.infer<typeof orderSchema>;
 type InventoryRequest = z.infer<typeof orderSchema>;

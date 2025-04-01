@@ -31,6 +31,7 @@ export const GlobalModalProvider = ({ children }: ModalContextProviderProps) => 
   const [modalProps, setModalProps] = useState<GlobalModalProps>({
     open: false,
     onClose: undefined,
+    initialData: undefined,
     body: null,
     title: undefined,
   });
@@ -57,6 +58,7 @@ export const GlobalModalProvider = ({ children }: ModalContextProviderProps) => 
   );
   const stateValue = useMemo(() => modalProps, [modalProps]);
   const actionsValue = useMemo(() => ({ openModal, closeModal }), [openModal, closeModal]);
+
   return (
     <ModalActionContext.Provider value={actionsValue}>
       {children}

@@ -6,9 +6,7 @@ import { createAction, updateAction, deleteAction, ActionResponse } from './crea
 import { z } from 'zod';
 import { userSchema } from '@/helpers/schemas';
 
-interface CreateUserResponse extends ActionResponse<User> {}
-interface UpdateUserResponse extends ActionResponse<User> {}
-export const createUserAction = async (data: UserRequest): Promise<CreateUserResponse> => {
+export const createUserAction = async (data: UserRequest): Promise<ActionResponse<User>> => {
   try {
     const res = await createAction(userService, processData(data));
     return {
@@ -36,14 +34,10 @@ export const createUserAction = async (data: UserRequest): Promise<CreateUserRes
 export const updateUserAction = async (
   id: string,
   data: UserRequest,
-): Promise<UpdateUserResponse> => {
-  const resp = await updateAction(userService, id, processData(data) as User);
-  console.log('resp', resp);
-
+): Promise<ActionResponse<User>> => {
   try {
     const resp = await updateAction(userService, id, processData(data) as User);
 
-    console.log('resp', resp);
     return {
       success: true,
       message: 'Usuario actualizado con éxito',

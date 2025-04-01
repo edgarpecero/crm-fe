@@ -7,13 +7,14 @@ import { PageActionsEnum } from '@/types/enums';
 import { orderService } from '@/services/orderService';
 import FormLayout, { FormProps } from '@/components/layout/FormLayout/FormLayout';
 import { orderSchema } from '@/helpers/schemas';
-import { Box, Grid2, Typography } from '@mui/material';
+import { Grid2, Typography } from '@mui/material';
 import GridInputs from '@/components/ui/GridInputs/GridInputs';
 import { getAddInfoInputs1, getAddInfoInputs2 } from '../helpers';
 import { getTabContentStyle } from '@/components/layout/InnerPageTabs/helpers';
 import { useInnerPageTabs } from '@/components/layout/InnerPageTabs/NestedTabsProvider';
 import { TabsIdentifierEnum } from '@/components/layout/InnerPageTabs/types';
 import { OrdersTabsEnum } from '../helpers';
+import TitlePage from '@/components/layout/PageLayout/TitlePage';
 export type OrderPaymentsProps = {
   initialData?: Order;
   id: string;
@@ -30,19 +31,16 @@ export default function OrderPayments({ initialData, mode, id }: OrderPaymentsPr
     //eslint-disable-next-line
     async (id: string, data: any) => {
       // logic to format data before sending
-      console.log('valid');
       data.customerId = initialData.customerId;
       return await updateOrderAction(id, data);
     },
     [initialData],
   );
-  console.log('initialData', initialData);
   const title =
     mode === PageActionsEnum.CREATE
       ? 'Crea un nuevo contrato'
       : `Detalles del contrato número: ${initialData?.number || ''}`;
 
-  console.log('asdfasdiid', id);
   const formProps: FormProps<Order, OrderRequest> = {
     schema: orderSchema,
     service: orderService,
@@ -54,36 +52,38 @@ export default function OrderPayments({ initialData, mode, id }: OrderPaymentsPr
   };
 
   return (
-    <div style={wrapperStyles}>
-      <FormLayout
-        mode={PageActionsEnum.UPDATE}
-        formProps={formProps}
-      >
+    <div style={{ ...wrapperStyles, margin: '0 auto' }}>
+      <FormLayout mode={PageActionsEnum.UPDATE} formProps={formProps}>
         {/* Grid Section */}
-        <Box sx={{ flex: '1 0 auto' }}>
-          {title && (
-            <Typography variant='h2' sx={{ mb: 5 }}>
-              Información Adicional
-            </Typography>
-          )}
-          <Typography variant='h4' sx={{ pb: '24px' }}>
-            Detalles
-          </Typography>
-          <Grid2 container spacing={6} alignItems='start' justifyContent='space-between'>
-            <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
+        <TitlePage title={'Información Adicional'} />
+
+        <Grid2 container spacing={6} columns={12} >
+
+          <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
+            <Grid2 container spacing={3}>
+              <Typography variant='h4' sx={{ p: '1rem 0' }}>
+                Detalles
+              </Typography>
+            </Grid2>
+            <Grid2 container spacing={3}>
               <GridInputs inputs={getAddInfoInputs1(mode)} />
             </Grid2>
           </Grid2>
-          <Typography variant='h4' sx={{ pb: '24px', pt: '24px' }}>
-            Pagos
-          </Typography>
-          <Grid2 container spacing={6} alignItems='start' justifyContent='space-between'>
-            <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
+
+          <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }} alignContent="flex-start">
+            <Grid2 container spacing={3}>
+              <Typography variant='h4' sx={{ p: '1rem 0' }}>
+                Pagos
+              </Typography>
+            </Grid2>
+            <Grid2 container spacing={3} alignItems="start">
               <GridInputs inputs={getAddInfoInputs2(mode)} />
             </Grid2>
           </Grid2>
-        </Box>
+
+        </Grid2>
+
       </FormLayout>
-    </div>
+    </div >
   );
 }

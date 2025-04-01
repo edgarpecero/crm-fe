@@ -8,7 +8,7 @@ import { Box, Divider, ListItemIcon, ListItemText, ThemeProvider, Typography } f
 import NavDrawerHeader from './NavDrawerHeader';
 import { BreakpointVisible } from '@/components/ui/BreakpointVisible';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-import AssessmentIcon from '@mui/icons-material/Assessment';
+import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import { DrawerMenuRoutes } from './types';
@@ -91,7 +91,7 @@ const routes: DrawerMenuRoutes[] = [
   },
   {
     label: 'Clientes',
-    icon: <AssessmentIcon />,
+    icon: <SwitchAccountIcon  />,
     route: '/clientes',
   },
   {
@@ -121,7 +121,7 @@ const routes: DrawerMenuRoutes[] = [
   // },
   {
     label: 'Reportes',
-    icon: <AssessmentIcon />,
+    icon: <SwitchAccountIcon  />,
     route: '/reportes',
   },
 ];

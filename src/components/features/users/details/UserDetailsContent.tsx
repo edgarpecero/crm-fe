@@ -8,6 +8,7 @@ import UserFormBody from './UserForm/UserFormBody';
 import { userService } from '@/services/userService';
 import FormLayout, { FormProps } from '@/components/layout/FormLayout/FormLayout';
 import { userSchema } from '@/helpers/schemas';
+import { getUserFullname } from '@/helpers/utils';
 
 export type UserDetailsContentProps = {
   initialData?: User;
@@ -41,7 +42,7 @@ export default function UserDetailsContent({
   const title =
     mode === PageActionsEnum.CREATE
       ? 'Registrar nuevo usuario'
-      : `Detalles del usuario número: ${initialData?.number || userId || ''}`;
+      : `Detalles del usuario: ${getUserFullname(initialData) || userId || ''}`;
 
   const formProps: FormProps<User, UserRequest> = {
     schema: userSchema,
@@ -57,7 +58,7 @@ export default function UserDetailsContent({
   return (
     <FormLayout mode={mode} formProps={formProps}>
       {/* Grid Section */}
-      <UserFormBody mode={mode} />
+      <UserFormBody mode={mode} title={title} />
     </FormLayout>
   );
 }

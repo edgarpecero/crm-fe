@@ -37,7 +37,6 @@ function CustomersTable({ initialData }: { initialData: ListCustomersResponse })
     actionButtonsProps: {
       modalProps: {
         body: <CustomerDetailsContent mode={PageActionsEnum.READONLY} />,
-        title: 'Detalles del cliente: ',
       },
     },
   };

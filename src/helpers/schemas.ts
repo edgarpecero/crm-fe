@@ -1,5 +1,14 @@
 import { z } from 'zod';
 
+export const baseEntitySchema = z.object({
+  id: z.string().optional().nullable(),
+  number: z.string().optional().nullable(), // Unique identifier
+  status: z.string().optional().nullable(),
+  createdAt: z.string().optional().nullable(), // ISO 8601 string
+  lastModifiedAt: z.string().optional().nullable(), // ISO 8601 string
+  lastModifiedBy: z.string().optional().nullable(),
+});
+
 export const userSchema = z.object({
   id: z.string().optional().nullable(),
   username: z.string().optional().nullable(),
@@ -57,7 +66,26 @@ export const orderSchema = z.object({
   userId: z.string().optional().nullable(), // ID del vendedor
   username: z.string().optional().nullable(), // Nombre del vendedor
 });
-export type OrderSchema = z.infer<typeof orderSchema>;
+
+export const inventorySchema = z.object({
+  // Campos de Inventory
+  sku: z.string().optional().nullable(),
+  name: z.string().optional().nullable(),
+  description: z.string().optional().nullable(),
+  price: z.bigint().optional().nullable(), // o z.number() si prefieres decimales
+  quantityStock: z.number().optional().nullable(),
+  type: z.string().optional().nullable(),
+  vendor: z.string().optional().nullable(),
+
+  // Campos de Vehicle
+  manufacturer: z.string().optional().nullable(),
+  model: z.string().optional().nullable(),
+  year: z.number().optional().nullable(),
+  vin: z.string().optional().nullable(),
+  fuelType: z.string().optional().nullable(),
+  kilometers: z.number().optional().nullable(),
+  color: z.string().optional().nullable(),
+});
 
 export const createOrderSchema = orderSchema;
 export const updateOrderSchema = orderSchema;
@@ -65,8 +93,19 @@ export const createUserSchema = userSchema;
 export const updateUserSchema = userSchema;
 export const createCustomerSchema = customerSchema;
 export const updateCustomerSchema = customerSchema;
+export const createInventorySchema = inventorySchema;
+export const updateInventorySchema = inventorySchema;
 
 export type CreateUserSchema = z.infer<typeof createUserSchema>;
 export type UpdateUserSchema = z.infer<typeof updateUserSchema>;
 export type CreateCustomerSchema = z.infer<typeof createCustomerSchema>;
 export type UpdateCustomerSchema = z.infer<typeof updateCustomerSchema>;
+export type CreateInventorySchema = z.infer<typeof createInventorySchema>;
+export type UpdateInventorySchema = z.infer<typeof updateInventorySchema>;
+export type CreateOrderSchema = z.infer<typeof createOrderSchema>;
+export type UpdateOrderSchema = z.infer<typeof updateOrderSchema>;
+
+export type OrderSchema = z.infer<typeof orderSchema>;
+export type UserSchema = z.infer<typeof userSchema>;
+export type CustomerSchema = z.infer<typeof customerSchema>;
+export type InventorySchema = z.infer<typeof inventorySchema>;

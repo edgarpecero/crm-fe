@@ -22,10 +22,14 @@ export default function OrderDetailsContent({ initialData, mode, id }: OrderDeta
   const { innerPageTab } = useInnerPageTabs(TabsIdentifierEnum.ordersTab);
 
   const wrapperStyles = useMemo(
-    () => getTabContentStyle(innerPageTab === OrdersTabsEnum.Details),
-    [innerPageTab],
+    () =>
+      getTabContentStyle(
+        mode === PageActionsEnum.MODALREADONLY
+        || mode === PageActionsEnum.CREATE
+        || innerPageTab === OrdersTabsEnum.Details,
+      ),
+    [innerPageTab, mode],
   );
-
   //TODO: FIX HERE
   const createNewOrder = useCallback(
     // eslint-disable-next-line
@@ -72,7 +76,7 @@ export default function OrderDetailsContent({ initialData, mode, id }: OrderDeta
     <div style={wrapperStyles}>
       <FormLayout mode={mode} formProps={formProps}>
         {/* Grid Section */}
-        <OrderFormBody mode={mode} />
+        <OrderFormBody mode={mode} title={title} />
       </FormLayout>
     </div>
   );

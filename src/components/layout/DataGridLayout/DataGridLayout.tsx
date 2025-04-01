@@ -28,7 +28,7 @@ function DataGridLayout<T extends BaseEntity>({
 
   return (
     <>
-      <Typography variant='h2' sx={{ mb: 2 }}>
+      <Typography variant='h2'>
         {pageProps?.title || capitalizeFirstLetter(pathname)}
       </Typography>
       {dataGridHeaderProps && <DataGridHeader {...dataGridHeaderProps} />}

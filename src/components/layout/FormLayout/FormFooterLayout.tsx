@@ -9,8 +9,7 @@ export default function FormFooterLayout() {
   const { mode, isPending } = useFormLayout();
   const {
     reset,
-    formState: { isDirty, isValid },
-    getValues,
+    formState: { isDirty },
   } = useFormContext();
 
   return (
@@ -33,7 +32,6 @@ export default function FormFooterLayout() {
           size='large'
           type='submit'
           sx={{ position: 'relative' }}
-          onClick={() => console.log(getValues(), isValid, isValid, isValid)}
         >
           {isPending ? (
             <>

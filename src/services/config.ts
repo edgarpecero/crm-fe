@@ -1,9 +1,8 @@
 import { EntityTypeEnum } from '@/types/BaseEntity';
 
 // const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-// const API_BASE_URL = 'http://qbiko-erp.us-east-1.elasticbeanstalk.com/api';
 // const API_BASE_URL = 'http://localhost:5000/api';
-const API_BASE_URL = 'http://www.qbiko-api.xyz/api';
+const API_BASE_URL = 'https://qbiko-api.xyz/api';
 const defaultHeaders = {
   'Content-Type': 'application/json',
   // Placeholder para autenticación (ej. token desde cookies o localStorage en cliente)
