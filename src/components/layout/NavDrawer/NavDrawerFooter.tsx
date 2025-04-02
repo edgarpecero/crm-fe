@@ -1,4 +1,4 @@
-import { Box, styled, ButtonBase, Typography } from '@mui/material';
+import { Box, styled, ButtonBase, Typography, Tooltip } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import React from 'react';
@@ -53,18 +53,20 @@ const DrawerFooterStyled = styled(Box)(({ theme }) => ({
 
 const DrawerFooter = ({ onOpen, onClose, open }: DrawerFooterProps) => {
   return (
-    <DrawerFooterStyled>
-      {open ? (
-        <ButtonBase onClick={onClose}>
-          <ChevronLeftIcon />
-          <Typography variant='body2'>Ocultar Menu</Typography>
-        </ButtonBase>
-      ) : (
-        <ButtonBase onClick={onOpen}>
-          <ChevronRightIcon />
-        </ButtonBase>
-      )}
-    </DrawerFooterStyled>
+    <Tooltip title='Ocultar/Mostrar Menú' placement='right'>
+      <DrawerFooterStyled>
+        {open ? (
+          <ButtonBase onClick={onClose}>
+            <ChevronLeftIcon />
+            <Typography variant='h3'>Ocultar Menu</Typography>
+          </ButtonBase>
+        ) : (
+          <ButtonBase onClick={onOpen}>
+            <ChevronRightIcon />
+          </ButtonBase>
+        )}
+      </DrawerFooterStyled>
+    </Tooltip>
   );
 };
 

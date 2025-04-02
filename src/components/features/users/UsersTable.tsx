@@ -41,7 +41,7 @@ function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
       },
       onDeleteCb: async (user: User) => {
         await deleteUserAction(user.id);
-        alert('Usuario eliminado');
+        alert('Usuario removido exitosamente!');
         gridMethods.refetch();
       },
     },

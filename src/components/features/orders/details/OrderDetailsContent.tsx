@@ -24,9 +24,9 @@ export default function OrderDetailsContent({ initialData, mode, id }: OrderDeta
   const wrapperStyles = useMemo(
     () =>
       getTabContentStyle(
-        mode === PageActionsEnum.MODALREADONLY
-        || mode === PageActionsEnum.CREATE
-        || innerPageTab === OrdersTabsEnum.Details,
+        mode === PageActionsEnum.MODALREADONLY ||
+          mode === PageActionsEnum.CREATE ||
+          innerPageTab === OrdersTabsEnum.Details,
       ),
     [innerPageTab, mode],
   );
@@ -35,8 +35,7 @@ export default function OrderDetailsContent({ initialData, mode, id }: OrderDeta
     // eslint-disable-next-line
     async (data: any) => {
       // logic to format data before sending
-      data.lastModifiedBy = 'Admin';
-      data.username = 'Admin';
+      data.userName = 'Admin';
       data.itemId = 'Admin';
       data.itemName = 'Toyota Prius 2021';
       data.userId = 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f';

@@ -1,13 +1,61 @@
 import { z } from 'zod';
 
-export const baseEntitySchema = z.object({
-  id: z.string().optional().nullable(),
-  number: z.string().optional().nullable(), // Unique identifier
-  status: z.string().optional().nullable(),
-  createdAt: z.string().optional().nullable(), // ISO 8601 string
-  lastModifiedAt: z.string().optional().nullable(), // ISO 8601 string
-  lastModifiedBy: z.string().optional().nullable(),
+// Reusable validators
+const BaseInventorySchema = z.object({
+  status: z.string(),
+  sku: z.string(),
+  name: z.string(),
+  description: z.string(),
+  price: z.number(),
+  quantityStock: z.number().int(),
+  type: z.string(),
+  manufacturer: z.string(),
+  model: z.string(),
+  year: z.number().int(),
+  vin: z.string(),
+  fuelType: z.string(),
+  kilometers: z.number(),
+  color: z.string(),
 });
+
+// UpdateInventoryRequest: all vehicle fields optional
+export const UpdateInventoryRequestSchema = BaseInventorySchema.partial({
+  manufacturer: true,
+  model: true,
+  year: true,
+  vin: true,
+  fuelType: true,
+  kilometers: true,
+  color: true,
+});
+
+// CreateInventoryRequest: most fields required with validation
+export const CreateInventoryRequestSchema = BaseInventorySchema.extend({
+  sku: z.string().min(1, 'SKU no puede estar vacío'),
+  name: z.string().min(1, 'Nombre no puede estar vacío'),
+  description: z.string().min(1, 'Descripción no puede estar vacía'),
+  price: z.number().refine((val) => val !== null && val !== undefined, 'El precio es requerido'),
+  quantityStock: z
+    .number()
+    .int()
+    .refine((val) => val !== null && val !== undefined, 'La cantidad en stock es requerida'),
+  type: z.string().min(1, 'Tipo no puede estar vacío'),
+  manufacturer: z.string().min(1, 'Fabricante no puede estar vacío'),
+  model: z.string().min(1, 'Modelo no puede estar vacío'),
+  year: z
+    .number()
+    .int()
+    .refine((val) => val !== null && val !== undefined, 'El año es requerido'),
+  vin: z.string().min(1, 'VIN no puede estar vacío'),
+  fuelType: z.string().min(1, 'Tipo de combustible no puede estar vacío'),
+  kilometers: z
+    .number()
+    .refine((val) => val !== null && val !== undefined, 'Kilómetros es requerido'),
+  color: z.string().optional(),
+});
+
+export type UpdateInventoryRequest = z.infer<typeof UpdateInventoryRequestSchema>;
+export type CreateInventoryRequest = z.infer<typeof CreateInventoryRequestSchema>;
 
 export const userSchema = z.object({
   id: z.string().optional().nullable(),
@@ -23,9 +71,11 @@ export const userSchema = z.object({
   city: z.string().optional().nullable(), // Cambiado a opcional
   state: z.string().optional().nullable(), // Cambiado a opcional
   country: z.string().optional().nullable(), // Cambiado a opcional
+  status: z.string().optional().nullable(),
 
   zip: z.string().optional().nullable(), // Cambiado a opcional
   nationalId: z.string().optional().nullable(), // Cambiado a opcional
+  maritalStatus: z.string().optional().nullable(), // Cambiado a opcional
 });
 
 export const customerSchema = userSchema.extend({
@@ -57,6 +107,7 @@ export const orderSchema = z.object({
   onTimePayments: z.number().optional().nullable(), // PAGO PUNTUAL
   overduePayments: z.number().optional().nullable(), // PAGO VENCIDO
   saleDate: z.string().optional().nullable(), // Instant como ISO string
+  status: z.string().optional().nullable(),
   secondPayment: z.number().optional().nullable(), // 2DA
   sixthPayment: z.number().optional().nullable(), // 6TA
   termMonths: z.number().int().positive().optional().nullable(), // PLAZO (entero positivo)
@@ -64,15 +115,16 @@ export const orderSchema = z.object({
   totalAmount: z.number().optional().nullable(), // BigDecimal como number en JS
   totalPayments: z.number().int().nonnegative().optional().nullable(), // PAGOS (entero no negativo)
   userId: z.string().optional().nullable(), // ID del vendedor
-  username: z.string().optional().nullable(), // Nombre del vendedor
+  userName: z.string().optional().nullable(), // Nombre del vendedor
 });
 
 export const inventorySchema = z.object({
   // Campos de Inventory
   sku: z.string().optional().nullable(),
+  status: z.string().optional().nullable(),
   name: z.string().optional().nullable(),
   description: z.string().optional().nullable(),
-  price: z.bigint().optional().nullable(), // o z.number() si prefieres decimales
+  price: z.number().optional().nullable(), // o z.number() si prefieres decimales
   quantityStock: z.number().optional().nullable(),
   type: z.string().optional().nullable(),
   vendor: z.string().optional().nullable(),
@@ -85,6 +137,30 @@ export const inventorySchema = z.object({
   fuelType: z.string().optional().nullable(),
   kilometers: z.number().optional().nullable(),
   color: z.string().optional().nullable(),
+});
+
+export const updateUserRequestSchema = z.object({
+  status: z.string().optional(),
+  username: z.string().optional(),
+  name: z.string().optional(),
+  lastName: z.string().optional(),
+  email: z.string().email({ message: 'El correo electrónico debe ser válido' }).optional(),
+  birthdate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, {
+      message: 'La fecha de nacimiento debe tener el formato YYYY-MM-DD',
+    })
+    .optional(),
+  phone: z.string().optional(),
+  phoneSecondary: z.string().optional(),
+  address: z.string().optional(),
+  addressSecondary: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  country: z.string().optional(),
+  zip: z.string().optional(),
+  nationalId: z.string().optional(),
+  maritalStatus: z.string().optional(),
 });
 
 export const createOrderSchema = orderSchema;

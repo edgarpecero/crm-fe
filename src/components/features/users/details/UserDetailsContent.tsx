@@ -14,14 +14,8 @@ export type UserDetailsContentProps = {
   initialData?: User;
   id?: string;
   mode: PageActionsEnum;
-  userId?: string;
 };
-export default function UserDetailsContent({
-  initialData,
-  mode,
-  id,
-  userId,
-}: UserDetailsContentProps) {
+export default function UserDetailsContent({ initialData, mode, id }: UserDetailsContentProps) {
   //TODO: FIX HERE
   //eslint-disable-next-line
   const createNewUser = useCallback(async (data: any) => {
@@ -42,7 +36,7 @@ export default function UserDetailsContent({
   const title =
     mode === PageActionsEnum.CREATE
       ? 'Registrar nuevo usuario'
-      : `Detalles del usuario: ${getUserFullname(initialData) || userId || ''}`;
+      : `Detalles del usuario: ${getUserFullname(initialData) || ''}`;
 
   const formProps: FormProps<User, UserRequest> = {
     schema: userSchema,

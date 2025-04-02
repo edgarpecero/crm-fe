@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { PageActionsEnum } from '@/types/enums';
 import { BaseEntity } from '@/types/BaseEntity';
 import { ZodType } from 'zod';
@@ -38,7 +38,6 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
   const {
     schema,
     mapToRequest,
-    title,
     id,
     initialData,
     service,
@@ -67,7 +66,7 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
         console.error('Error fetching data:', error);
       }
     };
-    if (modalReadonly && id && !initialData) {
+    if (modalReadonly && id) {
       fetchData();
     }
     //eslint-disable-next-line
@@ -77,6 +76,7 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
     async (data: R) => {
       startTransition(async () => {
         if (mode === PageActionsEnum.CREATE && createRequestAction) {
+          console.log('Data:', data);
           const response = await createRequestAction(data as R);
           if (response.success && response.data) {
             alert(response.message);

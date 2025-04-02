@@ -1,4 +1,4 @@
-import { orderSchema } from '@/helpers/schemas';
+import { inventorySchema } from '@/helpers/schemas';
 import { BaseEntity } from '../BaseEntity';
 import { z } from 'zod';
 
@@ -7,7 +7,7 @@ interface Inventory extends BaseEntity {
   sku: string;
   name: string;
   description: string;
-  price: bigint; // O usa number si prefieres decimales
+  price: number; // O usa number si prefieres decimales
   quantityStock: number;
   type: string;
   vendor: string;
@@ -21,9 +21,9 @@ interface Inventory extends BaseEntity {
   color: string;
 }
 
-type CreateInventoryRequest = z.infer<typeof orderSchema>;
-type UpdateInventoryRequest = z.infer<typeof orderSchema>;
-type InventoryRequest = z.infer<typeof orderSchema>;
+type CreateInventoryRequest = z.infer<typeof inventorySchema>;
+type UpdateInventoryRequest = z.infer<typeof inventorySchema>;
+type InventoryRequest = z.infer<typeof inventorySchema>;
 interface ListInventoryResponse {
   items: Inventory[];
   count: number;

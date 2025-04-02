@@ -6,7 +6,9 @@ import { createAction, updateAction, deleteAction, ActionResponse } from './crea
 import { z } from 'zod';
 import { customerSchema } from '@/helpers/schemas';
 
-export const createCustomerAction = async (data: CustomerRequest): Promise<ActionResponse<Customer>> => {
+export const createCustomerAction = async (
+  data: CustomerRequest,
+): Promise<ActionResponse<Customer>> => {
   try {
     const res = await createAction(customerService, processData(data));
     return {
@@ -59,8 +61,19 @@ export const updateCustomerAction = async (
   }
 };
 
-export const deleteCustomerAction = async (id: string): Promise<void> => {
-  deleteAction(customerService, id);
+export const deleteCustomerAction = async (id: string): Promise<ActionResponse<void>> => {
+  try {
+    await deleteAction(customerService, id);
+    return {
+      success: true,
+      message: 'Cliente eliminado con éxito',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: 'Error al eliminar el cliente ' + error,
+    };
+  }
 };
 
 const processData = (data: CustomerRequest): CustomerRequest => {

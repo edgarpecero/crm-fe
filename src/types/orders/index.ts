@@ -5,7 +5,7 @@ import { createOrderSchema, orderSchema, updateOrderSchema } from '@/helpers/sch
 
 interface Order extends BaseEntity {
   userId: string; // Vendedor
-  username: string; // Vendedor
+  userName: string; // Vendedor
   itemId: string; // Producto
   itemName: string; // Producto
   customerId: string; // Cliente

@@ -11,6 +11,7 @@ import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
 import { useQueryData } from '@/hooks/useQueryData';
 import { PageActionsEnum } from '@/types/enums';
 import CustomerDetailsContent from './details/CustomerDetailsContent';
+import { deleteCustomerAction } from '@/services/actions/customerActions';
 
 function CustomersTable({ initialData }: { initialData: ListCustomersResponse }) {
   const gridMethods = useQueryData<ListCustomersResponse>({
@@ -36,7 +37,12 @@ function CustomersTable({ initialData }: { initialData: ListCustomersResponse })
     },
     actionButtonsProps: {
       modalProps: {
-        body: <CustomerDetailsContent mode={PageActionsEnum.READONLY} />,
+        body: <CustomerDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
+      },
+      onDeleteCb: async (customer: Customer) => {
+        await deleteCustomerAction(customer.id);
+        alert('Cliente removido exitosamente!');
+        gridMethods.refetch();
       },
     },
   };

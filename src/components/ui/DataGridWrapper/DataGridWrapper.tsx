@@ -1,14 +1,15 @@
 'use client';
 
-import { memo, ReactNode } from 'react';
+import { memo, ReactNode, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { DataGrid, DataGridProps, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, DataGridProps, GridDensity, GridToolbar } from '@mui/x-data-grid';
 import { BaseEntity } from '@/types/BaseEntity';
 import useDataGridRows from '@/components/ui/DataGridWrapper/hooks/useDataGridRows';
 import useDataGridCols, {
   DataGridActionButtonsProps,
 } from '@/components/ui/DataGridWrapper/hooks/useDataGridCols';
 import NoResults from '@/components/ui/IconButtons/NoResults/NoResults';
+import { theme } from '@/styles/Theme';
 
 export interface DataGridWrapperProps<T extends BaseEntity> extends DataGridProps {
   rows: T[];
@@ -21,8 +22,8 @@ function DataGridWrapped<T extends BaseEntity>({
   actionButtonsProps,
   ...props
 }: DataGridWrapperProps<T>) {
-  // const dataGridTheme = getDataGridTheme();
-  const dataGridTheme = createTheme({});
+  const [density, setDensity] = useState<GridDensity>('compact');
+  const dataGridTheme = createTheme({ ...theme });
   const cols = useDataGridCols<T>({ cols: [...columns], actionButtonsProps });
   const _rows = useDataGridRows<T>({ rows });
 
@@ -32,7 +33,8 @@ function DataGridWrapped<T extends BaseEntity>({
         rows={_rows}
         columns={cols}
         {...props}
-        density={props?.density || 'compact'}
+        density={density}
+        onDensityChange={(density) => setDensity(density)}
         getRowId={(row) => row.id || row.tableIndex}
         slotProps={{
           loadingOverlay: {

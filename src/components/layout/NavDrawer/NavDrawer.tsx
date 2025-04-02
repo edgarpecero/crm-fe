@@ -4,14 +4,23 @@ import useDrawerWidth from '@/hooks/useDrawerWidth';
 import { DrawerStyled } from './DrawerStyled';
 import NavDrawerFooter from './NavDrawerFooter';
 import { theme } from '@/styles/Theme';
-import { Box, Divider, ListItemIcon, ListItemText, ThemeProvider, Typography } from '@mui/material';
+import {
+  Box,
+  Divider,
+  ListItemIcon,
+  ListItemText,
+  ThemeProvider,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import NavDrawerHeader from './NavDrawerHeader';
 import { BreakpointVisible } from '@/components/ui/BreakpointVisible';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import { DrawerMenuRoutes } from './types';
+import ContactsIcon from '@mui/icons-material/Contacts';
 import List from '@mui/material/List';
 import Link from 'next/link';
 
@@ -25,40 +34,43 @@ const DrawerMenuItem = (props: DrawerMenuRoutes) => {
   return (
     <ThemeProvider theme={theme}>
       <Link href={props.route || ''}>
-        <Box
-          sx={{
-            padding: '0px 8px 0px 8px',
-            display: 'flex',
-            color: 'white',
-            alignItems: 'center',
-            minHeight: '45px !important',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            cursor: 'pointer',
-            '&:hover': {
-              backgroundColor: theme.palette.grey[600],
-              color: `${theme.palette.primary.main} !important`,
-              '& .MuiSvgIcon-root': {
+        <Tooltip title={props.label} placement='right' sx={{ fontSize: '20px' }}>
+          <Box
+            sx={{
+              mt: 2,
+              padding: '0px 12px 0px 8px',
+              display: 'flex',
+              color: 'white',
+              alignItems: 'center',
+              minHeight: '45px !important',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              cursor: 'pointer',
+              '&:hover': {
+                backgroundColor: theme.palette.grey[600],
                 color: `${theme.palette.primary.main} !important`,
+                '& .MuiSvgIcon-root': {
+                  color: `${theme.palette.primary.main} !important`,
+                },
+                '& .MuiTypography-root': {
+                  color: `${theme.palette.primary.main} !important`,
+                },
               },
-              '& .MuiTypography-root': {
-                color: `${theme.palette.primary.main} !important`,
-              },
-            },
-          }}
-        >
-          <ListItemIcon sx={{ alignItems: 'center', color: 'white', minWidth: '40px' }}>
-            {props.icon}
-          </ListItemIcon>
-          <ListItemText
-            disableTypography
-            primary={
-              <Typography variant='h4' sx={{ color: 'white' }}>
-                {props.label}
-              </Typography>
-            }
-          />
-        </Box>
+            }}
+          >
+            <ListItemIcon sx={{ alignItems: 'center', color: 'white', minWidth: '40px' }}>
+              {props.icon}
+            </ListItemIcon>
+            <ListItemText
+              disableTypography
+              primary={
+                <Typography variant='h3' sx={{ color: 'white' }}>
+                  {props.label}
+                </Typography>
+              }
+            />
+          </Box>
+        </Tooltip>
       </Link>
     </ThemeProvider>
   );
@@ -91,7 +103,7 @@ const routes: DrawerMenuRoutes[] = [
   },
   {
     label: 'Clientes',
-    icon: <SwitchAccountIcon  />,
+    icon: <ContactsIcon />,
     route: '/clientes',
   },
   {
@@ -101,27 +113,12 @@ const routes: DrawerMenuRoutes[] = [
   },
   {
     label: 'Inventorio',
-    icon: <ListAltIcon />,
+    icon: <DirectionsCarIcon />,
+    route: '/inventario',
   },
-  // {
-  //   label: 'Libro Mayor',
-  //   icon: <LocalAtmIcon />,
-  // },
-  // {
-  //   label: 'Ordenes de Compra',
-  //   icon: <InventoryIcon />,
-  // },
-  // {
-  //   label: 'Cuentas por Pagar',
-  //   icon: <PaidIcon />,
-  // },
-  // {
-  //   label: 'Recibos',
-  //   icon: <ReceiptLong />,
-  // },
   {
     label: 'Reportes',
-    icon: <SwitchAccountIcon  />,
+    icon: <ListAltIcon />,
     route: '/reportes',
   },
 ];

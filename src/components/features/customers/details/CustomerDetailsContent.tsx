@@ -7,24 +7,24 @@ import { PageActionsEnum } from '@/types/enums';
 import CustomerFormBody from './CustomerForm/CustomerFormBody';
 import { customerService } from '@/services/customerService';
 import FormLayout, { FormProps } from '@/components/layout/FormLayout/FormLayout';
+import { getUserFullname } from '@/helpers/utils';
 import { customerSchema } from '@/helpers/schemas';
 
 export type CustomerDetailsContentProps = {
   initialData?: Customer;
   id?: string;
   mode: PageActionsEnum;
-  customerId?: string;
 };
 export default function CustomerDetailsContent({
   initialData,
   mode,
   id,
-  customerId,
 }: CustomerDetailsContentProps) {
   //TODO: FIX HERE
   //eslint-disable-next-line
   const createNewCustomer = useCallback(async (data: any) => {
     // logic to format data before sending
+    data.username = data.email;
     return await createCustomerAction(data as CustomerRequest);
   }, []);
 
@@ -41,7 +41,7 @@ export default function CustomerDetailsContent({
   const title =
     mode === PageActionsEnum.CREATE
       ? 'Registrar nuevo cliente'
-      : `Detalles del cliente número: ${initialData?.number || customerId || ''}`;
+      : `Detalles del cliente: ${getUserFullname(initialData) || ''}`;
 
   const formProps: FormProps<Customer, CustomerRequest> = {
     schema: customerSchema,
@@ -57,7 +57,7 @@ export default function CustomerDetailsContent({
   return (
     <FormLayout mode={mode} formProps={formProps}>
       {/* Grid Section */}
-      <CustomerFormBody mode={mode} />
+      <CustomerFormBody mode={mode} title={title} />
     </FormLayout>
   );
 }

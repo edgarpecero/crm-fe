@@ -5,7 +5,7 @@ import { OrderSchema } from '@/helpers/schemas';
 
 export const defaultValues: OrderSchema = {
   userId: 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f',
-  username: 'Admin',
+  userName: 'Admin',
   itemName: 'Toyota Prius 2021',
   itemId: 'Admin',
   accumulatedAmount: 0,
@@ -59,10 +59,24 @@ export const userAttributesInputs = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
   parent: string = '',
 ): InputsProps[] => {
-  const isReadOnly = mode === PageActionsEnum.READONLY || mode === PageActionsEnum.MODALREADONLY;;
+  const isReadOnly = mode === PageActionsEnum.READONLY || mode === PageActionsEnum.MODALREADONLY;
   const isCreate = mode === PageActionsEnum.CREATE;
 
   return [
+    {
+      name: `${parent}number`,
+      label: 'Número',
+      ...commonInputProps(isCreate, isReadOnly),
+      disabled: true,
+      required: false,
+    },
+    {
+      name: `${parent}status`,
+      label: 'Status',
+      ...commonInputProps(isCreate, isReadOnly),
+      disabled: isCreate || isReadOnly,
+      required: false,
+    },
     {
       name: `${parent}username`,
       label: 'Usuario',
@@ -165,22 +179,32 @@ export const userAttributesInputs = (
   ];
 };
 export const getUserInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  userAttributesInputs(mode).slice(0, 7);
+  userAttributesInputs(mode).slice(0, 9);
 
 export const getUserAddressInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  userAttributesInputs(mode).slice(11, 17);
+  userAttributesInputs(mode).slice(13, 19);
+
+export const getUserInputsForCustomerRequest = (mode: PageActionsEnum) =>
+  userAttributesInputs(mode).slice(0, 11);
+export const getUserAddressInputsForCustomerRequest = (mode: PageActionsEnum) =>
+  userAttributesInputs(mode).slice(11, 19);
 
 export const getUserInputsForOrderRequest = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
   isLicense: boolean = true,
 ) =>
   isLicense
-    ? userAttributesInputs(mode, 'customer.').slice(1, 11)
-    : userAttributesInputs(mode, 'customer.').slice(1, 9);
+    ? userAttributesInputs(mode, 'customer.').slice(0, 11)
+    : userAttributesInputs(mode, 'customer.').slice(0, 9);
 export const getUserAddressInputsForOrderRequest = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
-) => userAttributesInputs(mode, 'customer.').slice(11, 17);
+) => userAttributesInputs(mode, 'customer.').slice(11, 19);
 
+const commonInputProps = (isCreate: boolean, isReadOnly: boolean) => ({
+  required: isCreate,
+  disabled: isReadOnly,
+  gridSize: { xs: 12, sm: 6 },
+});
 const paymentCommonProps = { gridSize: { xs: 12, sm: 6 }, disabled: false, type: 'number' };
 const paymentInputCommonProps = { gridSize: { xs: 12, sm: 9 }, required: true, type: 'number' };
 export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): InputsProps[] => {
@@ -384,7 +408,7 @@ export const trasformOrderToOrderSchema = (initialOrder?: Order): OrderSchema =>
   if (!initialOrder) return defaultValues;
   return {
     userId: 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f',
-    username: 'Admin',
+    userName: 'Admin',
     itemName: 'Toyota Prius 2021',
     itemId: 'Admin',
     accumulatedAmount: initialOrder.accumulatedAmount,
@@ -434,3 +458,93 @@ export const trasformOrderToOrderSchema = (initialOrder?: Order): OrderSchema =>
     totalPayments: initialOrder.totalPayments,
   };
 };
+
+export const inventoryInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): InputsProps[] => {
+  const isReadOnly = mode === PageActionsEnum.READONLY || mode === PageActionsEnum.MODALREADONLY;
+  const isCreate = mode === PageActionsEnum.CREATE;
+  return [
+    {
+      name: 'sku',
+      label: 'Número de serie',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      ...commonInputProps(isCreate, isReadOnly),
+      disabled: isCreate || isReadOnly,
+    },
+    {
+      name: 'name',
+      label: 'Nombre',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'price',
+      label: 'Precio',
+      type: 'number',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'description',
+      label: 'Descripción',
+      ...commonInputProps(isCreate, isReadOnly),
+      gridSize: { xs: 12, sm: 12 },
+    },
+    {
+      name: 'quantityStock',
+      label: 'Cantidad en stock',
+      type: 'number',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'type',
+      label: 'Tipo',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'manufacturer',
+      label: 'Fabricante',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'model',
+      label: 'Modelo',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'year',
+      label: 'Año',
+      type: 'number',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'vin',
+      label: 'VIN',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'fuelType',
+      label: 'Tipo de combustible',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'kilometers',
+      label: 'Kilometraje',
+      type: 'number',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'color',
+      label: 'Color',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+  ];
+};
+
+export const getInventoryInputsForInventoryRequestColOne = (
+  mode: PageActionsEnum = PageActionsEnum.CREATE,
+) => inventoryInputs(mode).slice(0, 7);
+export const getInventoryInputsForInventoryRequestColTwo = (
+  mode: PageActionsEnum = PageActionsEnum.CREATE,
+) => inventoryInputs(mode).slice(7, 15);

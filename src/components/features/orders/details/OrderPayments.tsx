@@ -7,14 +7,13 @@ import { PageActionsEnum } from '@/types/enums';
 import { orderService } from '@/services/orderService';
 import FormLayout, { FormProps } from '@/components/layout/FormLayout/FormLayout';
 import { orderSchema } from '@/helpers/schemas';
-import { Grid2, Typography } from '@mui/material';
-import GridInputs from '@/components/ui/GridInputs/GridInputs';
 import { getAddInfoInputs1, getAddInfoInputs2 } from '../helpers';
 import { getTabContentStyle } from '@/components/layout/InnerPageTabs/helpers';
 import { useInnerPageTabs } from '@/components/layout/InnerPageTabs/NestedTabsProvider';
 import { TabsIdentifierEnum } from '@/components/layout/InnerPageTabs/types';
 import { OrdersTabsEnum } from '../helpers';
 import TitlePage from '@/components/layout/PageLayout/TitlePage';
+import TwoColumnsGrid from '@/components/layout/GridLayouts/TwoColumnsGrid';
 export type OrderPaymentsProps = {
   initialData?: Order;
   id: string;
@@ -57,33 +56,13 @@ export default function OrderPayments({ initialData, mode, id }: OrderPaymentsPr
         {/* Grid Section */}
         <TitlePage title={'Información Adicional'} />
 
-        <Grid2 container spacing={6} columns={12} >
-
-          <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
-            <Grid2 container spacing={3}>
-              <Typography variant='h4' sx={{ p: '1rem 0' }}>
-                Detalles
-              </Typography>
-            </Grid2>
-            <Grid2 container spacing={3}>
-              <GridInputs inputs={getAddInfoInputs1(mode)} />
-            </Grid2>
-          </Grid2>
-
-          <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }} alignContent="flex-start">
-            <Grid2 container spacing={3}>
-              <Typography variant='h4' sx={{ p: '1rem 0' }}>
-                Pagos
-              </Typography>
-            </Grid2>
-            <Grid2 container spacing={3} alignItems="start">
-              <GridInputs inputs={getAddInfoInputs2(mode)} />
-            </Grid2>
-          </Grid2>
-
-        </Grid2>
-
+        <TwoColumnsGrid
+          title1='Detalles'
+          title2='Pagos'
+          firstColInputs={getAddInfoInputs1(mode)}
+          secondColInputs={getAddInfoInputs2(mode)}
+        />
       </FormLayout>
-    </div >
+    </div>
   );
 }

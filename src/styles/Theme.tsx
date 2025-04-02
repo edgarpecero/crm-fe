@@ -57,135 +57,136 @@ declare module '@mui/material/Button' {
   }
 }
 // export const theme = createTheme({});
-export const theme = createTheme({
-  // cssVariables: true,
-  palette: {
-    primary: {
-      main: '#1626BA',
-      dark: '#111574',
-      light: '#2333CB',
+export const theme = createTheme(
+  {
+    // cssVariables: true,
+    palette: {
+      primary: {
+        main: '#1626BA',
+        dark: '#111574',
+        light: '#055C9D',
+      },
+      secondary: {
+        main: '#1EBB8C',
+        light: '#D7F1E9',
+      },
+      error: {
+        main: '#D9244F',
+        light: '#e97b95',
+      },
+      warning: {
+        main: '#D6A11C',
+        // yellow
+        light: '#FFF7D9',
+      },
+      common: {
+        black: 'rgba(0, 0, 0, 0.5)',
+      },
+      success: {
+        main: '#3E972F',
+        light: '#DCEED9',
+        dark: '#18D6A5',
+      },
+      info: {
+        main: '#1EBB8C',
+        contrastText: '#FFF',
+        // light turquoise
+        light: '#E8FBF6',
+      },
+      dark: {
+        main: '#111574',
+        dark: '#1626BA',
+        contrastText: '#FFF',
+        light: '#333',
+      },
+      purple: {
+        main: '#70299B',
+        light: '#F0D8FF',
+        contrastText: '#FFF',
+      },
+      grey: {
+        900: '#38384A', // black
+        800: '#80809A', // Mid Grey
+        700: '#A7A7C2', // Hue Grey
+        600: '#CBD3EE', // Light Blue
+        500: '#E4E5EE', // Light Grey
+        400: '#EDEEF5', // Dividers
+        300: '#F6F7FB', // Background Grey
+        200: '#DFF2DC', // Light Green
+        50: '#FFFFFF', // White
+      },
     },
-    secondary: {
-      main: '#1EBB8C',
-      light: '#D7F1E9',
+    typography: {
+      fontFamily: roboto.style.fontFamily,
+      fontWeightRegular: 500,
+      fontSize: 14,
+      h1: {
+        fontWeight: 700,
+        fontSize: '32px',
+        lineHeight: '150%',
+      },
+      h2: {
+        fontWeight: 700,
+        fontSize: '20px',
+        lineHeight: '150%',
+      },
+      h3: {
+        fontWeight: 700,
+        fontSize: '18px',
+        lineHeight: '150%',
+      },
+      h4: {
+        fontWeight: 700,
+        fontSize: '14px',
+        lineHeight: '150%',
+        letterSpacing: '0.15px',
+      },
+      body1: {
+        // text
+        fontWeight: 500,
+        fontSize: '14px',
+        lineHeight: '150%',
+        letterSpacing: '0.15px',
+      },
+      h5: {
+        fontWeight: 600,
+        fontSize: '12px',
+        lineHeight: '19.8px',
+      },
+      body2: {
+        // input
+        fontWeight: 600,
+        fontSize: '12px',
+        lineHeight: '165%',
+      },
+      subtitle1: {
+        // small title
+        fontWeight: 600,
+        fontSize: '11px',
+        lineHeight: '165%',
+      },
+      caption: {
+        // subtext
+        fontWeight: 400,
+        fontSize: '11px',
+        lineHeight: '165%',
+      },
+      button: {
+        fontWeight: 700,
+        fontSize: '11px',
+        letterSpacing: '0.46',
+      },
     },
-    error: {
-      main: '#D9244F',
-      light: '#e97b95',
-    },
-    warning: {
-      main: '#D6A11C',
-      // yellow
-      light: '#FFF7D9',
-    },
-    common: {
-      black: 'rgba(0, 0, 0, 0.5)',
-    },
-    success: {
-      main: '#3E972F',
-      light: '#DCEED9',
-      dark: '#18D6A5',
-    },
-    info: {
-      main: '#1EBB8C',
-      contrastText: '#FFF',
-      // light turquoise
-      light: '#E8FBF6',
-    },
-    dark: {
-      main: '#111574',
-      dark: '#1626BA',
-      contrastText: '#FFF',
-      light: '#333',
-    },
-    purple: {
-      main: '#70299B',
-      light: '#F0D8FF',
-      contrastText: '#FFF',
-    },
-    grey: {
-      900: '#07071E', // black
-      800: '#80809A', // Mid Grey
-      700: '#A7A7C2', // Hue Grey
-      600: '#CBD3EE', // Light Blue
-      500: '#E4E5EE', // Light Grey
-      400: '#EDEEF5', // Dividers
-      300: '#F6F7FB', // Background Grey
-      200: '#DFF2DC', // Light Green
-      50: '#FFFFFF', // White
+    // ... other theme settings
+    hideShowOnHover: {
+      opacity: 0,
+      transition: 'opacity 0.2s',
+      '&:hover': {
+        opacity: 1,
+      },
     },
   },
-  typography: {
-    fontFamily: roboto.style.fontFamily,
-    fontWeightRegular: 500,
-    fontSize: 12,
-    h1: {
-      fontWeight: 700,
-      fontSize: '32px',
-      lineHeight: '150%',
-    },
-    h2: {
-      fontWeight: 700,
-      fontSize: '20px',
-      lineHeight: '150%',
-    },
-    h3: {
-      fontWeight: 700,
-      fontSize: '18px',
-      lineHeight: '150%',
-    },
-    h4: {
-      fontWeight: 700,
-      fontSize: '14px',
-      lineHeight: '150%',
-      letterSpacing: '0.15px',
-    },
-    body1: {
-      // text
-      fontWeight: 500,
-      fontSize: '14px',
-      lineHeight: '150%',
-      letterSpacing: '0.15px',
-    },
-    h5: {
-      fontWeight: 600,
-      fontSize: '12px',
-      lineHeight: '19.8px',
-    },
-    body2: {
-      // input
-      fontWeight: 600,
-      fontSize: '12px',
-      lineHeight: '165%',
-    },
-    subtitle1: {
-      // small title
-      fontWeight: 600,
-      fontSize: '11px',
-      lineHeight: '165%',
-    },
-    caption: {
-      // subtext
-      fontWeight: 400,
-      fontSize: '11px',
-      lineHeight: '165%',
-    },
-    button: {
-      fontWeight: 700,
-      fontSize: '11px',
-      letterSpacing: '0.46',
-    },
-  },
-  // ... other theme settings
-  hideShowOnHover: {
-    opacity: 0,
-    transition: 'opacity 0.2s',
-    '&:hover': {
-      opacity: 1,
-    },
-  },
-},
-  esES
+  esES,
 );
 
 theme.components = {
@@ -218,9 +219,9 @@ theme.components = {
           backgroundColor: theme.palette.grey[500],
         },
         '& input::-webkit-search-decoration, & input::-webkit-search-cancel-button, & input::-webkit-search-results-button, & input::-webkit-search-results-decoration':
-        {
-          WebkitAppearance: 'none',
-        },
+          {
+            WebkitAppearance: 'none',
+          },
       },
     },
   },
@@ -493,12 +494,19 @@ theme.components = {
             borderRadius: '8px',
             borderColor: theme.palette.grey[500],
           },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.error.light,
+          },
+          '&.Mui-disabled:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#bdbdbd', // Borde gris en deshabilitado + hover
+          },
         },
         '& .MuiFormHelperText-root.Mui-error': {
           fontSize: 10,
         },
         '& .Mui-disabled': {
           color: theme.palette.grey[800],
+          backgroundColor: theme.palette.grey[400],
           WebkitTextFillColor: theme.palette.grey[800],
           opacity: 0.75,
           cursor: 'not-allowed',
@@ -512,7 +520,8 @@ theme.components = {
   MuiTooltip: {
     styleOverrides: {
       tooltip: {
-        background: 'rgba(7, 7, 30, 0.9)',
+        background: '#000',
+        fontSize: theme.typography.body1.fontSize,
       },
     },
   },
