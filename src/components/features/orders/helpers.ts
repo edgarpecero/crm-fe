@@ -303,9 +303,17 @@ export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): 
       disabled: isReadOnly,
     },
     {
+      name: 'amountPaid',
+      label: 'Monto Pagado',
+      type: 'number',
+      gridSize: { xs: 12, sm: 6 },
+      disabled: isReadOnly,
+    },
+    {
       name: 'description',
       label: 'Descripción',
       disabled: isReadOnly,
+      gridSize: { xs: 12, sm: 12 },
     },
     {
       name: 'saleDate',
@@ -322,14 +330,6 @@ export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): 
     {
       name: 'actualContribution',
       label: 'Contribución Actual',
-      type: 'number',
-
-      gridSize: { xs: 12, sm: 6 },
-      disabled: isReadOnly,
-    },
-    {
-      name: 'amountPaid',
-      label: 'Monto Pagado',
       type: 'number',
 
       gridSize: { xs: 12, sm: 6 },
@@ -467,6 +467,8 @@ export const inventoryInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE):
       name: 'sku',
       label: 'Número de serie',
       ...commonInputProps(isCreate, isReadOnly),
+      disabled: true,
+      required: false,
     },
     {
       name: 'status',
