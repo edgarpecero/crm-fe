@@ -28,7 +28,7 @@ interface Test extends BaseEntity {
 
 describe('DataGridWrapper', () => {
   const mockColumns = [
-    { field: 'id', headerName: 'ID', width: 200 },
+    { field: 'id', headerName: 'INE', width: 200 },
     { field: 'number', headerName: 'Order Number', width: 180 },
     { field: 'status', headerName: 'Status', width: 120 },
     { field: 'createdAt', headerName: 'Created At', width: 200 },

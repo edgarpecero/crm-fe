@@ -72,6 +72,8 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
     //eslint-disable-next-line
   }, []);
 
+
+  console.log( 'fomr', methods.getValues());
   const handleSubmitOrder = useCallback(
     async (data: R) => {
       startTransition(async () => {

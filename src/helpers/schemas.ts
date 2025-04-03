@@ -1,3 +1,4 @@
+import { parseISO } from 'date-fns';
 import { z } from 'zod';
 
 // Reusable validators
@@ -63,7 +64,11 @@ export const userSchema = z.object({
   name: z.string().optional().nullable(), // Cambiado a opcional
   lastName: z.string().optional().nullable(), // Cambiado a opcional
   email: z.string().email().optional().nullable(), // Cambiado a opcional
-  birthdate: z.string().optional().nullable(), // Cambiado a opcional
+  // birthdate: z.string().optional().nullable(), // Cambiado a opcional
+  birthdate: z.preprocess(
+    (val) => (typeof val === 'string' ? parseISO(val) : val),
+    z.date().min(new Date('1901-01-01')).optional().nullable()
+  ),
   phone: z.string().optional().nullable(), // Cambiado a opcional
   phoneSecondary: z.string().optional().nullable(), // Cambiado a opcional
   address: z.string().optional().nullable(), // Cambiado a opcional
@@ -81,7 +86,10 @@ export const userSchema = z.object({
 export const customerSchema = userSchema.extend({
   taxNumber: z.string().max(50).optional().nullable(),
   licenseNumber: z.string().max(50).optional().nullable(),
-  licenseExpiration: z.string().optional().nullable(),
+  licenseExpiration: z.preprocess(
+    (val) => (typeof val === 'string' ? parseISO(val) : val),
+    z.date().min(new Date('1901-01-01')).optional().nullable()
+  ),// Cambiado a opcional
 });
 
 export const orderSchema = z.object({

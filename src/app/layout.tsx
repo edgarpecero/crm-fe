@@ -17,19 +17,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html lang='es' suppressHydrationWarning>
       <body className={`roboto.variable`}>
-        <ClientQueryProvider>
-          <InitColorSchemeScript attribute='class' />
-          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+          <ClientQueryProvider>
+            <InitColorSchemeScript attribute='class' />
+            <AppRouterCacheProvider options={{ enableCssLayer: true }}>
               <GlobalModalProvider>
                 <CssBaseline />
                 <ClientLayout>{children}</ClientLayout>
               </GlobalModalProvider>
-            </ThemeProvider>
-          </AppRouterCacheProvider>
-        </ClientQueryProvider>
+            </AppRouterCacheProvider>
+          </ClientQueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

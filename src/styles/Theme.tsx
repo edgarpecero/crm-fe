@@ -64,7 +64,7 @@ export const theme = createTheme(
       primary: {
         main: '#1626BA',
         dark: '#111574',
-        light: '#055C9D',
+        light: '#ADD8E6',
       },
       secondary: {
         main: '#1EBB8C',
@@ -219,9 +219,9 @@ theme.components = {
           backgroundColor: theme.palette.grey[500],
         },
         '& input::-webkit-search-decoration, & input::-webkit-search-cancel-button, & input::-webkit-search-results-button, & input::-webkit-search-results-decoration':
-          {
-            WebkitAppearance: 'none',
-          },
+        {
+          WebkitAppearance: 'none',
+        },
       },
     },
   },
@@ -488,14 +488,20 @@ theme.components = {
           fontSize: '14px',
           top: 0,
         },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          borderColor: 'red', // Borde rojo cuando está enfocado
+        },
         '& .MuiOutlinedInput-root': {
+          '&.Mui-focused': {
+            borderColor: theme.palette.primary.light,
+          },
           '& fieldset': {
             borderWidth: 2,
             borderRadius: '8px',
             borderColor: theme.palette.grey[500],
           },
           '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.error.light,
+            borderColor: theme.palette.primary.light,
           },
           '&.Mui-disabled:hover .MuiOutlinedInput-notchedOutline': {
             borderColor: '#bdbdbd', // Borde gris en deshabilitado + hover
@@ -505,14 +511,13 @@ theme.components = {
           fontSize: 10,
         },
         '& .Mui-disabled': {
-          color: theme.palette.grey[800],
-          backgroundColor: theme.palette.grey[400],
-          WebkitTextFillColor: theme.palette.grey[800],
-          opacity: 0.75,
-          cursor: 'not-allowed',
-          '& fieldset, .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.grey[500],
-          },
+          //   color: theme.palette.grey[800],
+          backgroundColor: theme.palette.grey[300],
+          //   WebkitTextFillColor: theme.palette.grey[800],
+          //   opacity: 0.75,
+          //   cursor: 'not-allowed',
+          //   '& fieldset, .MuiOutlinedInput-notchedOutline': {
+          //     borderColor: theme.palette.grey[500],
         },
       },
     },

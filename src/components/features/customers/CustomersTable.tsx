@@ -137,7 +137,7 @@ const _columns: GridColDef<Customer>[] = [
   },
   {
     field: 'nationalId',
-    headerName: 'ID Nacional',
+    headerName: 'INE',
     flex: 1,
   },
   {

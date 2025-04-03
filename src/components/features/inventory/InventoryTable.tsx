@@ -76,7 +76,7 @@ const _columns: GridColDef<Inventory>[] = [
   },
   {
     field: 'sku',
-    headerName: 'SKU',
+    headerName: 'ID de Activo',
     flex: 1,
   },
   {

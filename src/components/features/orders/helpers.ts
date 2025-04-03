@@ -1,4 +1,4 @@
-import { InputsProps } from '@/components/ui/GridInputs/types';
+import { ControlledInputType, InputsProps } from '@/components/ui/GridInputs/types';
 import { Order } from '@/types/orders';
 import { PageActionsEnum } from '@/types/enums';
 import { OrderSchema } from '@/helpers/schemas';
@@ -21,7 +21,7 @@ export const defaultValues: OrderSchema = {
     name: '',
     lastName: '',
     email: '',
-    birthdate: '',
+    birthdate: new Date('2000-01-01'),
     phone: '',
     phoneSecondary: '',
     address: '',
@@ -33,7 +33,7 @@ export const defaultValues: OrderSchema = {
     nationalId: '',
     taxNumber: '',
     licenseNumber: '',
-    licenseExpiration: '',
+    licenseExpiration: new Date('2000-01-01'),
   },
   dailyInterest: 0,
   description: '',
@@ -65,7 +65,7 @@ export const userAttributesInputs = (
   return [
     {
       name: `${parent}number`,
-      label: 'Número',
+      label: 'Número de usuario',
       ...commonInputProps(isCreate, isReadOnly),
       disabled: true,
       required: false,
@@ -104,6 +104,7 @@ export const userAttributesInputs = (
     {
       name: `${parent}birthdate`,
       label: 'Fecha de nacimiento',
+      inputType: ControlledInputType.datePicker,
       required: isCreate,
       disabled: isReadOnly,
     },
@@ -120,7 +121,7 @@ export const userAttributesInputs = (
     },
     {
       name: `${parent}nationalId`,
-      label: 'ID',
+      label: 'INE',
       disabled: isReadOnly,
     },
     {
@@ -136,6 +137,7 @@ export const userAttributesInputs = (
     {
       name: `${parent}licenseExpiration`,
       label: 'Fecha de expiración de la licencia',
+      inputType: ControlledInputType.datePicker,
       disabled: isReadOnly,
     },
     {
@@ -207,6 +209,7 @@ const commonInputProps = (isCreate: boolean, isReadOnly: boolean) => ({
 });
 const paymentCommonProps = { gridSize: { xs: 12, sm: 6 }, disabled: false, type: 'number' };
 const paymentInputCommonProps = { gridSize: { xs: 12, sm: 9 }, required: true, type: 'number' };
+
 export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): InputsProps[] => {
   const isReadOnly = mode === PageActionsEnum.READONLY || mode === PageActionsEnum.MODALREADONLY;
   const isCreate = mode === PageActionsEnum.CREATE;
@@ -424,7 +427,7 @@ export const trasformOrderToOrderSchema = (initialOrder?: Order): OrderSchema =>
       name: initialOrder.customer.name,
       lastName: initialOrder.customer.lastName,
       email: initialOrder.customer.email,
-      birthdate: initialOrder.customer.birthdate,
+      birthdate: new Date(initialOrder.customer.birthdate),
       phone: initialOrder.customer.phone,
       phoneSecondary: initialOrder.customer.phoneSecondary,
       address: initialOrder.customer.address,
@@ -436,7 +439,7 @@ export const trasformOrderToOrderSchema = (initialOrder?: Order): OrderSchema =>
       nationalId: initialOrder.customer.nationalId,
       taxNumber: initialOrder.customer.taxNumber,
       licenseNumber: initialOrder.customer.licenseNumber,
-      licenseExpiration: initialOrder.customer.licenseExpiration,
+      licenseExpiration: new Date(initialOrder.customer.licenseExpiration),
     },
     dailyInterest: initialOrder.dailyInterest,
     description: initialOrder.description,

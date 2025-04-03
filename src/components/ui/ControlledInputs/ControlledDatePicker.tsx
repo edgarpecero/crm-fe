@@ -1,44 +1,53 @@
-'use client';
-import { TextFieldProps } from '@mui/material';
-import { LocalizationProvider, DesktopDatePicker } from '@mui/x-date-pickers';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { Controller, FieldValues, UseFormReturn, useFormContext } from 'react-hook-form';
-
-interface ControlledDatePickerProps
-  extends Pick<Partial<TextFieldProps>, 'InputProps' | 'InputLabelProps'> {
+import { Controller, useFormContext } from 'react-hook-form';
+import { parseISO } from 'date-fns';
+import { esES } from '@mui/x-date-pickers/locales';
+import es from 'date-fns/locale/es';
+interface ControlledDatePickerProps {
   name: string;
   label?: string;
-  required?: boolean;
-  disableFuture?: boolean;
-  disablePast?: boolean;
   disabled?: boolean;
 }
 
 const ControlledDatePicker = ({
   name,
-  label = '',
-  disableFuture = true,
+  label,
   disabled,
-  disablePast,
+  ...rest
 }: ControlledDatePickerProps) => {
-  const formContext: UseFormReturn<FieldValues> | undefined = useFormContext();
+  const { control } = useFormContext();
 
   return (
     <Controller
       name={name}
-      control={formContext?.control}
-      render={({ field }) => (
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DesktopDatePicker
-            label={label}
-            // inputFormat={datePickerFormat}
-            disableFuture={disableFuture}
-            disablePast={disablePast}
-            disabled={disabled}
-            {...field}
-          />
-        </LocalizationProvider>
-      )}
+      control={control}
+      render={({ field }) => {
+        // Convertimos el valor a Date si es una cadena
+        const value = typeof field.value === 'string' ? parseISO(field.value) : field.value;
+
+        return (
+          <LocalizationProvider
+            localeText={esES.components.MuiLocalizationProvider.defaultProps.localeText}
+            dateAdapter={AdapterDateFns}
+            adapterLocale={es}
+          >
+            <DesktopDatePicker
+              label={label}
+              sx={{ width: '100%' }} // Estilo para ocupar el 100% del ancho
+              value={value || null} // Aseguramos que sea Date o null
+              onChange={(date) => {
+                const newValue = typeof date === 'string' ? parseISO(date) : date;
+                field.onChange(newValue);
+              }}
+              disabled={disabled}
+              {...rest} // Pasamos props adicionales
+
+            />
+          </LocalizationProvider>
+        );
+      }}
     />
   );
 };

@@ -10,6 +10,7 @@ import useDataGridCols, {
 } from '@/components/ui/DataGridWrapper/hooks/useDataGridCols';
 import NoResults from '@/components/ui/IconButtons/NoResults/NoResults';
 import { theme } from '@/styles/Theme';
+import localizedTextsMap from './helpers';
 
 export interface DataGridWrapperProps<T extends BaseEntity> extends DataGridProps {
   rows: T[];
@@ -58,6 +59,7 @@ function DataGridWrapped<T extends BaseEntity>({
             },
           },
         }}
+        localeText={localizedTextsMap}
       />
     </ThemeProvider>
   );
