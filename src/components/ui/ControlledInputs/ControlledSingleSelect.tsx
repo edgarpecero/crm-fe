@@ -66,22 +66,24 @@ const ControlledSingleSelect = (props: ControlledSingleSelectProps) => {
               id={props.id || props.name}
               helperText={error?.message ?? ''}
               select
-              value={value ?? ''}
+              value={value ?? 'Por Validar'}
               {...rest}
               {...restField}
-              SelectProps={{
-                endAdornment: !!onSelectClear && value && (
-                  <IconButton
-                    sx={{ p: '10px', right: '8px' }}
-                    aria-label='clear'
-                    onClick={() => {
-                      onSelectClear(name);
-                    }}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                ),
-                IconComponent: ExpandMoreIcon,
+              slotProps={{
+                input: {
+                  endAdornment: !props.disabled && !!onSelectClear && value && (
+                    <IconButton
+                      sx={{ p: '10px', right: '8px' }}
+                      aria-label='clear'
+                      onClick={() => {
+                        onSelectClear(name);
+                      }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  ),
+                  inputComponent: ExpandMoreIcon,
+                }
               }}
               sx={{ width: '100%', ...(rest.sx || {}) }}
             >

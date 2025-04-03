@@ -515,7 +515,7 @@ theme.components = {
           backgroundColor: theme.palette.grey[300],
           //   WebkitTextFillColor: theme.palette.grey[800],
           //   opacity: 0.75,
-          //   cursor: 'not-allowed',
+          cursor: 'not-allowed',
           //   '& fieldset, .MuiOutlinedInput-notchedOutline': {
           //     borderColor: theme.palette.grey[500],
         },

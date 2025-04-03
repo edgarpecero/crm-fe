@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
+import { FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { Box } from '@mui/material';
 import { PageActionsEnum } from '@/types/enums';
 import { BaseEntity } from '@/types/BaseEntity';
@@ -15,11 +15,13 @@ interface ApiService<T> {
   getById(id: string): Promise<T>;
 }
 export interface FormProps<T, R> {
-  schema: ZodType<R>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  schema: any | ZodType<R>;
   service: ApiService<T>;
   createRequestAction?: (data: R) => Promise<ActionResponse<T>>;
   updateRequestAction: (id: string, data: R) => Promise<ActionResponse<T>>;
-  mapToRequest: (data?: T) => DefaultValues<R>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mapToRequest?: (data?: any) => any;
   id?: string;
   initialData?: T;
   title: string;
@@ -37,24 +39,25 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
 }: FormLayoutProps<T, R>) {
   const {
     schema,
-    mapToRequest,
     id,
     initialData,
     service,
+    mapToRequest,
     createRequestAction,
     updateRequestAction,
   } = formProps || {};
   const readonly = mode === PageActionsEnum.READONLY;
   const modalReadonly = mode === PageActionsEnum.MODALREADONLY;
-  const defaultValues = mapToRequest(initialData);
+  const defaultValues = mapToRequest ? mapToRequest(initialData) : initialData;
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname().split('/')[1];
   const router = useRouter();
-
   const methods = useForm<R>({
     resolver: zodResolver(schema),
     defaultValues,
   });
+
+  console.log(initialData)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +76,6 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
   }, []);
 
 
-  console.log( 'fomr', methods.getValues());
   const handleSubmitOrder = useCallback(
     async (data: R) => {
       startTransition(async () => {

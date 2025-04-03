@@ -46,7 +46,7 @@ export default function CustomerDetailsContent({
   const formProps: FormProps<Customer, CustomerRequest> = {
     schema: customerSchema,
     service: customerService,
-    mapToRequest: (data?: Customer) => data as CustomerRequest,
+    // mapToRequest: (data?: Customer) => data as any,
     createRequestAction: createNewCustomer,
     updateRequestAction: updateCustomer,
     id,

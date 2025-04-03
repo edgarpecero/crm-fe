@@ -3,9 +3,13 @@
 import { revalidatePath } from 'next/cache';
 
 // Definimos una interfaz para los servicios compatibles
-export interface ApiService<T> {
-  create: (data: T) => Promise<T>;
-  update: (id: string, data: Partial<T>) => Promise<T>;
+/*
+* T is the type of the entity returned by the API
+* R is the type of the request data sent to the API
+*/
+export interface ApiService<T, R> {
+  create: (data: R) => Promise<T>;
+  update: (id: string, data: Partial<R>) => Promise<T>;
   delete: (id: string) => Promise<void>;
   endpoint: string;
 }
@@ -18,37 +22,28 @@ export interface ActionResponse<T> {
     message: string;
   }>;
 }
-type ActionOptions<T> = {
-  mapCreateData?: (formData: T) => T;
-  mapUpdateData?: (formData: Partial<T>) => Partial<T>;
-};
 
-// Creamos las funciones de acción individualmente
-export async function createAction<T>(
-  service: ApiService<T>,
-  data: T,
-  options: ActionOptions<T> = {},
+export async function createAction<T, R>(
+  service: ApiService<T, R>,
+  data: R,
 ): Promise<T> {
-  const mappedData = options.mapCreateData ? options.mapCreateData(data) : data;
-  const createdItem = await service.create(mappedData);
+  const createdItem = await service.create(data);
   revalidatePath(service.endpoint);
   return createdItem;
 }
 
-export async function updateAction<T>(
-  service: ApiService<T>,
+export async function updateAction<T, R>(
+  service: ApiService<T, R>,
   id: string,
-  data: Partial<T>,
-  options: ActionOptions<T> = {},
+  data: Partial<R>,
 ): Promise<T> {
-  const mappedData = options.mapUpdateData ? options.mapUpdateData(data) : data;
-  const updatedItem = await service.update(id, mappedData);
+  const updatedItem = await service.update(id, data);
   revalidatePath(service.endpoint);
   return updatedItem;
 }
 
-export async function deleteAction<T>(service: ApiService<T>, id: string): Promise<void> {
+export async function deleteAction<T, R>(service: ApiService<T, R>, id: string): Promise<void> {
   await service.delete(id);
   revalidatePath(service.endpoint);
-  revalidatePath(`${service.endpoint}/${id}`); // Revalida la página de detalle
+  revalidatePath(`${service.endpoint}/${id}`); // Revalidate the specific item page
 }

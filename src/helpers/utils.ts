@@ -150,3 +150,10 @@ export const capitalizeFirstLetter = (text?: string): string => {
 
 /* API - QUERIES */
 export const getStaleTime = (minutes: number = 5) => minutes * 60 * 1000; // 5 minutes
+
+/* STRUCTURES */
+export const getOptionsFromEnum = <T extends Record<string, string>>(enumObject: T) =>
+  (Object.keys(enumObject) as Array<keyof T>).map((key) => ({
+    label: enumObject[key],
+    value: key,
+  }));

@@ -41,7 +41,7 @@ export default function UserDetailsContent({ initialData, mode, id }: UserDetail
   const formProps: FormProps<User, UserRequest> = {
     schema: userSchema,
     service: userService,
-    mapToRequest: (data?: User) => data as UserRequest,
+    // mapToRequest: (data?: User) => data as any,
     createRequestAction: createNewUser,
     updateRequestAction: updateUser,
     id,

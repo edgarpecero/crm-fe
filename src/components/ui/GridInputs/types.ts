@@ -1,4 +1,4 @@
-import { BaseTextFieldProps, GridBaseProps, TypographyProps } from '@mui/material';
+import { GridBaseProps, StandardTextFieldProps, TypographyProps } from '@mui/material';
 // import { SingleSelectItem } from '../ControlledInputs/ControlledSingleSelect';
 
 export enum ControlledInputType {
@@ -20,7 +20,7 @@ export enum ControlledInputType {
 
 //TODO: Add SingleSelectItem type for Items prop
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export interface InputsProps extends Omit<BaseTextFieldProps, 'label' | 'variant'> {
+export interface InputsProps extends Omit<StandardTextFieldProps, 'label' | 'variant'> {
   name: string;
   label?: string;
   items?: any[];

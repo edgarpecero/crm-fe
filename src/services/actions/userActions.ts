@@ -4,7 +4,6 @@ import { User, UserRequest } from '@/types/users';
 import { userService } from '../userService';
 import { createAction, updateAction, deleteAction, ActionResponse } from './createApiActions';
 import { z } from 'zod';
-import { userSchema } from '@/helpers/schemas';
 
 export const createUserAction = async (data: UserRequest): Promise<ActionResponse<User>> => {
   try {
@@ -36,7 +35,7 @@ export const updateUserAction = async (
   data: UserRequest,
 ): Promise<ActionResponse<User>> => {
   try {
-    const resp = await updateAction(userService, id, processData(data) as User);
+    const resp = await updateAction(userService, id, processData(data));
 
     return {
       success: true,
@@ -65,12 +64,6 @@ export const deleteUserAction = async (id: string): Promise<void> => {
 };
 
 const processData = (data: UserRequest): UserRequest => {
-  const validatedData = userSchema.parse(data);
-
-  if (validatedData?.birthdate) {
-    const date = new Date(validatedData.birthdate);
-    validatedData.birthdate = date.toISOString();
-  }
-
-  return validatedData as UserRequest;
+  //TODO: Add logic to format data before sending
+  return data;
 };

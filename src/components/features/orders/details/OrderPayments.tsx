@@ -43,7 +43,7 @@ export default function OrderPayments({ initialData, mode, id }: OrderPaymentsPr
   const formProps: FormProps<Order, OrderRequest> = {
     schema: orderSchema,
     service: orderService,
-    mapToRequest: (data?: Order) => data as OrderRequest,
+    // mapToRequest: (data?: Order) => data as any,
     updateRequestAction: updateOrder,
     id,
     initialData,

@@ -2,6 +2,7 @@ import { ControlledInputType, InputsProps } from '@/components/ui/GridInputs/typ
 import { Order } from '@/types/orders';
 import { PageActionsEnum } from '@/types/enums';
 import { OrderSchema } from '@/helpers/schemas';
+import { getOptionsFromEnum } from '@/helpers/utils';
 
 export const defaultValues: OrderSchema = {
   userId: 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f',
@@ -28,6 +29,7 @@ export const defaultValues: OrderSchema = {
     addressSecondary: '',
     city: '',
     state: '',
+    status: 'ToValidate',
     country: '',
     zip: '',
     nationalId: '',
@@ -55,6 +57,27 @@ export const defaultValues: OrderSchema = {
   totalPayments: 0,
 };
 
+export enum CustomerStatus {
+  ToValidate = "Por Validar",
+  Active = "Activo",
+  Documentation = "Documentación",
+  Delivered = "Entregado",
+  InProgress = "En progreso",
+  Canceled = "Cancelado"
+}
+export enum PaymentPlan {
+  DownPayment = "Enganche",
+  EightOnTimePayments = "8 Pagos Puntuales",
+  AutoPlusThreeEighths = "Automático Plus ⅜",
+  AutoPlusFourSevenths = "Automático Plus 4/7",
+  AutoPlusFiveSixths = "Automático Plus ⅚"
+}
+export enum ReviewStatus {
+  Accepted = "Aceptado",
+  AcceptedWithIssue = "Aceptado con incidencia",
+  Rejected = "Rechazado"
+}
+
 export const userAttributesInputs = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
   parent: string = '',
@@ -72,10 +95,12 @@ export const userAttributesInputs = (
     },
     {
       name: `${parent}status`,
-      label: 'Status',
+      label: 'Estatus',
       ...commonInputProps(isCreate, isReadOnly),
       disabled: isCreate || isReadOnly,
       required: false,
+      inputType: ControlledInputType.select,
+      items: getOptionsFromEnum(CustomerStatus)
     },
     {
       name: `${parent}username`,
@@ -186,18 +211,22 @@ export const getUserInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
 export const getUserAddressInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
   userAttributesInputs(mode).slice(13, 19);
 
-export const getUserInputsForCustomerRequest = (mode: PageActionsEnum) =>
-  userAttributesInputs(mode).slice(0, 11);
+export const getUserInputsForCustomerRequest = (mode: PageActionsEnum, parent = '') =>
+  userAttributesInputs(mode, parent)
+    .slice(0, 11)
+    .filter((input) => input.label !== 'Usuario')
+    .map((input) => input.label === 'Número de usuario'
+      ? { ...input, label: 'Número de cliente' }
+      : input
+    );
+
 export const getUserAddressInputsForCustomerRequest = (mode: PageActionsEnum) =>
   userAttributesInputs(mode).slice(11, 19);
 
 export const getUserInputsForOrderRequest = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
-  isLicense: boolean = true,
-) =>
-  isLicense
-    ? userAttributesInputs(mode, 'customer.').slice(0, 11)
-    : userAttributesInputs(mode, 'customer.').slice(0, 9);
+) => getUserInputsForCustomerRequest(mode, 'customer.');
+
 export const getUserAddressInputsForOrderRequest = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
 ) => userAttributesInputs(mode, 'customer.').slice(11, 19);
@@ -278,23 +307,21 @@ export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): 
     {
       name: 'agreementNumber',
       label: 'Convenio',
+      gridSize: { xs: 12, sm: 6 },
       required: isCreate,
       disabled: isReadOnly,
     },
     {
       name: 'agreementType',
       label: 'Tipo de Convenio',
+      gridSize: { xs: 12, sm: 6 },
       disabled: isReadOnly,
     },
     {
       name: 'contracts',
       label: 'Contratos',
       type: 'number',
-      disabled: isReadOnly,
-    },
-    {
-      name: 'mark',
-      label: 'Azul',
+      gridSize: { xs: 12, sm: 6 },
       disabled: isReadOnly,
     },
 
@@ -396,7 +423,7 @@ export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): 
 export const getContractInputsSectionOne = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
   contractInputs(mode).slice(0, 8);
 export const getContractInputsSectionTwo = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  contractInputs(mode).slice(8, 12);
+  contractInputs(mode).slice(8, 11);
 export const getAddInfoInputs1 = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
   contractInputs(mode).slice(12, 20);
 export const getAddInfoInputs2 = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
@@ -407,7 +434,29 @@ export enum OrdersTabsEnum {
   Payments = 'Pagos',
 }
 
-export const trasformOrderToOrderSchema = (initialOrder?: Order): OrderSchema => {
+export const customerDefaultValues = {
+  id: '',
+  username: '',
+  name: '',
+  lastName: '',
+  email: '',
+  birthdate: new Date('1990-01-01'),
+  phone: '',
+  phoneSecondary: '',
+  address: '',
+  addressSecondary: '',
+  city: '',
+  state: '',
+  status: 'ToValidate',
+  country: '',
+  zip: '',
+  nationalId: '',
+  taxNumber: '',
+  licenseNumber: '',
+  licenseExpiration: new Date(),
+}
+
+export const transformOrderToOrderSchema = (initialOrder?: Order): OrderSchema => {
   if (!initialOrder) return defaultValues;
   return {
     userId: 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f',
@@ -434,6 +483,7 @@ export const trasformOrderToOrderSchema = (initialOrder?: Order): OrderSchema =>
       addressSecondary: initialOrder.customer.addressSecondary,
       city: initialOrder.customer.city,
       state: initialOrder.customer.state,
+      status: initialOrder.customer.status || 'ToValidate',
       country: initialOrder.customer.country,
       zip: initialOrder.customer.zip,
       nationalId: initialOrder.customer.nationalId,
@@ -553,3 +603,180 @@ export const getInventoryInputsForInventoryRequestColOne = (
 export const getInventoryInputsForInventoryRequestColTwo = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
 ) => inventoryInputs(mode).slice(7, 15);
+
+
+export const contractInputsNew = (mode: PageActionsEnum = PageActionsEnum.CREATE): InputsProps[] => {
+  const isReadOnly = mode === PageActionsEnum.READONLY || mode === PageActionsEnum.MODALREADONLY;
+  const isCreate = mode === PageActionsEnum.CREATE;
+  return [
+    {
+      name: 'totalAmount',
+      label: 'Fecha de inicio de contrato',
+      ...paymentInputCommonProps,
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}status`,
+      label: 'Estatus',
+      ...commonInputProps(isCreate, isReadOnly),
+      disabled: isCreate || isReadOnly,
+      required: false,
+      inputType: ControlledInputType.select,
+      items: getOptionsFromEnum(PaymentPlan)
+    },
+    {
+      name: `${parent}status`,
+      label: 'Estatus',
+      ...commonInputProps(isCreate, isReadOnly),
+      disabled: isCreate || isReadOnly,
+      required: false,
+      inputType: ControlledInputType.select,
+      items: getOptionsFromEnum(PaymentPlan)
+    },
+    {
+      name: 'termMonths',
+      label: '# No. Adjud',
+      ...paymentInputCommonProps,
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'advancedPayments',
+      label: 'Mens Adela',
+      type: 'number',
+      gridSize: { xs: 12, sm: 3 },
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'monthlyPayment',
+      label: 'Mensualidad',
+      type: 'number',
+      ...paymentInputCommonProps,
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'overduePayments',
+      label: 'Mens Venci',
+      type: 'number',
+      gridSize: { xs: 12, sm: 3 },
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'agreementNumber',
+      label: 'Convenio',
+      gridSize: { xs: 12, sm: 6 },
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'agreementType',
+      label: 'Tipo de Convenio',
+      gridSize: { xs: 12, sm: 6 },
+      disabled: isReadOnly,
+    },
+    {
+      name: 'contracts',
+      label: 'Contratos',
+      type: 'number',
+      gridSize: { xs: 12, sm: 6 },
+      disabled: isReadOnly,
+    },
+
+    // New fields from OrderSchema
+    {
+      name: 'itemName',
+      label: 'Nombre del Ítem',
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'amountPaid',
+      label: 'Monto Pagado',
+      type: 'number',
+      gridSize: { xs: 12, sm: 6 },
+      disabled: isReadOnly,
+    },
+    {
+      name: 'description',
+      label: 'Descripción',
+      disabled: isReadOnly,
+      gridSize: { xs: 12, sm: 12 },
+    },
+    {
+      name: 'saleDate',
+      label: 'Fecha de Venta',
+      disabled: isReadOnly,
+    },
+    {
+      name: 'accumulatedAmount',
+      label: 'Monto Acumulado',
+      type: 'number',
+      gridSize: { xs: 12, sm: 6 },
+      disabled: isReadOnly,
+    },
+    {
+      name: 'actualContribution',
+      label: 'Contribución Actual',
+      type: 'number',
+
+      gridSize: { xs: 12, sm: 6 },
+      disabled: isReadOnly,
+    },
+    {
+      name: 'dailyInterest',
+      label: 'Interés Diario',
+      type: 'number',
+
+      gridSize: { xs: 12, sm: 6 },
+      disabled: isReadOnly,
+    },
+    {
+      name: 'excessAmount',
+      label: 'Monto Excedente',
+      type: 'number',
+
+      gridSize: { xs: 12, sm: 6 },
+      disabled: isReadOnly,
+    },
+    {
+      name: 'downPayment',
+      label: 'Pago Inicial',
+      ...paymentCommonProps,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'secondPayment',
+      label: 'Segundo Pago',
+      ...paymentCommonProps,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'thirdPayment',
+      label: 'Tercer Pago',
+      ...paymentCommonProps,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'fourthPayment',
+      label: 'Cuarto Pago',
+      ...paymentCommonProps,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'fifthPayment',
+      label: 'Quinto Pago',
+      ...paymentCommonProps,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'sixthPayment',
+      label: 'Sexto Pago',
+      ...paymentCommonProps,
+      disabled: isReadOnly,
+    },
+  ];
+};

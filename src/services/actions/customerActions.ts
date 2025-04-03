@@ -4,7 +4,6 @@ import { Customer, CustomerRequest } from '@/types/customers';
 import { customerService } from '../customerService';
 import { createAction, updateAction, deleteAction, ActionResponse } from './createApiActions';
 import { z } from 'zod';
-import { customerSchema } from '@/helpers/schemas';
 
 export const createCustomerAction = async (
   data: CustomerRequest,
@@ -38,7 +37,7 @@ export const updateCustomerAction = async (
   data: CustomerRequest,
 ): Promise<ActionResponse<Customer>> => {
   try {
-    const resp = await updateAction(customerService, id, processData(data) as Customer);
+    const resp = await updateAction(customerService, id, processData(data));
     return {
       success: true,
       message: 'Cliente actualizado con éxito',
@@ -77,16 +76,6 @@ export const deleteCustomerAction = async (id: string): Promise<ActionResponse<v
 };
 
 const processData = (data: CustomerRequest): CustomerRequest => {
-  const validatedData = customerSchema.parse(data);
-
-  if (validatedData?.birthdate) {
-    const date = new Date(validatedData.birthdate);
-    validatedData.birthdate = date.toISOString();
-  }
-  if (validatedData?.licenseExpiration) {
-    const date = new Date(validatedData.licenseExpiration);
-    validatedData.licenseExpiration = date.toISOString();
-  }
-
-  return validatedData as CustomerRequest;
+  //TODO: Add logic to format data before sending
+  return data;
 };

@@ -4,7 +4,6 @@ import { Inventory, InventoryRequest } from '@/types/inventory';
 import { inventoryService } from '../inventoryService';
 import { createAction, updateAction, deleteAction, ActionResponse } from './createApiActions';
 import { z } from 'zod';
-import { inventorySchema } from '@/helpers/schemas';
 
 export const createInventoryAction = async (
   data: InventoryRequest,
@@ -38,7 +37,7 @@ export const updateInventoryAction = async (
   data: InventoryRequest,
 ): Promise<ActionResponse<Inventory>> => {
   try {
-    const resp = await updateAction(inventoryService, id, processData(data) as Inventory);
+    const resp = await updateAction(inventoryService, id, processData(data));
     return {
       success: true,
       message: 'Inventario actualizado con éxito',
@@ -77,13 +76,6 @@ export const deleteInventoryAction = async (id: string): Promise<ActionResponse<
 };
 
 const processData = (data: InventoryRequest): InventoryRequest => {
-  const validatedData = inventorySchema.parse(data);
-
-  // Ajuste de fechas u otros campos específicos de Inventory, si aplica
-  if (validatedData?.year) {
-    // Por ejemplo, si 'year' necesita algún tipo de transformación
-    validatedData.year = Number(validatedData.year);
-  }
-
-  return validatedData as InventoryRequest;
+  //TODO: Add logic to format data before sending
+  return data;
 };

@@ -25,8 +25,8 @@ export default function OrderDetailsContent({ initialData, mode, id }: OrderDeta
     () =>
       getTabContentStyle(
         mode === PageActionsEnum.MODALREADONLY ||
-          mode === PageActionsEnum.CREATE ||
-          innerPageTab === OrdersTabsEnum.Details,
+        mode === PageActionsEnum.CREATE ||
+        innerPageTab === OrdersTabsEnum.Details,
       ),
     [innerPageTab, mode],
   );
@@ -63,7 +63,6 @@ export default function OrderDetailsContent({ initialData, mode, id }: OrderDeta
   const formProps: FormProps<Order, OrderRequest> = {
     schema: orderSchema,
     service: orderService,
-    mapToRequest: (data?: Order) => data as OrderRequest,
     createRequestAction: createNewOrder,
     updateRequestAction: updateOrder,
     id,

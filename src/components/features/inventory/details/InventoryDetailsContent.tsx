@@ -44,7 +44,7 @@ export default function InventoryDetailsContent({
   const formProps: FormProps<Inventory, InventoryRequest> = {
     schema: inventorySchema,
     service: inventoryService,
-    mapToRequest: (data?: Inventory) => data as InventoryRequest,
+    // mapToRequest: (data?: Inventory) => data as InventoryRequest,
     createRequestAction: createNewInventory,
     updateRequestAction: updateInventory,
     id,

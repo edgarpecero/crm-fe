@@ -15,6 +15,7 @@ const ControlledTextInput = ({
   name,
   type = 'text',
   id,
+  maxLength = 45,
   ...props
 }: ControlledTextInputProps) => {
   return (
@@ -22,15 +23,21 @@ const ControlledTextInput = ({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => {
+        const _maxLength = type === 'number' ? 9 : maxLength;
+
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const value = e.target.value;
+          
           if (type === 'number') {
-            // Convertir a número, o undefined si está vacío
-            field.onChange(value === '' ? undefined : Number(value));
+            // Solo permitir caracteres numéricos y longitud menor o igual a _maxLength
+            if (/^\d*$/.test(value) && value.length <= _maxLength) {
+              field.onChange(value === '' ? undefined : Number(value));
+            }
           } else {
             field.onChange(value);
           }
         };
+
         return (
           <TextInput
             error={!!error}
@@ -38,9 +45,17 @@ const ControlledTextInput = ({
             id={name || id}
             type={type}
             field={field}
-            onChange={handleChange} // Usar nuestro manejador personalizado
+            onChange={handleChange}
             value={field.value ?? ''}
             {...props}
+            slotProps={{
+              ...props.slotProps,
+              htmlInput: {
+                ...props.slotProps?.htmlInput,
+                maxLength: _maxLength,
+                pattern: type === 'number' ? '[0-9]*' : undefined
+              }
+            }}
           />
         );
       }}

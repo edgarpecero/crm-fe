@@ -36,7 +36,7 @@ export const updateOrderAction = async (
   data: OrderRequest,
 ): Promise<ActionResponse<Order>> => {
   try {
-    const resp = await updateAction(orderService, id, processData(data) as Order);
+    const resp = await updateAction(orderService, id, data);
     return {
       success: true,
       message: 'Orden actualizada con éxito',
@@ -64,15 +64,6 @@ export const deleteOrderAction = async (id: string): Promise<void> => {
 };
 
 const processData = (data: OrderRequest): OrderRequest => {
-  const validatedData = data;
-
-  if (validatedData?.customer?.birthdate) {
-    const date = new Date(validatedData.customer.birthdate);
-    validatedData.customer.birthdate = date.toISOString();
-  }
-  if (validatedData?.customer?.licenseExpiration) {
-    const date = new Date(validatedData.customer.licenseExpiration);
-    validatedData.customer.licenseExpiration = date.toISOString();
-  }
-  return validatedData;
+  //TODO: Add logic to format data before sending
+  return data;
 };
