@@ -13,6 +13,19 @@ export const filterData = <T>(data: T[], searchInput: string, ...keys: (keyof T)
   );
 };
 
+export const getCurrentDate = (): string => {
+  const today = new Date();
+
+  const opts: Intl.DateTimeFormatOptions = {
+    timeZone: 'America/Mexico_City',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  };
+
+  return new Intl.DateTimeFormat('es-MX', opts).format(today);
+};
+
 export const getRowId = (row: GridRowParams) => row.id;
 
 /* FORMATTERS */

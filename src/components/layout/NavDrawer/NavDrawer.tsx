@@ -23,7 +23,8 @@ import { DrawerMenuRoutes } from './types';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import List from '@mui/material/List';
 import Link from 'next/link';
-
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import AddCardIcon from '@mui/icons-material/AddCard';
 interface NavDrawerProps {
   open: boolean;
   onClose: () => void;
@@ -84,7 +85,19 @@ const NavDrawer = ({ open, onClose, onOpen }: NavDrawerProps) => {
       <NavDrawerHeader open={open} onClose={onClose} />
       <Divider />
       <List disablePadding sx={{ margin: '0 12px', paddingTop: '16px' }}>
-        {routes.map((props, index) => (
+        {routes.slice(0, 2).map((props, index) => (
+          <DrawerMenuItem key={index} {...props} />
+        ))}
+      </List>
+      <Divider sx={{ mt: 3 }} />
+      <List disablePadding sx={{ margin: '0 12px', paddingTop: '16px' }}>
+        {routes.slice(2, -1).map((props, index) => (
+          <DrawerMenuItem key={index} {...props} />
+        ))}
+      </List>
+      <Divider sx={{ mt: 3 }} />
+      <List disablePadding sx={{ margin: '0 12px', paddingTop: '16px' }}>
+        {routes.slice(-1).map((props, index) => (
           <DrawerMenuItem key={index} {...props} />
         ))}
       </List>
@@ -97,14 +110,24 @@ const NavDrawer = ({ open, onClose, onOpen }: NavDrawerProps) => {
 
 const routes: DrawerMenuRoutes[] = [
   {
-    label: 'Cobranza',
-    icon: <PointOfSaleIcon />,
-    route: '/cobranza',
+    label: 'Nuevo Contrato',
+    icon: <AppRegistrationIcon />,
+    route: '/cobranza/crear',
+  },
+  {
+    label: 'Capturar Pago',
+    icon: <AddCardIcon />,
+    route: '/pagos/capturar',
   },
   {
     label: 'Clientes',
     icon: <ContactsIcon />,
     route: '/clientes',
+  },
+  {
+    label: 'Cobranza',
+    icon: <PointOfSaleIcon />,
+    route: '/cobranza',
   },
   {
     label: 'Usuarios',

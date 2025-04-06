@@ -13,6 +13,10 @@ interface Order extends BaseEntity {
   customer: Customer;
   description: string; // Descripcion
   totalAmount: number; // Monto
+
+  initialPayment: number; // Pago INICIAL
+  openingPayment: number; // AP APERTURA
+
   actualContribution: number; // AP REAL
   downPayment: number; // ENGANCHE
   excessAmount: number; // EXCEDENTE
@@ -35,7 +39,37 @@ interface Order extends BaseEntity {
   thirdPayment: number; // 3RA
   fourthPayment: number; // 4TA
   fifthPayment: number; // 5TA
-  sixthPayment: number; // 6TA
+  sixthPayment: number; //
+  //  6TA
+}
+interface CustomerAditionalInfoRequest {
+  
+}
+interface CustomerOrderRequest {
+  name: string;
+  lastName: string;
+  email: string;
+  birthdate: string;
+  phone: string;
+  phoneSecondary: string;
+  address: string;
+  addressSecondary: string;
+  city: string;
+  state: string;
+  country: string;
+  zip: string;
+  maritalStatus: string;
+}
+interface Request {
+  number: string;
+  clientId?: string;
+  customer?: Customer;
+  itemId: string;
+  userId: string;
+  description: string;
+  totalAmount: number;
+  termMonths: number;
+  initialPayment: number;
 }
 type OrderRequest = z.infer<typeof orderSchema>;
 type CreateOrderRequest = z.infer<typeof createOrderSchema>;

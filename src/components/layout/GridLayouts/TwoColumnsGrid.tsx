@@ -19,7 +19,7 @@ function TwoColumnsGrid(props: TwoColumnsGridProps) {
   return (
     <Grid2 container spacing={6} columns={12}>
       {/* Col One */}
-      <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }}>
+      <Grid2 container spacing={3} size={{ xs: 12, sm: 6 }} alignContent='flex-start'>
         {isTitles && (
           <Grid2 container spacing={3}>
             <Typography variant='h4' sx={{ p: '1rem 0', textAlign: 'center', minHeight: '3.3rem' }}>

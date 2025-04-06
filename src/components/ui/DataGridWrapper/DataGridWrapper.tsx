@@ -48,6 +48,7 @@ function DataGridWrapped<T extends BaseEntity>({
         }}
         slots={{
           toolbar: GridToolbar,
+        
           noResultsOverlay: () => <NoResults />,
           noRowsOverlay: () => <NoResults />,
         }}

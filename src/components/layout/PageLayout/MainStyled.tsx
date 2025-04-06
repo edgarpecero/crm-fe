@@ -18,7 +18,7 @@ const MainStyled = styled('main', { shouldForwardProp: (prop) => prop !== 'open'
     position: 'relative',
     height: '100vh',
     overflow: 'hidden',
-    padding: '40px',
+    padding: '0 40px 40px 40px',
     backgroundColor: theme.palette.grey[300],
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,

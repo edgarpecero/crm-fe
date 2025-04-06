@@ -8,8 +8,11 @@ import SimpleActionsCell from '@/components/ui/DataGridCellComponents/SimpleActi
 export interface DataGridActionButtonsProps<T> {
   modalProps?: OpenModalParams;
   onDeleteCb?: (row: T) => void;
+  deleteAction?: boolean;
   onEditCb?: (row: T) => void;
+  editAction?: boolean;
   onViewCb?: (row: T) => void;
+  viewAction?: boolean;
 }
 interface UseDataGridColsParams<T extends GridValidRowModel> {
   cols: GridColDef<T>[];
@@ -20,13 +23,22 @@ function useDataGridCols<T extends GridValidRowModel>({
   cols = [],
   actionButtonsProps,
 }: UseDataGridColsParams<T>): GridColDef<T>[] {
+  const {
+    modalProps,
+    onDeleteCb,
+    onEditCb,
+    onViewCb,
+    deleteAction = false,
+    editAction = false,
+    viewAction = true,
+  } = actionButtonsProps || {};
   const hasActionButtons = Boolean(
     actionButtonsProps &&
-      Object.keys(actionButtonsProps).some(
-        (key) => actionButtonsProps[key as keyof DataGridActionButtonsProps<T>] !== undefined,
-      ),
+    Object.keys(actionButtonsProps).some(
+      (key) => 
+        actionButtonsProps[key as keyof DataGridActionButtonsProps<T>] !== undefined,
+    ),
   );
-  const { modalProps, onDeleteCb, onEditCb, onViewCb } = actionButtonsProps || {};
   const { openModal } = useModal();
   const router = useRouter();
   const pathname = usePathname();
@@ -60,7 +72,13 @@ function useDataGridCols<T extends GridValidRowModel>({
         }
       };
 
-      return <SimpleActionsCell onDelete={onDelete} onEdit={onEdit} onView={onView} />;
+      return (
+        <SimpleActionsCell
+          onDelete={deleteAction ? onDelete : undefined}
+          onEdit={editAction ? onEdit : undefined}
+          onView={viewAction ? onView : undefined}
+        />
+      );
     },
     [openModal, onDeleteCb, onEditCb, onViewCb, router, pathname, modalProps],
   );
@@ -74,13 +92,13 @@ function useDataGridCols<T extends GridValidRowModel>({
         width: 60,
       },
       ...cols,
-    ];
+    ];  
 
     if (hasActionButtons) {
       baseColumns.push({
         field: 'actions',
         headerName: 'Acciones',
-        width: 150,
+        width: viewAction && editAction ? 150 : 80,
         renderCell: renderActionsCell,
       });
     }
