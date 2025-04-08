@@ -4,9 +4,9 @@ import { revalidatePath } from 'next/cache';
 
 // Definimos una interfaz para los servicios compatibles
 /*
-* T is the type of the entity returned by the API
-* R is the type of the request data sent to the API
-*/
+ * T is the type of the entity returned by the API
+ * R is the type of the request data sent to the API
+ */
 export interface ApiService<T, R> {
   create: (data: R) => Promise<T>;
   update: (id: string, data: Partial<R>) => Promise<T>;
@@ -23,10 +23,7 @@ export interface ActionResponse<T> {
   }>;
 }
 
-export async function createAction<T, R>(
-  service: ApiService<T, R>,
-  data: R,
-): Promise<T> {
+export async function createAction<T, R>(service: ApiService<T, R>, data: R): Promise<T> {
   const createdItem = await service.create(data);
   revalidatePath(service.endpoint);
   return createdItem;

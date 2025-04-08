@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 
 interface CustomizedAccordionProps extends AccordionProps {
   children: React.ReactNode;
-  summary: string
+  summary: string;
   defaultExpanded?: boolean;
 }
 export default function CustomizedAccordion({
@@ -22,8 +22,8 @@ export default function CustomizedAccordion({
 }: CustomizedAccordionProps) {
   return (
     <Accordion defaultExpanded={defaultExpanded} {...rest}>
-      <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-        <Typography variant="h3" pl={2}>
+      <AccordionSummary aria-controls='panel1d-content' id='panel1d-header'>
+        <Typography variant='h3' pl={2}>
           {summary}
         </Typography>
       </AccordionSummary>
@@ -45,7 +45,7 @@ const Accordion = styled((props: AccordionProps) => (
 
 const AccordionSummary = styled((props: AccordionSummaryProps) => (
   <MuiAccordionSummary
-    expandIcon={<ExpandLessIcon className="custom-expand-icon" sx={{ fontSize: '1.5rem' }} />}
+    expandIcon={<ExpandLessIcon className='custom-expand-icon' sx={{ fontSize: '1.5rem' }} />}
     {...props}
   />
 ))(({ theme }) => ({
@@ -83,6 +83,6 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
   }),
 }));
 
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+const AccordionDetails = styled(MuiAccordionDetails)(() => ({
   padding: '32px 0 24px 0',
 }));

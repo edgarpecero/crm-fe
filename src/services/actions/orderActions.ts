@@ -6,7 +6,9 @@ import { createAction, updateAction, deleteAction, ActionResponse } from './crea
 import { z } from 'zod';
 
 // Interface específica para la respuesta de creación de orden
-export const createOrderAction = async (data: CreateOrderRequest): Promise<ActionResponse<Order>> => {
+export const createOrderAction = async (
+  data: CreateOrderRequest,
+): Promise<ActionResponse<Order>> => {
   try {
     data.saleDate = new Date();
     data.saleDate.toISOString();

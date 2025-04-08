@@ -48,7 +48,7 @@ function DataGridWrapped<T extends BaseEntity>({
         }}
         slots={{
           toolbar: GridToolbar,
-        
+
           noResultsOverlay: () => <NoResults />,
           noRowsOverlay: () => <NoResults />,
         }}
@@ -57,6 +57,7 @@ function DataGridWrapped<T extends BaseEntity>({
             columnVisibilityModel: {
               ...props?.initialState?.columns?.columnVisibilityModel,
               tableIndex: true,
+              lastModifiedAt: false,
             },
           },
         }}

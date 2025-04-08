@@ -1,9 +1,8 @@
-import { Control, Controller, FieldValues, UseFormReturn, useFormContext } from 'react-hook-form';
+import { Control, Controller } from 'react-hook-form';
 import TextField, { BaseTextFieldProps } from '@mui/material/TextField';
-import { IconButton, MenuItem } from '@mui/material';
+import { MenuItem } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CloseIcon from '@mui/icons-material/Close';
-import React, { useCallback } from 'react';
+import React from 'react';
 
 export type SingleSelectItem = {
   value: number | string;
@@ -28,22 +27,21 @@ const ControlledSingleSelect = (props: ControlledSingleSelectProps) => {
     name,
     items,
     onChange,
-    onClear,
     loading = false,
     defaultOption = 'No items',
     ...rest
   } = props;
-  const formContext: UseFormReturn<FieldValues> | undefined = useFormContext();
+  // const formContext: UseFormReturn<FieldValues> | undefined = useFormContext();
 
-  const onSelectClear = useCallback(
-    (name: string) => {
-      if (onClear) return onClear(name);
-      else {
-        if (formContext) formContext.resetField(name);
-      }
-    },
-    [formContext, onClear],
-  );
+  // const onSelectClear = useCallback(
+  //   (name: string) => {
+  //     if (onClear) return onClear(name);
+  //     else {
+  //       if (formContext) formContext.resetField(name);
+  //     }
+  //   },
+  //   [formContext, onClear],
+  // );
 
   return (
     <Controller
@@ -62,6 +60,7 @@ const ControlledSingleSelect = (props: ControlledSingleSelectProps) => {
                   onChange(changeValue);
                 }
               }}
+              placeholder='Selecciona una opción'
               error={!!error}
               id={props.id || props.name}
               helperText={error?.message ?? ''}
@@ -83,7 +82,7 @@ const ControlledSingleSelect = (props: ControlledSingleSelectProps) => {
                   //   </IconButton>
                   // ),
                   inputComponent: ExpandMoreIcon,
-                }
+                },
               }}
               sx={{ width: '100%', ...(rest.sx || {}) }}
             >

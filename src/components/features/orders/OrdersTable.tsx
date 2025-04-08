@@ -52,7 +52,6 @@ function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
       modalProps: {
         body: <OrderDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
       },
-
     },
   };
 
@@ -82,18 +81,18 @@ const _columns: GridColDef<Order>[] = [
     renderCell: (props) => <ChipCell {...props} />,
   },
   {
-    field: 'userFullname',  // Cambiado de 'username' a 'userFullname'
+    field: 'userFullname', // Cambiado de 'username' a 'userFullname'
     headerName: 'Vendedor',
     flex: 1,
   },
   // { field: 'sucursal', headerName: 'Sucursal', flex: 1 }, // No está en la interfaz
   {
-    field: 'employeeManager',  // Cambiado de 'manager' a 'employeeManager'
+    field: 'employeeManager', // Cambiado de 'manager' a 'employeeManager'
     headerName: 'Lider',
     flex: 1,
   },
   {
-    field: 'productType',  // Cambiado de 'inventoryType' a 'productType'
+    field: 'productType', // Cambiado de 'inventoryType' a 'productType'
     headerName: 'Producto',
     flex: 1,
   },
@@ -111,7 +110,7 @@ const _columns: GridColDef<Order>[] = [
     valueFormatter: (value) => formatToPrice(value),
   },
   {
-    field: 'openingFee',  // Cambiado de 'openingPayment' a 'openingFee'
+    field: 'openingFee', // Cambiado de 'openingPayment' a 'openingFee'
     headerName: 'Apertura',
     width: 120,
     valueFormatter: (value) => formatToPrice(value),
@@ -154,7 +153,7 @@ const _columns: GridColDef<Order>[] = [
     valueFormatter: (value) => formatToPrice(value), // Agregado formatter
   },
   {
-    field: 'onTimePayments',  // Cambiado de 'onTimePayment' a 'onTimePayments'
+    field: 'onTimePayments', // Cambiado de 'onTimePayment' a 'onTimePayments'
     headerName: 'Pago Puntual',
     flex: 1,
     valueFormatter: (value) => formatToPrice(value),

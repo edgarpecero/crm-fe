@@ -27,7 +27,7 @@ const ControlledTextInput = ({
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const value = e.target.value;
-          
+
           if (type === 'number') {
             // Solo permitir caracteres numéricos y longitud menor o igual a _maxLength
             if (/^\d*$/.test(value) && value.length <= _maxLength) {
@@ -53,8 +53,8 @@ const ControlledTextInput = ({
               htmlInput: {
                 ...props.slotProps?.htmlInput,
                 maxLength: _maxLength,
-                pattern: type === 'number' ? '[0-9]*' : undefined
-              }
+                pattern: type === 'number' ? '[0-9]*' : undefined,
+              },
             }}
           />
         );

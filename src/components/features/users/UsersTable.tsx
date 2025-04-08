@@ -32,14 +32,20 @@ function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
     toolbar: true,
     initialState: {
       columns: {
-        columnVisibilityModel: {},
+        columnVisibilityModel: {
+          address: false,
+          addressSecondary: false,
+          country: false,
+          phoneSecondary: false,
+          zip: false,
+        },
       },
     },
     actionButtonsProps: {
       modalProps: {
         body: <UserDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
       },
-      
+
       onDeleteCb: async (user: User) => {
         await deleteUserAction(user.id);
         alert('Usuario removido exitosamente!');
@@ -58,25 +64,10 @@ function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
 }
 
 export default React.memo(UsersTable);
-
 const _columns: GridColDef<User>[] = [
   {
-    field: 'number',
-    headerName: 'Numero',
-    minWidth: 100,
-    flex: 1,
-  },
-  {
-    field: 'status',
-    headerName: 'Status',
-    flex: 1,
-    minWidth: 100,
-    renderCell: (props) => <ChipCell {...props} />,
-  },
-  {
-    field: 'username',
-    headerName: 'Usuario',
-    minWidth: 120,
+    field: 'employeeType',
+    headerName: 'Tipo de Empleado',
     flex: 1,
   },
   {
@@ -90,6 +81,23 @@ const _columns: GridColDef<User>[] = [
     headerName: 'Apellido',
     minWidth: 120,
     flex: 1,
+  },
+  {
+    field: 'employeeLeader',
+    headerName: 'Líder',
+    flex: 1,
+  },
+  {
+    field: 'employeeManager',
+    headerName: 'Manager',
+    flex: 1,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    flex: 1,
+    minWidth: 100,
+    renderCell: (props) => <ChipCell {...props} />,
   },
   {
     field: 'email',
@@ -142,14 +150,23 @@ const _columns: GridColDef<User>[] = [
     headerName: 'Código Postal',
     flex: 1,
   },
+  // New fields from BaseEntity
   {
-    field: 'nationalId',
-    headerName: 'INE',
+    field: 'createdAt',
+    headerName: 'Fecha de Inicio',
     flex: 1,
+    valueFormatter: (value) => dateFormatter(value),
   },
   {
-    field: 'maritalStatus',
-    headerName: 'Estado Civil',
+    field: 'lastModifiedAt',
+    headerName: 'Última Modificación',
     flex: 1,
+    valueFormatter: (value) => dateFormatter(value),
   },
+  // {
+  //   field: 'lastModifiedBy',
+  //   headerName: 'Modificado Por',
+  //   flex: 1,
+  // },
+  // Optional fields from UserBase
 ];

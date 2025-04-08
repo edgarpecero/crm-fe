@@ -20,8 +20,11 @@ export default function CustomerDetailsContent({
   mode,
   id,
 }: CustomerDetailsContentProps) {
-
-  const { handleSubmitData } = useSubmitData<Customer, CreateCustomerRequest, UpdateCustomerRequest>({
+  const { handleSubmitData } = useSubmitData<
+    Customer,
+    CreateCustomerRequest,
+    UpdateCustomerRequest
+  >({
     id,
     mode,
     createRequestAction: createCustomerAction,

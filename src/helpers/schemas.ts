@@ -67,7 +67,7 @@ export const userSchema = z.object({
   // birthdate: z.string().optional().nullable(), // Cambiado a opcional
   birthdate: z.preprocess(
     (val) => (typeof val === 'string' ? parseISO(val) : val),
-    z.date().min(new Date('1901-01-01')).optional().nullable()
+    z.date().min(new Date('1901-01-01')).optional().nullable(),
   ),
   phone: z.string().optional().nullable(), // Cambiado a opcional
   phoneSecondary: z.string().optional().nullable(), // Cambiado a opcional
@@ -88,8 +88,8 @@ export const customerSchema = userSchema.extend({
   licenseNumber: z.string().max(50).optional().nullable(),
   licenseExpiration: z.preprocess(
     (val) => (typeof val === 'string' ? parseISO(val) : val),
-    z.date().min(new Date('1901-01-01')).optional().nullable()
-  ),// Cambiado a opcional
+    z.date().min(new Date('1901-01-01')).optional().nullable(),
+  ), // Cambiado a opcional
 });
 
 export const orderSchema2 = z.object({
@@ -182,46 +182,43 @@ export type InventorySchema = z.infer<typeof inventorySchema>;
 
 const required = true;
 const getStringSchema = (isRequired: boolean) => {
-  return isRequired
-    ? z.string()
-    : z.string().optional().nullable();
-}
+  return isRequired ? z.string() : z.string().optional().nullable();
+};
 const getNumberSchema = (isRequired: boolean) => {
   return isRequired
     ? z.number() // Required number
     : z.number().optional().nullable(); // Optional and nullable number
-}
+};
 const getEmailSchema = (isRequired: boolean) => {
   return isRequired
     ? z.string().email() // Required email
     : z.string().email().optional().nullable();
-}
+};
 const getDateSchema = (isRequired: boolean) => {
   return isRequired
     ? z.preprocess(
-      (val) => (typeof val === 'string' ? parseISO(val) : val),
-      z.date().min(new Date('1901-01-01'))
-    )
+        (val) => (typeof val === 'string' ? parseISO(val) : val),
+        z.date().min(new Date('1901-01-01')),
+      )
     : z.preprocess(
-      (val) => (typeof val === 'string' ? parseISO(val) : val),
-      z.date().min(new Date('1901-01-01')).optional().nullable()
-    );
-}
-const getCurrencySchema = (isRequired: boolean) => {
-  const baseSchema = z.number()
-    .min(0)            // Allows zero and positive numbers
-    .refine(
-      (val) => {
-        const decimals = val.toString().split('.')[1];
-        return !decimals || decimals.length <= 2;
-      },
-      { message: "Hasta 2 decimales permitidas." }
-    );
-
-  return isRequired
-    ? baseSchema
-    : baseSchema.optional().nullable();
+        (val) => (typeof val === 'string' ? parseISO(val) : val),
+        z.date().min(new Date('1901-01-01')).optional().nullable(),
+      );
 };
+// const getCurrencySchema = (isRequired: boolean) => {
+//   const baseSchema = z
+//     .number()
+//     .min(0) // Allows zero and positive numbers
+//     .refine(
+//       (val) => {
+//         const decimals = val.toString().split('.')[1];
+//         return !decimals || decimals.length <= 2;
+//       },
+//       { message: 'Hasta 2 decimales permitidas.' },
+//     );
+
+//   return isRequired ? baseSchema : baseSchema.optional().nullable();
+// };
 
 const basicContactSchema = (isRequired = true) => {
   const stringSchema = getStringSchema(isRequired); // Optional and nullable string
@@ -238,7 +235,7 @@ const basicContactSchema = (isRequired = true) => {
     country: stringSchema,
     zip: stringSchema,
   });
-}
+};
 
 const userBaseSchema = (isRequired = true) => {
   // Base string schema: required or optional/nullable
@@ -249,9 +246,12 @@ const userBaseSchema = (isRequired = true) => {
     username: stringSchema,
     name: stringSchema,
     lastName: stringSchema,
+    employeeLeader: stringSchema,
+    employeeManager: stringSchema,
+    EmployeeType: stringSchema,
     birthdate: dateSchema,
   });
-}
+};
 
 export const createUserSchema = z.object({
   ...userBaseSchema(required).shape,
@@ -262,7 +262,6 @@ export const updateUserSchema = z.object({
   ...basicContactSchema(!required).shape,
   status: z.string().optional().nullable(),
 });
-
 
 const customerBaseSchema = (isRequired = true) => {
   const stringSchema = getStringSchema(isRequired);
@@ -277,7 +276,7 @@ const customerBaseSchema = (isRequired = true) => {
     birthdate: dateSchema,
     ...basicContactSchema(isRequired).shape,
   });
-}
+};
 const customerBeneficiarySchema = (isRequired = true) => {
   const stringSchema = getStringSchema(isRequired);
   const dateSchema = getDateSchema(isRequired);
@@ -288,7 +287,7 @@ const customerBeneficiarySchema = (isRequired = true) => {
     birthdate: dateSchema,
     ...basicContactSchema(isRequired).shape,
   });
-}
+};
 const customerWorkplaceSchema = (isRequired = true) => {
   const stringSchema = getStringSchema(isRequired);
   const dateSchema = getDateSchema(isRequired);
@@ -301,17 +300,17 @@ const customerWorkplaceSchema = (isRequired = true) => {
     otherIncome: getNumberSchema(!isRequired),
     ...basicContactSchema(isRequired).shape,
   });
-}
+};
 export const createCustomerSchema = z.object({
   ...customerBaseSchema(required).shape,
-  workplace: z.object({ ...(customerWorkplaceSchema(required).shape) }),
-  beneficiary: z.object({ ...(customerBeneficiarySchema(required).shape) }),
+  workplace: z.object({ ...customerWorkplaceSchema(required).shape }),
+  beneficiary: z.object({ ...customerBeneficiarySchema(required).shape }),
 });
 console.log('customerBaseSchema: ', customerBeneficiarySchema(required).shape);
 export const updateCustomerSchema = z.object({
   ...customerBaseSchema(!required).shape,
-  workplace: z.object({ ...(customerWorkplaceSchema(!required).shape) }),
-  beneficiary: z.object({ ...(customerBeneficiarySchema(!required).shape) }),
+  workplace: z.object({ ...customerWorkplaceSchema(!required).shape }),
+  beneficiary: z.object({ ...customerBeneficiarySchema(!required).shape }),
   status: z.string().optional().nullable(),
 });
 
@@ -325,17 +324,19 @@ const orderBaseSchema = (isRequired = true) => {
     description: stringSchema,
     termMonths: numberSchema,
     initialPayment: numberSchema,
-    userId: stringSchema,
+    userId: stringSchema, // TODO: handle it in BE
     saleDate: getDateSchema(!required),
   });
-}
+};
 
 export const createOrderSchema = z.object({
   ...orderBaseSchema(required).shape,
   customerId: z.string(),
+  customerName: z.string(), // TODO: handle it in BE
+  userFullname: z.string(), // TODO: handle it in BE
+  employeeManager: z.string(), // TODO: handle it in BE
   number: z.string(),
 });
 export const updateOrderSchema = z.object({
-  ...orderBaseSchema(!required).shape,
+  description: getStringSchema(!required),
 });
-

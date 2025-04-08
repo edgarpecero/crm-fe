@@ -13,28 +13,19 @@ import { BaseEntity } from '@/types/BaseEntity';
  * U - Type of the update request data
  */
 
-interface UseSubmitDataProps<
-  T extends BaseEntity,
-  C,
-  U,
-> {
+interface UseSubmitDataProps<T extends BaseEntity, C, U> {
   id?: string;
   mode: PageActionsEnum;
   createRequestAction?: (data: C) => Promise<ActionResponse<T>>;
   updateRequestAction?: (data: U, id: string) => Promise<ActionResponse<T>>;
 }
 
-function useSubmitData<
-  T extends BaseEntity,
-  C,
-  U,
->({
+function useSubmitData<T extends BaseEntity, C, U>({
   id,
   mode,
   createRequestAction,
   updateRequestAction,
 }: UseSubmitDataProps<T, C, U>) {
-
   const pathname = usePathname().split('/')[1];
   const router = useRouter();
 
@@ -66,7 +57,7 @@ function useSubmitData<
         }
       }
     },
-    [mode, createRequestAction, updateRequestAction, id, pathname, router]
+    [mode, createRequestAction, updateRequestAction, id, pathname, router],
   );
 
   return { handleSubmitData };

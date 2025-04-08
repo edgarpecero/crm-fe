@@ -31,8 +31,8 @@ export default function OrderDetailsContent({ initialData, mode, id }: OrderDeta
     () =>
       getTabContentStyle(
         mode === PageActionsEnum.MODALREADONLY ||
-        mode === PageActionsEnum.CREATE ||
-        innerPageTab === OrdersTabsEnum.Details,
+          mode === PageActionsEnum.CREATE ||
+          innerPageTab === OrdersTabsEnum.Details,
       ),
     [innerPageTab, mode],
   );
@@ -51,7 +51,6 @@ export default function OrderDetailsContent({ initialData, mode, id }: OrderDeta
     schema,
     title,
   };
-
 
   return (
     <div style={wrapperStyles}>

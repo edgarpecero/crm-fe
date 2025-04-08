@@ -23,10 +23,7 @@ export default function CustomerFormBody({
     <>
       {title && <TitlePage title={title} />}
       {/* Customer */}
-      <CustomizedAccordion
-        summary='Datos del solicitante'
-        defaultExpanded={defaultExpanded}
-      >
+      <CustomizedAccordion summary='Datos del solicitante' defaultExpanded={defaultExpanded}>
         <TwoColumnsGrid
           firstColInputs={getCustomerRequestInputs(mode, parentName)}
           secondColInputs={getCustomerAddressRequestInputs(mode, parentName)}
@@ -45,10 +42,7 @@ export default function CustomerFormBody({
       </CustomizedAccordion>
 
       {/* Beneficiary */}
-      <CustomizedAccordion
-        summary='Datos del beneficiario'
-        defaultExpanded={defaultExpanded}
-      >
+      <CustomizedAccordion summary='Datos del beneficiario' defaultExpanded={defaultExpanded}>
         <TwoColumnsGrid
           firstColInputs={getCustomerBeneficiaryInputs(mode, parentName)}
           secondColInputs={getCustomerBeneficiaryAddressInputs(mode, parentName)}

@@ -8,6 +8,9 @@ interface UserBase extends BaseEntity {
   name: string;
   lastName: string;
   birthdate: string;
+  employeeLeader?: string;
+  employeeManager?: string;
+  employeeType?: string;
 }
 type User = UserBase & BasicContact;
 type CreateUserRequest = z.infer<typeof createUserSchema>;

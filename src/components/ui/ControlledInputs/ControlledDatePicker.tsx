@@ -25,17 +25,12 @@ const ControlledDatePicker = ({
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => {
+      render={({ field }) => {
         // Convertimos el valor a Date si es una cadena
         const value = typeof field.value === 'string' ? parseISO(field.value) : field.value;
         return (
-          <LocalizationProvider
-            dateAdapter={AdapterDateFns}
-            adapterLocale={es}
-          >
+          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
             <DesktopDatePicker
-              error={!!error}
-              helperText={error?.message || ''}
               label={
                 <>
                   {label} {required && <span style={{ color: theme.palette.error.main }}>*</span>}
@@ -48,9 +43,7 @@ const ControlledDatePicker = ({
                 field.onChange(newValue);
               }}
               disabled={disabled}
-              required={required}
               {...rest} // Pasamos props adicionales
-
             />
           </LocalizationProvider>
         );

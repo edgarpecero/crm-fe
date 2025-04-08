@@ -14,7 +14,7 @@ import FormFooterLayout from './FormFooterLayout';
  * @param {PageActionsEnum} mode - The mode of the form (CREATE, UPDATE, READONLY, MODALREADONLY)
  * @param {React.ReactNode} children - The form fields and other components
  * @param {FormProps} formProps - The form properties including schema, service, and other options
- * @returns {JSX.Element} - The rendered form layout  
+ * @returns {JSX.Element} - The rendered form layout
  */
 
 interface ApiService<T> {
@@ -24,13 +24,18 @@ interface ApiService<T> {
 export interface FormProps<T extends BaseEntity, S extends z.ZodType<any, any, any>> {
   schema: S;
   service: ApiService<T>;
-  handleSubmitData?: (data: z.infer<S>, methods: UseFormReturn<z.TypeOf<S>, any, undefined>) => Promise<void>;
+  handleSubmitData?: (
+    data: z.infer<S>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    methods: UseFormReturn<z.TypeOf<S>, any, undefined>,
+  ) => Promise<void>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mapToRequest?: (data?: any) => any;
   id?: string;
   initialData?: T;
   title: string;
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface FormLayoutProps<T extends BaseEntity, S extends z.ZodType<any, any, any>> {
   mode: PageActionsEnum;
   children: React.ReactNode;
@@ -39,20 +44,10 @@ export interface FormLayoutProps<T extends BaseEntity, S extends z.ZodType<any, 
 
 export default function FormLayoutFormLayout<
   T extends BaseEntity,
-  S extends z.ZodType<any, any, any>
->({
-  mode,
-  children,
-  formProps,
-}: FormLayoutProps<T, S>) {
-  const {
-    schema,
-    id,
-    initialData,
-    service,
-    mapToRequest,
-    handleSubmitData,
-  } = formProps || {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  S extends z.ZodType<any, any, any>,
+>({ mode, children, formProps }: FormLayoutProps<T, S>) {
+  const { schema, id, initialData, service, mapToRequest, handleSubmitData } = formProps || {};
   const readonly = mode === PageActionsEnum.READONLY;
   const modalReadonly = mode === PageActionsEnum.MODALREADONLY;
   const defaultValues = mapToRequest ? mapToRequest(initialData) : initialData;

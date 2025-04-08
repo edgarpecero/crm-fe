@@ -14,12 +14,8 @@ interface UserDetailsContentProps {
   initialData?: User;
   id?: string;
   mode: PageActionsEnum;
-};
-export default function UserDetailsContent({
-  initialData,
-  mode,
-  id
-}: UserDetailsContentProps) {
+}
+export default function UserDetailsContent({ initialData, mode, id }: UserDetailsContentProps) {
   const { handleSubmitData } = useSubmitData<User, CreateUserRequest, UpdateUserRequest>({
     id,
     mode,
@@ -29,10 +25,9 @@ export default function UserDetailsContent({
 
   const isCreateMode = mode === PageActionsEnum.CREATE;
   const schema = isCreateMode ? createUserSchema : updateUserSchema;
-  const title =
-    isCreateMode
-      ? 'Registrar nuevo usuario'
-      : `Detalles del usuario: ${getUserFullname(initialData) || ''}`;
+  const title = isCreateMode
+    ? 'Registrar nuevo usuario'
+    : `Detalles del usuario: ${getUserFullname(initialData) || ''}`;
 
   const formProps = {
     handleSubmitData,

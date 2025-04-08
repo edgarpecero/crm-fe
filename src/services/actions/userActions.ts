@@ -63,4 +63,3 @@ export const updateUserAction = async (
 export const deleteUserAction = async (id: string): Promise<void> => {
   deleteAction(userService, id);
 };
-

@@ -5,8 +5,7 @@ import Content from '@/components/layout/PageLayout/Content';
 import MainStyled from '@/components/layout/PageLayout/MainStyled';
 import { getCurrentDate } from '@/helpers/utils';
 import useDrawerWidth from '@/hooks/useDrawerWidth';
-import { theme } from '@/styles/Theme';
-import { Box, Chip, Typography } from '@mui/material';
+import { Box, Chip } from '@mui/material';
 import { memo, PropsWithChildren, useCallback, useState } from 'react';
 
 const ClientLayout = ({ children }: PropsWithChildren) => {
@@ -28,14 +27,23 @@ const ClientLayout = ({ children }: PropsWithChildren) => {
         {/* TODO: Add select to change location */}
         <Box display={'flex'} justifyContent={'flex-end'} p={1}>
           <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} gap={2}>
-            <Chip label={'Pachuca'} color={"primary"} sx={{ fontSize: '1.2rem', fontWeight: 600 }} />
-            <Chip label={getCurrentDate()} color={"primary"} variant={'outlined'} sx={{ fontSize: '1.2rem', fontWeight: 600 }} />
+            <Chip
+              label={'Pachuca'}
+              color={'primary'}
+              sx={{ fontSize: '1.2rem', fontWeight: 600 }}
+            />
+            <Chip
+              label={getCurrentDate()}
+              color={'primary'}
+              variant={'outlined'}
+              sx={{ fontSize: '1.2rem', fontWeight: 600 }}
+            />
           </Box>
         </Box>
         {/* {children} */}
         <Content>{children}</Content>
-      </MainStyled >
-    </Box >
+      </MainStyled>
+    </Box>
   );
 };
 

@@ -1,8 +1,9 @@
 import { createApiService } from './createApiService';
-import { Inventory, ListInventoryResponse, InventoryRequest } from '@/types/inventory';
+import { Inventory, ListInventoryResponse, CreateInventoryRequest, UpdateInventoryRequest } from '@/types/inventory';
 
 export const inventoryService = createApiService<
   Inventory,
   ListInventoryResponse,
-  InventoryRequest
+  CreateInventoryRequest,
+  UpdateInventoryRequest
 >('/inventory');

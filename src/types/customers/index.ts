@@ -26,7 +26,7 @@ interface CustomerBase extends User {
 type Customer = CustomerBase & {
   workplace: CustomerWorkplace;
   beneficiary: CustomerBeneficiary;
-}
+};
 type CreateCustomerRequest = z.infer<typeof createCustomerSchema>;
 type UpdateCustomerRequest = z.infer<typeof updateCustomerSchema>;
 interface ListCustomersResponse {
@@ -34,9 +34,4 @@ interface ListCustomersResponse {
   count: number;
 }
 
-export type {
-  Customer,
-  ListCustomersResponse,
-  CreateCustomerRequest,
-  UpdateCustomerRequest,
-};
+export type { Customer, ListCustomersResponse, CreateCustomerRequest, UpdateCustomerRequest };

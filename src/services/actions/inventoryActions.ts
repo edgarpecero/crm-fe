@@ -1,15 +1,15 @@
 'use server';
 
-import { Inventory, InventoryRequest } from '@/types/inventory';
+import { CreateInventoryRequest, Inventory, UpdateInventoryRequest } from '@/types/inventory';
 import { inventoryService } from '../inventoryService';
 import { createAction, updateAction, deleteAction, ActionResponse } from './createApiActions';
 import { z } from 'zod';
 
 export const createInventoryAction = async (
-  data: InventoryRequest,
+  data: CreateInventoryRequest,
 ): Promise<ActionResponse<Inventory>> => {
   try {
-    const res = await createAction(inventoryService, processData(data));
+    const res = await createAction(inventoryService, data);
     return {
       success: true,
       message: 'Inventario creado con éxito',
@@ -33,11 +33,11 @@ export const createInventoryAction = async (
 };
 
 export const updateInventoryAction = async (
+  data: UpdateInventoryRequest,
   id: string,
-  data: InventoryRequest,
 ): Promise<ActionResponse<Inventory>> => {
   try {
-    const resp = await updateAction(inventoryService, id, processData(data));
+    const resp = await updateAction(inventoryService, id, data);
     return {
       success: true,
       message: 'Inventario actualizado con éxito',
@@ -73,9 +73,4 @@ export const deleteInventoryAction = async (id: string): Promise<ActionResponse<
       message: 'Error al eliminar el inventario ' + error,
     };
   }
-};
-
-const processData = (data: InventoryRequest): InventoryRequest => {
-  //TODO: Add logic to format data before sending
-  return data;
 };
