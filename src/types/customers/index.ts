@@ -1,23 +1,42 @@
 import { z } from 'zod';
 import { User } from '../users';
-import { customerSchema } from '@/helpers/schemas';
+import { createCustomerSchema, updateCustomerSchema } from '@/helpers/schemas';
+import { BasicContact } from '../BaseEntity';
 
-interface Customer extends User {
-  taxNumber: string;
-  licenseNumber: string;
-  licenseExpiration: string;
+interface CustomerBeneficiaryBase {
+  name: string;
+  lastName: string;
+  relationship: string;
+  birthdate: number;
 }
-type CreateCustomerRequest = z.infer<typeof customerSchema>;
-type UpdateCustomerRequest = z.infer<typeof customerSchema>;
-type CustomerRequest = z.infer<typeof customerSchema>;
+type CustomerBeneficiary = CustomerBeneficiaryBase & BasicContact;
+interface CustomerWorkplaceBase {
+  name: string;
+  startDate: string;
+  position: string;
+  salary: number;
+  otherIncome?: number;
+}
+type CustomerWorkplace = CustomerWorkplaceBase & BasicContact;
+
+interface CustomerBase extends User {
+  maritalStatus: string;
+  taxNumber: string;
+}
+type Customer = CustomerBase & {
+  workplace: CustomerWorkplace;
+  beneficiary: CustomerBeneficiary;
+}
+type CreateCustomerRequest = z.infer<typeof createCustomerSchema>;
+type UpdateCustomerRequest = z.infer<typeof updateCustomerSchema>;
 interface ListCustomersResponse {
   costumers: Customer[];
   count: number;
 }
+
 export type {
   Customer,
   ListCustomersResponse,
   CreateCustomerRequest,
   UpdateCustomerRequest,
-  CustomerRequest,
 };

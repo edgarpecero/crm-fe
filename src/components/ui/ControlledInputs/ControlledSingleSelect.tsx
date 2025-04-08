@@ -71,17 +71,17 @@ const ControlledSingleSelect = (props: ControlledSingleSelectProps) => {
               {...restField}
               slotProps={{
                 input: {
-                  endAdornment: !props.disabled && !!onSelectClear && value && (
-                    <IconButton
-                      sx={{ p: '10px', right: '8px' }}
-                      aria-label='clear'
-                      onClick={() => {
-                        onSelectClear(name);
-                      }}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  ),
+                  // endAdornment: !props.disabled && !!onSelectClear && value && (
+                  //   <IconButton
+                  //     sx={{ p: '10px', right: '8px' }}
+                  //     aria-label='clear'
+                  //     onClick={() => {
+                  //       onSelectClear(name);
+                  //     }}
+                  //   >
+                  //     <CloseIcon />
+                  //   </IconButton>
+                  // ),
                   inputComponent: ExpandMoreIcon,
                 }
               }}

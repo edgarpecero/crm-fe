@@ -173,23 +173,150 @@ export const updateUserRequestSchema = z.object({
 
 export const createOrderSchema = orderSchema;
 export const updateOrderSchema = orderSchema;
-export const createUserSchema = userSchema;
-export const updateUserSchema = userSchema;
-export const createCustomerSchema = customerSchema;
-export const updateCustomerSchema = customerSchema;
+// export const updateUserSchema = userSchema;
 export const createInventorySchema = inventorySchema;
 export const updateInventorySchema = inventorySchema;
 
-export type CreateUserSchema = z.infer<typeof createUserSchema>;
-export type UpdateUserSchema = z.infer<typeof updateUserSchema>;
-export type CreateCustomerSchema = z.infer<typeof createCustomerSchema>;
-export type UpdateCustomerSchema = z.infer<typeof updateCustomerSchema>;
 export type CreateInventorySchema = z.infer<typeof createInventorySchema>;
 export type UpdateInventorySchema = z.infer<typeof updateInventorySchema>;
 export type CreateOrderSchema = z.infer<typeof createOrderSchema>;
 export type UpdateOrderSchema = z.infer<typeof updateOrderSchema>;
 
 export type OrderSchema = z.infer<typeof orderSchema>;
-export type UserSchema = z.infer<typeof userSchema>;
 export type CustomerSchema = z.infer<typeof customerSchema>;
 export type InventorySchema = z.infer<typeof inventorySchema>;
+
+const required = true;
+const getStringSchema = (isRequired: boolean) => {
+  return isRequired
+    ? z.string()
+    : z.string().optional().nullable();
+}
+const getNumberSchema = (isRequired: boolean) => {
+  return isRequired
+    ? z.number() // Required number
+    : z.number().optional().nullable(); // Optional and nullable number
+}
+const getEmailSchema = (isRequired: boolean) => {
+  return isRequired
+    ? z.string().email() // Required email
+    : z.string().email().optional().nullable();
+}
+const getDateSchema = (isRequired: boolean) => {
+  return isRequired
+    ? z.preprocess(
+      (val) => (typeof val === 'string' ? parseISO(val) : val),
+      z.date().min(new Date('1901-01-01'))
+    )
+    : z.preprocess(
+      (val) => (typeof val === 'string' ? parseISO(val) : val),
+      z.date().min(new Date('1901-01-01')).optional().nullable()
+    );
+}
+const getCurrencySchema = (isRequired: boolean) => {
+  const baseSchema = z.number()
+    .min(0)            // Allows zero and positive numbers
+    .refine(
+      (val) => {
+        const decimals = val.toString().split('.')[1];
+        return !decimals || decimals.length <= 2;
+      },
+      { message: "Hasta 2 decimales permitidas." }
+    );
+
+  return isRequired
+    ? baseSchema
+    : baseSchema.optional().nullable();
+};
+
+const basicContactSchema = (isRequired = true) => {
+  const stringSchema = getStringSchema(isRequired); // Optional and nullable string
+  const stringEmailSchema = getEmailSchema(isRequired); // Optional nullable email
+
+  return z.object({
+    email: stringEmailSchema,
+    phone: stringSchema,
+    phoneSecondary: z.string().optional().nullable(),
+    address: stringSchema,
+    addressSecondary: stringSchema,
+    city: stringSchema,
+    state: stringSchema,
+    country: stringSchema,
+    zip: stringSchema,
+  });
+}
+
+const userBaseSchema = (isRequired = true) => {
+  // Base string schema: required or optional/nullable
+  const stringSchema = getStringSchema(isRequired);
+  const dateSchema = getDateSchema(isRequired);
+
+  return z.object({
+    username: stringSchema,
+    name: stringSchema,
+    lastName: stringSchema,
+    birthdate: dateSchema,
+  });
+}
+
+export const createUserSchema = z.object({
+  ...userBaseSchema(required).shape,
+  ...basicContactSchema(required).shape,
+});
+export const updateUserSchema = z.object({
+  ...userBaseSchema(!required).shape,
+  ...basicContactSchema(!required).shape,
+  status: z.string().optional().nullable(),
+});
+
+
+const customerBaseSchema = (isRequired = true) => {
+  const stringSchema = getStringSchema(isRequired);
+  const dateSchema = getDateSchema(isRequired);
+
+  return z.object({
+    name: stringSchema,
+    lastName: stringSchema,
+    maritalStatus: stringSchema,
+    nationalId: getStringSchema(false),
+    taxNumber: stringSchema,
+    birthdate: dateSchema,
+    ...basicContactSchema(isRequired).shape,
+  });
+}
+const customerBeneficiarySchema = (isRequired = true) => {
+  const stringSchema = getStringSchema(isRequired);
+  const dateSchema = getDateSchema(isRequired);
+  return z.object({
+    name: stringSchema,
+    lastName: stringSchema,
+    relationship: stringSchema,
+    birthdate: dateSchema,
+    ...basicContactSchema(isRequired).shape,
+  });
+}
+const customerWorkplaceSchema = (isRequired = true) => {
+  const stringSchema = getStringSchema(isRequired);
+  const dateSchema = getDateSchema(isRequired);
+  const numberSchema = getNumberSchema(isRequired);
+  return z.object({
+    name: stringSchema,
+    startDate: dateSchema,
+    position: stringSchema,
+    salary: numberSchema,
+    otherIncome: getNumberSchema(!isRequired),
+    ...basicContactSchema(isRequired).shape,
+  });
+}
+export const createCustomerSchema = z.object({
+  ...customerBaseSchema(required).shape,
+  workplace: z.object({ ...(customerWorkplaceSchema(required).shape) }),
+  beneficiary: z.object({ ...(customerBeneficiarySchema(required).shape) }),
+});
+console.log('customerBaseSchema: ', customerBeneficiarySchema(required).shape);
+export const updateCustomerSchema = z.object({
+  ...customerBaseSchema(!required).shape,
+  workplace: z.object({ ...(customerWorkplaceSchema(!required).shape) }),
+  beneficiary: z.object({ ...(customerBeneficiarySchema(!required).shape) }),
+  status: z.string().optional().nullable(),
+});

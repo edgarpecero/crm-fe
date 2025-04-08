@@ -1,15 +1,19 @@
 'use server';
 
-import { Customer, CustomerRequest } from '@/types/customers';
+import { Customer, CreateCustomerRequest, UpdateCustomerRequest } from '@/types/customers';
 import { customerService } from '../customerService';
 import { createAction, updateAction, deleteAction, ActionResponse } from './createApiActions';
 import { z } from 'zod';
 
 export const createCustomerAction = async (
-  data: CustomerRequest,
+  data: CreateCustomerRequest,
 ): Promise<ActionResponse<Customer>> => {
   try {
-    const res = await createAction(customerService, processData(data));
+    data.birthdate.toISOString();
+    data.workplace.startDate.toISOString();
+    data.beneficiary.birthdate.toISOString();
+    console.log('Data to submit:', data); 
+    const res = await createAction(customerService, data);
     return {
       success: true,
       message: 'Cliente creado con éxito',
@@ -33,11 +37,11 @@ export const createCustomerAction = async (
 };
 
 export const updateCustomerAction = async (
+  data: UpdateCustomerRequest,
   id: string,
-  data: CustomerRequest,
 ): Promise<ActionResponse<Customer>> => {
   try {
-    const resp = await updateAction(customerService, id, processData(data));
+    const resp = await updateAction(customerService, id, data);
     return {
       success: true,
       message: 'Cliente actualizado con éxito',
@@ -73,9 +77,4 @@ export const deleteCustomerAction = async (id: string): Promise<ActionResponse<v
       message: 'Error al eliminar el cliente ' + error,
     };
   }
-};
-
-const processData = (data: CustomerRequest): CustomerRequest => {
-  //TODO: Add logic to format data before sending
-  return data;
 };

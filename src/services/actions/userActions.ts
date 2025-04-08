@@ -1,13 +1,14 @@
 'use server';
 
-import { User, UserRequest } from '@/types/users';
+import { User, UpdateUserRequest, CreateUserRequest } from '@/types/users';
 import { userService } from '../userService';
 import { createAction, updateAction, deleteAction, ActionResponse } from './createApiActions';
 import { z } from 'zod';
 
-export const createUserAction = async (data: UserRequest): Promise<ActionResponse<User>> => {
+export const createUserAction = async (data: CreateUserRequest): Promise<ActionResponse<User>> => {
   try {
-    const res = await createAction(userService, processData(data));
+    data.birthdate.toISOString();
+    const res = await createAction(userService, data);
     return {
       success: true,
       message: 'Usuario creado con éxito',
@@ -31,11 +32,11 @@ export const createUserAction = async (data: UserRequest): Promise<ActionRespons
 };
 
 export const updateUserAction = async (
+  data: UpdateUserRequest,
   id: string,
-  data: UserRequest,
 ): Promise<ActionResponse<User>> => {
   try {
-    const resp = await updateAction(userService, id, processData(data));
+    const resp = await updateAction(userService, id, data);
 
     return {
       success: true,
@@ -63,7 +64,3 @@ export const deleteUserAction = async (id: string): Promise<void> => {
   deleteAction(userService, id);
 };
 
-const processData = (data: UserRequest): UserRequest => {
-  //TODO: Add logic to format data before sending
-  return data;
-};

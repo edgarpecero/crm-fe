@@ -23,7 +23,7 @@ function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
 
   const pageProps = { ..._pageProps };
   const dataGridHeaderProps = {
-    buttonProps: { text: 'Crear nuevo usuario', href: 'usuarios/crear' },
+    buttonProps: { text: 'Registrar nuevo usuario', href: 'usuarios/crear' },
     // handleSearch: () => { },
   };
   const dataGridProps = {
@@ -39,6 +39,7 @@ function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
       modalProps: {
         body: <UserDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
       },
+      
       onDeleteCb: async (user: User) => {
         await deleteUserAction(user.id);
         alert('Usuario removido exitosamente!');

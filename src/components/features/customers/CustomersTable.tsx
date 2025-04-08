@@ -23,7 +23,7 @@ function CustomersTable({ initialData }: { initialData: ListCustomersResponse })
 
   const pageProps = { ..._pageProps };
   const dataGridHeaderProps = {
-    buttonProps: { text: 'Dar de alta nuevo cliente', href: 'clientes/crear' },
+    buttonProps: { text: 'Registrar nuevo cliente', href: 'clientes/crear' },
     // handleSearch: () => { },
   };
   const dataGridProps = {

@@ -3,6 +3,7 @@ import { Order } from '@/types/orders';
 import { PageActionsEnum } from '@/types/enums';
 import { OrderSchema } from '@/helpers/schemas';
 import { getOptionsFromEnum } from '@/helpers/utils';
+import { add } from 'date-fns';
 
 export const defaultValues: OrderSchema = {
   userId: 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f',
@@ -78,12 +79,24 @@ export enum ReviewStatus {
   Rejected = "Rechazado"
 }
 
-export const userAttributesInputs = (
+
+
+
+//NEWERA
+const getPageModeFlags = (mode: PageActionsEnum) => {
+  return {
+    isCreate: mode === PageActionsEnum.CREATE,
+    isUpdate: mode === PageActionsEnum.UPDATE,
+    isModalView: mode === PageActionsEnum.MODALREADONLY,
+    isReadOnly: mode === PageActionsEnum.READONLY ||
+      mode === PageActionsEnum.MODALREADONLY,
+  };
+}
+export const baseInputs = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
   parent: string = '',
 ): InputsProps[] => {
-  const isReadOnly = mode === PageActionsEnum.READONLY || mode === PageActionsEnum.MODALREADONLY;
-  const isCreate = mode === PageActionsEnum.CREATE;
+  const { isReadOnly, isCreate } = getPageModeFlags(mode);
 
   return [
     {
@@ -102,12 +115,16 @@ export const userAttributesInputs = (
       inputType: ControlledInputType.select,
       items: getOptionsFromEnum(CustomerStatus)
     },
-    {
-      name: `${parent}username`,
-      label: 'Usuario',
-      required: isCreate,
-      disabled: isReadOnly,
-    },
+  ]
+}
+export const commonPersonaInputs = (
+  // 6 inputs
+  mode: PageActionsEnum = PageActionsEnum.CREATE,
+  parent: string = '',
+): InputsProps[] => {
+  const { isReadOnly, isCreate } = getPageModeFlags(mode);
+
+  return [
     {
       name: `${parent}name`,
       label: 'Nombre',
@@ -144,27 +161,20 @@ export const userAttributesInputs = (
       label: 'Teléfono secundario',
       disabled: isReadOnly,
     },
-    {
-      name: `${parent}nationalId`,
-      label: 'INE',
-      disabled: isReadOnly,
-    },
-    {
-      name: `${parent}taxNumber`,
-      label: 'RFC',
-      disabled: isReadOnly,
-    },
-    {
-      name: `${parent}licenseNumber`,
-      label: 'Número de licencia',
-      disabled: isReadOnly,
-    },
-    {
-      name: `${parent}licenseExpiration`,
-      label: 'Fecha de expiración de la licencia',
-      inputType: ControlledInputType.datePicker,
-      disabled: isReadOnly,
-    },
+  ];
+};
+// 4 inputs
+export const placeInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE, parent = '') =>
+  commonPersonaInputs(mode, parent)
+    .filter((input => !input.name.endsWith('lastName') && !input.name.endsWith('birthdate')));
+
+export const addressInputs = (
+  mode: PageActionsEnum = PageActionsEnum.CREATE,
+  parent: string = '',
+): InputsProps[] => {
+  // 6 inputs
+  const { isReadOnly, isCreate } = getPageModeFlags(mode);
+  return [
     {
       name: `${parent}address`,
       label: 'Dirección',
@@ -206,16 +216,141 @@ export const userAttributesInputs = (
   ];
 };
 
-//user inputs
-export const getUserInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  userAttributesInputs(mode).slice(0, 9);
 
-export const getUserAddressInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  userAttributesInputs(mode).slice(13, 19);
+const userFormInputs = (
+  mode: PageActionsEnum = PageActionsEnum.CREATE,
+  parent: string = '',
+): InputsProps[] => {
+  const { isReadOnly, isCreate } = getPageModeFlags(mode);
+  return [
+    ...baseInputs(mode, parent), // inputs 0 - 2
+    {
+      name: `${parent}username`,
+      label: 'Usuario',
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    ...commonPersonaInputs(mode, parent), // inputs 3 - 9 
+    ...addressInputs(mode, parent), // inputs 9 - 15
+  ];
+};
+
+const customerWorkplaceInputs = (
+  mode: PageActionsEnum = PageActionsEnum.CREATE,
+  parent: string = 'customer.',
+): InputsProps[] => {
+  // 14 inputs
+  const { isReadOnly, isCreate } = getPageModeFlags(mode);
+  const inputs = [
+    ...placeInputs(mode, parent), // inputs 0 - 4
+    {
+      name: `${parent}startDate`,
+      label: 'Fecha Inicio',
+      inputType: ControlledInputType.datePicker,
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}position`,
+      label: 'Puesto',
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}salary`,
+      label: 'Ingresos',
+      type: 'number',
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    {
+      name: `${parent}otherIncome`,
+      type: 'number',
+      label: 'Otros Ingresos',
+      disabled: isReadOnly,
+    },
+    ...addressInputs(mode, parent), // inputs 8 - 14
+  ]
+  inputs[0].label = 'Nombre o razón social';
+  return inputs;
+}
+const customerBeneficiaryInputs = (
+  mode: PageActionsEnum = PageActionsEnum.CREATE,
+  parent: string = 'customer.',
+): InputsProps[] => {
+  // 13 inputs
+  const { isReadOnly, isCreate } = getPageModeFlags(mode);
+  return [
+    ...commonPersonaInputs(mode, parent), // inputs 0 - 6
+    {
+      name: `${parent}relationship`,
+      label: 'Parentesco',
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    ...addressInputs(mode, parent), // inputs 6 - 12
+  ]
+}
+const customerFormInputs = (
+  mode: PageActionsEnum = PageActionsEnum.CREATE,
+  parent: string = '',
+): InputsProps[] => {
+  const { isReadOnly, isCreate } = getPageModeFlags(mode);
+  return [
+    ...baseInputs(mode, parent), // inputs 0 - 2
+    ...commonPersonaInputs(mode, parent), // inputs 2 - 8 
+    {
+      name: `${parent}maritalStatus`,
+      label: 'Estado Civil',
+      disabled: isReadOnly,
+      required: isCreate,
+    },
+    {
+      name: `${parent}taxNumber`,
+      label: 'RFC',
+      disabled: isReadOnly,
+      required: isCreate,
+    },
+    ...addressInputs(mode, parent), // inputs 10 - 16
+    // Customer Workplace
+    ...customerWorkplaceInputs(mode, 'workplace.'), // inputs 16 - 24
+    // Customer Beneficiary
+    ...customerBeneficiaryInputs(mode, 'beneficiary.'), // inputs 24 - 31
+  ];
+};
+//customer inputs
+export const getCustomerRequestInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) => {
+  const start = mode === PageActionsEnum.UPDATE ? 0 : 2;
+  return customerFormInputs(mode).slice(start, 10);
+}
+export const getCustomerAddressRequestInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
+  customerFormInputs(mode).slice(10, 16);
+export const getCustomerWorkplaceInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
+  customerFormInputs(mode).slice(16, 24);
+export const getCustomerWorkplaceAddressInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
+  customerFormInputs(mode).slice(24, 30);
+export const getCustomerBeneficiaryInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
+  customerFormInputs(mode).slice(30, 37);
+export const getCustomerBeneficiaryAddressInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
+  customerFormInputs(mode).slice(37);
+
+
+// export const getCustomerWorkplaceInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
+//   customerFormInputs(mode).slice(16, 20);
+export const getCustomerBeneficiaryRequestInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
+  customerFormInputs(mode).slice(24, 31);
+
+//user inputs
+export const getUserRequestInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) => {
+  const start = mode === PageActionsEnum.UPDATE ? 0 : 2;
+  return userFormInputs(mode).slice(start, 9);
+}
+export const getUserAddressRequestInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
+  userFormInputs(mode).slice(9, 15);
 
 //customer inputs
 export const getUserInputsForCustomerRequest = (mode: PageActionsEnum, parent = '') =>
-  userAttributesInputs(mode, parent)
+  userFormInputs(mode, parent)
     .slice(2, 11)
     .filter((input) => input.label !== 'Usuario')
     .map((input) => input.label === 'Número de usuario'
@@ -224,7 +359,7 @@ export const getUserInputsForCustomerRequest = (mode: PageActionsEnum, parent = 
     );
 
 export const getUserAddressInputsForCustomerRequest = (mode: PageActionsEnum) =>
-  userAttributesInputs(mode).slice(11, 19);
+  userFormInputs(mode).slice(11, 19);
 
 //order inputs
 export const getUserInputsForOrderRequest = (
@@ -233,7 +368,7 @@ export const getUserInputsForOrderRequest = (
 
 export const getUserAddressInputsForOrderRequest = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
-) => userAttributesInputs(mode, 'customer.').slice(11, 19);
+) => userFormInputs(mode, 'customer.').slice(11, 19);
 
 const commonInputProps = (isCreate: boolean, isReadOnly: boolean) => ({
   required: isCreate,
@@ -255,7 +390,7 @@ export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): 
       required: isCreate,
       disabled: isReadOnly,
     },
-    
+
     {
       name: 'totalPayments',
       label: 'Mens Pag',
@@ -673,10 +808,7 @@ export const transformOrderToOrderSchema = (initialOrder?: Order): OrderSchema =
       status: initialOrder.customer.status || 'ToValidate',
       country: initialOrder.customer.country,
       zip: initialOrder.customer.zip,
-      nationalId: initialOrder.customer.nationalId,
       taxNumber: initialOrder.customer.taxNumber,
-      licenseNumber: initialOrder.customer.licenseNumber,
-      licenseExpiration: new Date(initialOrder.customer.licenseExpiration),
     },
     dailyInterest: initialOrder.dailyInterest,
     description: initialOrder.description,

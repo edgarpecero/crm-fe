@@ -1,51 +1,45 @@
 'use client';
 
-import { User, UserRequest } from '@/types/users';
-import { useCallback } from 'react';
+import { UpdateUserRequest, User, CreateUserRequest } from '@/types/users';
 import { createUserAction, updateUserAction } from '@/services/actions/userActions';
 import { PageActionsEnum } from '@/types/enums';
 import UserFormBody from './UserForm/UserFormBody';
-import { userService } from '@/services/userService';
-import FormLayout, { FormProps } from '@/components/layout/FormLayout/FormLayout';
-import { userSchema } from '@/helpers/schemas';
+import { userService as service } from '@/services/userService';
+import FormLayout from '@/components/layout/FormLayout/FormLayout';
+import { createUserSchema, updateUserSchema } from '@/helpers/schemas';
 import { getUserFullname } from '@/helpers/utils';
+import useSubmitData from '@/hooks/useSubmitData';
 
-export type UserDetailsContentProps = {
+interface UserDetailsContentProps {
   initialData?: User;
   id?: string;
   mode: PageActionsEnum;
 };
-export default function UserDetailsContent({ initialData, mode, id }: UserDetailsContentProps) {
-  //TODO: FIX HERE
-  //eslint-disable-next-line
-  const createNewUser = useCallback(async (data: any) => {
-    // logic to format data before sending
-    return await createUserAction(data as UserRequest);
-  }, []);
+export default function UserDetailsContent({
+  initialData,
+  mode,
+  id
+}: UserDetailsContentProps) {
+  const { handleSubmitData } = useSubmitData<User, CreateUserRequest, UpdateUserRequest>({
+    id,
+    mode,
+    createRequestAction: createUserAction,
+    updateRequestAction: updateUserAction,
+  });
 
-  const updateUser = useCallback(
-    //eslint-disable-next-line
-    async (id: string, data: any) => {
-      // logic to format data before sending
-      // data.customerId = initialData.customerId;
-      return await updateUserAction(id, data);
-    },
-    [],
-  );
-
+  const isCreateMode = mode === PageActionsEnum.CREATE;
+  const schema = isCreateMode ? createUserSchema : updateUserSchema;
   const title =
-    mode === PageActionsEnum.CREATE
+    isCreateMode
       ? 'Registrar nuevo usuario'
       : `Detalles del usuario: ${getUserFullname(initialData) || ''}`;
 
-  const formProps: FormProps<User, UserRequest> = {
-    schema: userSchema,
-    service: userService,
-    // mapToRequest: (data?: User) => data as any,
-    createRequestAction: createNewUser,
-    updateRequestAction: updateUser,
-    id,
+  const formProps = {
+    handleSubmitData,
     initialData,
+    id,
+    service,
+    schema,
     title,
   };
 

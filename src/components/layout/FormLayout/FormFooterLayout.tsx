@@ -9,7 +9,7 @@ export default function FormFooterLayout() {
   const { mode, isPending } = useFormLayout();
   const {
     reset,
-    formState: { isDirty },
+    formState: { isDirty, isValid },
   } = useFormContext();
 
   return (
@@ -27,7 +27,7 @@ export default function FormFooterLayout() {
           Cancelar
         </Button>
         <Button
-          disabled={isPending}
+          disabled={!(isDirty && isValid) || isPending}
           variant='contained'
           size='large'
           type='submit'

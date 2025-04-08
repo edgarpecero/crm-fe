@@ -7,12 +7,10 @@ import {
   getContractInputsSectionOne,
   getContractInputsSectionTwo,
 } from '../../helpers';
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { PageActionsEnum } from '@/types/enums';
 import TitlePage from '@/components/layout/PageLayout/TitlePage';
 import TwoColumnsGrid from '@/components/layout/GridLayouts/TwoColumnsGrid';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CustomizedAccordions from '@/components/ui/CustomizedAccordion/CustomizedAccordion';
 import CustomizedAccordion from '@/components/ui/CustomizedAccordion/CustomizedAccordion';
 type OrderFormBodyProps = {
   title?: string;

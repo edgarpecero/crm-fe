@@ -42,14 +42,17 @@ interface Order extends BaseEntity {
   sixthPayment: number; //
   //  6TA
 }
-interface CustomerAditionalInfoRequest {
-  
-}
-interface CustomerOrderRequest {
+
+
+interface CustomerBeneficiaryBase {
   name: string;
-  lastName: string;
+  relationship: string;
+  age: number;
+}
+type CustomerBeneficiary = CustomerBeneficiaryBase & ContactDetails;
+
+interface ContactDetails {
   email: string;
-  birthdate: string;
   phone: string;
   phoneSecondary: string;
   address: string;
@@ -58,12 +61,32 @@ interface CustomerOrderRequest {
   state: string;
   country: string;
   zip: string;
-  maritalStatus: string;
 }
-interface Request {
+interface CustomerWorkplaceBase {
+  businessName: string;
+  startDate: string;
+  position: string;
+  salary: number;
+  otherIncome: number;
+}
+
+type CustomerWorkplace = CustomerWorkplaceBase & ContactDetails;
+interface CustomerRequestBase {
+  name: string; 
+  lastName: string;
+  birthdate: string;
+  maritalStatus: string;
+  taxNumber: string;
+}
+type CustomerRequest = CustomerRequestBase & ContactDetails & {
+  customerWorkplace: CustomerWorkplace;
+  customerBeneficiary: CustomerBeneficiary;
+}
+
+interface OrderRequestTwo {
   number: string;
   clientId?: string;
-  customer?: Customer;
+  customer?: CustomerRequest;
   itemId: string;
   userId: string;
   description: string;
@@ -71,6 +94,7 @@ interface Request {
   termMonths: number;
   initialPayment: number;
 }
+
 type OrderRequest = z.infer<typeof orderSchema>;
 type CreateOrderRequest = z.infer<typeof createOrderSchema>;
 type UpdateOrderRequest = z.infer<typeof updateOrderSchema>;

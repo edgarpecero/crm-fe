@@ -28,8 +28,8 @@ const ClientLayout = ({ children }: PropsWithChildren) => {
         {/* TODO: Add select to change location */}
         <Box display={'flex'} justifyContent={'flex-end'} p={1}>
           <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} gap={2}>
-            <Chip label={getCurrentDate()} color={"primary"} variant={'outlined'} sx={{ fontSize: '1.5rem', fontWeight: 600 }} />
-            <Chip label={'Pachuca'} color={"primary"} sx={{ fontSize: '1.5rem', fontWeight: 600 }} />
+            <Chip label={'Pachuca'} color={"primary"} sx={{ fontSize: '1.2rem', fontWeight: 600 }} />
+            <Chip label={getCurrentDate()} color={"primary"} variant={'outlined'} sx={{ fontSize: '1.2rem', fontWeight: 600 }} />
           </Box>
         </Box>
         {/* {children} */}

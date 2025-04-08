@@ -13,3 +13,15 @@ export interface BaseEntity {
   lastModifiedAt: string; // Timestamp of last modification (ISO 8601 string)
   lastModifiedBy: string; // Who last modified the order
 }
+
+export interface BasicContact {
+  email: string;
+  phone: string;
+  phoneSecondary: string;
+  address: string;
+  addressSecondary: string;
+  city: string;
+  state: string;
+  country: string;
+  zip: string;
+}

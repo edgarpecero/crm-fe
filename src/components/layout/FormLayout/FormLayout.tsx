@@ -2,62 +2,66 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FieldValues, FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, UseFormReturn } from 'react-hook-form';
 import { Box } from '@mui/material';
 import { PageActionsEnum } from '@/types/enums';
 import { BaseEntity } from '@/types/BaseEntity';
-import { ZodType } from 'zod';
+import { z } from 'zod';
 import FormFooterLayout from './FormFooterLayout';
-import { ActionResponse } from '@/services/actions/createApiActions';
-import { usePathname, useRouter } from 'next/navigation';
+
+/**
+ * FormLayout component
+ * @param {PageActionsEnum} mode - The mode of the form (CREATE, UPDATE, READONLY, MODALREADONLY)
+ * @param {React.ReactNode} children - The form fields and other components
+ * @param {FormProps} formProps - The form properties including schema, service, and other options
+ * @returns {JSX.Element} - The rendered form layout  
+ */
 
 interface ApiService<T> {
   getById(id: string): Promise<T>;
 }
-export interface FormProps<T, R> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  schema: any | ZodType<R>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface FormProps<T extends BaseEntity, S extends z.ZodType<any, any, any>> {
+  schema: S;
   service: ApiService<T>;
-  createRequestAction?: (data: R) => Promise<ActionResponse<T>>;
-  updateRequestAction: (id: string, data: R) => Promise<ActionResponse<T>>;
+  handleSubmitData?: (data: z.infer<S>, methods: UseFormReturn<z.TypeOf<S>, any, undefined>) => Promise<void>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mapToRequest?: (data?: any) => any;
   id?: string;
   initialData?: T;
   title: string;
 }
-export interface FormLayoutProps<T extends BaseEntity, R extends FieldValues> {
+export interface FormLayoutProps<T extends BaseEntity, S extends z.ZodType<any, any, any>> {
   mode: PageActionsEnum;
   children: React.ReactNode;
-  formProps: FormProps<T, R>;
+  formProps: FormProps<T, S>;
 }
 
-export default function FormLayout<T extends BaseEntity, R extends FieldValues>({
+export default function FormLayoutFormLayout<
+  T extends BaseEntity,
+  S extends z.ZodType<any, any, any>
+>({
   mode,
   children,
   formProps,
-}: FormLayoutProps<T, R>) {
+}: FormLayoutProps<T, S>) {
   const {
     schema,
     id,
     initialData,
     service,
     mapToRequest,
-    createRequestAction,
-    updateRequestAction,
+    handleSubmitData,
   } = formProps || {};
   const readonly = mode === PageActionsEnum.READONLY;
   const modalReadonly = mode === PageActionsEnum.MODALREADONLY;
   const defaultValues = mapToRequest ? mapToRequest(initialData) : initialData;
   const [isPending, startTransition] = useTransition();
-  const pathname = usePathname().split('/')[1];
-  const router = useRouter();
-  const methods = useForm<R>({
+  const methods = useForm<z.infer<S>>({
     resolver: zodResolver(schema),
+    mode: 'all',
     defaultValues,
   });
-
-  console.log(initialData)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,48 +79,13 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
     //eslint-disable-next-line
   }, []);
 
-
-  const handleSubmitOrder = useCallback(
-    async (data: R) => {
+  const onSubmit = useCallback(
+    async (data: z.infer<S>) => {
       startTransition(async () => {
-        if (mode === PageActionsEnum.CREATE && createRequestAction) {
-          console.log('Data:', data);
-          const response = await createRequestAction(data as R);
-          if (response.success && response.data) {
-            alert(response.message);
-            methods.reset();
-            router.push(`/${pathname}/${response.data.id}`);
-          } else if (response.errors) {
-            console.log('Errores de validación:', response.errors);
-          } else {
-            alert(response.message);
-          }
-        }
-
-        if (mode === PageActionsEnum.UPDATE && id) {
-          const response = await updateRequestAction(id, data as R);
-          if (response.success && response.data) {
-            alert(response.message);
-            //eslint-disable-next-line
-            methods.reset(response.data as any);
-          } else if (response.errors) {
-            console.log('Errores de validación:', response.errors);
-          } else {
-            alert(response.message);
-          }
-        }
+        handleSubmitData(data, methods);
       });
     },
-    [
-      startTransition,
-      mode,
-      methods,
-      id,
-      createRequestAction,
-      updateRequestAction,
-      router,
-      pathname,
-    ],
+    [startTransition, methods, handleSubmitData],
   );
   const contextValue = useMemo(() => ({ isPending, mode }), [isPending, mode]);
   return (
@@ -132,7 +101,7 @@ export default function FormLayout<T extends BaseEntity, R extends FieldValues>(
     >
       <FormProvider {...methods}>
         <form
-          onSubmit={methods.handleSubmit(handleSubmitOrder)}
+          onSubmit={methods.handleSubmit(onSubmit)}
           style={{
             display: 'flex',
             flexDirection: 'column',

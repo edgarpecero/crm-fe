@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
 import MuiAccordionSummary, {
   AccordionSummaryProps,
@@ -9,8 +9,31 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 
+interface CustomizedAccordionProps extends AccordionProps {
+  children: React.ReactNode;
+  summary: string
+  defaultExpanded?: boolean;
+}
+export default function CustomizedAccordion({
+  children,
+  summary,
+  defaultExpanded = true,
+  ...rest // Capture other AccordionProps
+}: CustomizedAccordionProps) {
+  return (
+    <Accordion defaultExpanded={defaultExpanded} {...rest}>
+      <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+        <Typography variant="h3" pl={2}>
+          {summary}
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails>{children}</AccordionDetails>
+    </Accordion>
+  );
+}
+
 const Accordion = styled((props: AccordionProps) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
+  <MuiAccordion disableGutters elevation={0} square {...props} sx={{ ...props.sx, mb: 2 }} />
 ))(() => ({
   '&:not(:last-child)': {
     borderBottom: 0,
@@ -22,58 +45,44 @@ const Accordion = styled((props: AccordionProps) => (
 
 const AccordionSummary = styled((props: AccordionSummaryProps) => (
   <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+    expandIcon={<ExpandLessIcon className="custom-expand-icon" sx={{ fontSize: '1.5rem' }} />}
     {...props}
   />
 ))(({ theme }) => ({
-  flexDirection: 'row-reverse',
-  border: `2px solid ${theme.palette.primary.light}`,
-  borderRadius: '8px', 
+  borderBottom: `2px solid ${theme.palette.grey[700]}`,
+  borderRadius: '8px 8px 0 0',
   transition: 'border-color 0.3s ease',
+
   [`&:hover`]: {
-    borderColor: theme.palette.primary.main,
+    borderBottomColor: theme.palette.primary.main,
+
+    [`& .custom-expand-icon`]: {
+      color: theme.palette.primary.main,
+      transform: 'scale(1.1)',
+      transition: 'color 0.3s ease, transform 0.3s ease',
+    },
   },
-  [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
-  {
-    transform: 'rotate(90deg)',
+
+  [`& .${accordionSummaryClasses.expandIconWrapper}`]: {
+    marginLeft: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+    transition: 'transform 0.2s ease',
   },
+
+  [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]: {
+    transform: 'rotate(180deg)',
+  },
+
   [`& .${accordionSummaryClasses.content}`]: {
-    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
+
   ...theme.applyStyles('dark', {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.grey[300],
   }),
 }));
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
+  padding: '32px 0 24px 0',
 }));
-
-interface CustomizedAccordionProps extends AccordionProps {
-  children: React.ReactNode;
-  summary: string
-}
-export default function CustomizedAccordion({
-  children,
-  summary,
-}: CustomizedAccordionProps) {
-  const [expanded, setExpanded] = React.useState<string | false>('panel1');
-
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-      setExpanded(newExpanded ? panel : false);
-    };
-
-  return (
-    <div>
-      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography variant='h3' pl={2}>{summary}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {children}
-        </AccordionDetails>
-      </Accordion>
-    </div>
-  );
-}
