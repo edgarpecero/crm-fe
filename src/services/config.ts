@@ -1,7 +1,10 @@
 import { EntityTypeEnum } from '@/types/BaseEntity';
 
-const API_BASE_URL = 'http://localhost:5000/api';
-// const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const currentUrl = window.location.href;
+const isLocalhost = currentUrl.includes('localhost');
+const API_BASE_URL = isLocalhost
+  ? process.env.NEXT_PUBLIC_API_URL_LOCAL
+  : process.env.NEXT_PUBLIC_API_URL; 
 
 const defaultHeaders = {
   'Content-Type': 'application/json',
