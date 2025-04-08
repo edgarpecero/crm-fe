@@ -1,7 +1,5 @@
 'use client';
 
-import { Customer } from '@/types/customers';
-import { PageActionsEnum } from '@/types/enums';
 import {
   getCustomerRequestInputs,
   getCustomerAddressRequestInputs,
@@ -13,47 +11,47 @@ import {
 import TitlePage from '@/components/layout/PageLayout/TitlePage';
 import TwoColumnsGrid from '@/components/layout/GridLayouts/TwoColumnsGrid';
 import CustomizedAccordion from '@/components/ui/CustomizedAccordion/CustomizedAccordion';
+import { FormBodyProps } from '@/components/layout/FormLayout/FormLayout';
 
-type CustomerFormBodyProps = {
-  title?: string;
-  initialCustomer?: Customer | null;
-  mode: PageActionsEnum;
-};
-
-export default function CustomerFormBody({ title, mode }: CustomerFormBodyProps) {
+export default function CustomerFormBody({
+  title,
+  mode,
+  defaultExpanded = true,
+  parentName,
+}: FormBodyProps) {
   return (
     <>
-      <TitlePage title={title} />
+      {title && <TitlePage title={title} />}
       {/* Customer */}
       <CustomizedAccordion
         summary='Datos del solicitante'
-        defaultExpanded={true}
+        defaultExpanded={defaultExpanded}
       >
         <TwoColumnsGrid
-          firstColInputs={getCustomerRequestInputs(mode)}
-          secondColInputs={getCustomerAddressRequestInputs(mode)}
+          firstColInputs={getCustomerRequestInputs(mode, parentName)}
+          secondColInputs={getCustomerAddressRequestInputs(mode, parentName)}
         />
       </CustomizedAccordion>
 
       {/* Workplace */}
       <CustomizedAccordion
         summary='Empresa o lugar de trabajo del solicitante o del representante'
-        defaultExpanded={true}
+        defaultExpanded={defaultExpanded}
       >
         <TwoColumnsGrid
-          firstColInputs={getCustomerWorkplaceInputs(mode)}
-          secondColInputs={getCustomerWorkplaceAddressInputs(mode)}
+          firstColInputs={getCustomerWorkplaceInputs(mode, parentName)}
+          secondColInputs={getCustomerWorkplaceAddressInputs(mode, parentName)}
         />
       </CustomizedAccordion>
 
       {/* Beneficiary */}
       <CustomizedAccordion
         summary='Datos del beneficiario'
-        defaultExpanded={true}
+        defaultExpanded={defaultExpanded}
       >
         <TwoColumnsGrid
-          firstColInputs={getCustomerBeneficiaryInputs(mode)}
-          secondColInputs={getCustomerBeneficiaryAddressInputs(mode)}
+          firstColInputs={getCustomerBeneficiaryInputs(mode, parentName)}
+          secondColInputs={getCustomerBeneficiaryAddressInputs(mode, parentName)}
         />
       </CustomizedAccordion>
     </>

@@ -124,6 +124,14 @@ interface FormContextType {
   isPending: boolean;
   mode: PageActionsEnum;
 }
+export interface FormBodyProps {
+  defaultExpanded?: boolean;
+  parentName?: string;
+  required?: boolean;
+  disbled?: boolean;
+  mode: PageActionsEnum;
+  title?: string;
+}
 const FormContext = createContext<FormContextType | undefined>(undefined);
 export function useFormLayout() {
   const context = useContext(FormContext);

@@ -80,7 +80,8 @@ export const theme = createTheme(
         light: '#FFF7D9',
       },
       common: {
-        black: 'rgba(0, 0, 0, 0.5)',
+        black: '#000000',
+        white: '#FFFFFF',
       },
       success: {
         main: '#3E972F',
@@ -493,7 +494,7 @@ theme.components = {
         },
         '& .MuiOutlinedInput-root': {
           '&.Mui-focused': {
-            borderColor: theme.palette.primary.light,
+            borderColor: theme.palette.primary.main,
           },
           '& fieldset': {
             borderWidth: 2,
@@ -501,7 +502,7 @@ theme.components = {
             borderColor: theme.palette.grey[500],
           },
           '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.primary.light,
+            borderColor: theme.palette.primary.main,
           },
           '&.Mui-disabled:hover .MuiOutlinedInput-notchedOutline': {
             borderColor: '#bdbdbd', // Borde gris en deshabilitado + hover

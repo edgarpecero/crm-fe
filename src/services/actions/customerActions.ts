@@ -12,7 +12,6 @@ export const createCustomerAction = async (
     data.birthdate.toISOString();
     data.workplace.startDate.toISOString();
     data.beneficiary.birthdate.toISOString();
-    console.log('Data to submit:', data); 
     const res = await createAction(customerService, data);
     return {
       success: true,

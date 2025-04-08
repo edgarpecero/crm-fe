@@ -1,14 +1,16 @@
 'use server';
 
-import { Order, OrderRequest } from '@/types/orders';
+import { Order, CreateOrderRequest, UpdateOrderRequest } from '@/types/orders';
 import { orderService } from '../orderService';
 import { createAction, updateAction, deleteAction, ActionResponse } from './createApiActions';
 import { z } from 'zod';
 
 // Interface específica para la respuesta de creación de orden
-export const createOrderAction = async (data: OrderRequest): Promise<ActionResponse<Order>> => {
+export const createOrderAction = async (data: CreateOrderRequest): Promise<ActionResponse<Order>> => {
   try {
-    const res = await createAction(orderService, processData(data));
+    data.saleDate = new Date();
+    data.saleDate.toISOString();
+    const res = await createAction(orderService, data);
     return {
       success: true,
       message: 'Orden creada con éxito',
@@ -32,8 +34,8 @@ export const createOrderAction = async (data: OrderRequest): Promise<ActionRespo
 };
 
 export const updateOrderAction = async (
+  data: UpdateOrderRequest,
   id: string,
-  data: OrderRequest,
 ): Promise<ActionResponse<Order>> => {
   try {
     const resp = await updateAction(orderService, id, data);
@@ -61,9 +63,4 @@ export const updateOrderAction = async (
 
 export const deleteOrderAction = async (id: string): Promise<void> => {
   deleteAction(orderService, id);
-};
-
-const processData = (data: OrderRequest): OrderRequest => {
-  //TODO: Add logic to format data before sending
-  return data;
 };

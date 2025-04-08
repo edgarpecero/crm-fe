@@ -1,62 +1,7 @@
 import { ControlledInputType, InputsProps } from '@/components/ui/GridInputs/types';
 import { Order } from '@/types/orders';
 import { PageActionsEnum } from '@/types/enums';
-import { OrderSchema } from '@/helpers/schemas';
 import { getOptionsFromEnum } from '@/helpers/utils';
-import { add } from 'date-fns';
-
-export const defaultValues: OrderSchema = {
-  userId: 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f',
-  userName: 'Admin',
-  itemName: 'Toyota Prius 2021',
-  itemId: 'Admin',
-  accumulatedAmount: 0,
-  actualContribution: 0,
-  advancedPayments: 0,
-  agreementNumber: '',
-  agreementType: '',
-  amountPaid: 0,
-  contracts: 0,
-  customer: {
-    id: '',
-    username: '',
-    name: '',
-    lastName: '',
-    email: '',
-    birthdate: new Date('2000-01-01'),
-    phone: '',
-    phoneSecondary: '',
-    address: '',
-    addressSecondary: '',
-    city: '',
-    state: '',
-    status: 'ToValidate',
-    country: '',
-    zip: '',
-    nationalId: '',
-    taxNumber: '',
-    licenseNumber: '',
-    licenseExpiration: new Date('2000-01-01'),
-  },
-  dailyInterest: 0,
-  description: '',
-  downPayment: 0,
-  excessAmount: 0,
-  fifthPayment: 0,
-  fourthPayment: 0,
-  interestRate: 0,
-  mark: '',
-  monthlyPayment: 0,
-  onTimePayments: 0,
-  overduePayments: 0,
-  saleDate: '',
-  secondPayment: 0,
-  sixthPayment: 0,
-  termMonths: 0,
-  thirdPayment: 0,
-  totalAmount: 0,
-  totalPayments: 0,
-};
 
 export enum CustomerStatus {
   ToValidate = "Por Validar",
@@ -78,7 +23,17 @@ export enum ReviewStatus {
   AcceptedWithIssue = "Aceptado con incidencia",
   Rejected = "Rechazado"
 }
-
+export enum TermMonths {
+  Sixty = "60 meses",
+  SeventyTwo = "72 meses",
+  EightyFour = "84 meses",
+  OneFourFou = "144 meses",
+}
+export enum CustomerType {
+ 
+  Individual = "Persona Física",
+  Moral = "Persona Moral"
+}
 
 
 
@@ -313,26 +268,26 @@ const customerFormInputs = (
     },
     ...addressInputs(mode, parent), // inputs 10 - 16
     // Customer Workplace
-    ...customerWorkplaceInputs(mode, 'workplace.'), // inputs 16 - 24
+    ...customerWorkplaceInputs(mode, `${parent}workplace.`), // inputs 16 - 24
     // Customer Beneficiary
-    ...customerBeneficiaryInputs(mode, 'beneficiary.'), // inputs 24 - 31
+    ...customerBeneficiaryInputs(mode, `${parent}beneficiary.`), // inputs 24 - 31
   ];
 };
 //customer inputs
-export const getCustomerRequestInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) => {
+export const getCustomerRequestInputs = (mode: PageActionsEnum, parentName?: string) => {
   const start = mode === PageActionsEnum.UPDATE ? 0 : 2;
-  return customerFormInputs(mode).slice(start, 10);
+  return customerFormInputs(mode, parentName).slice(start, 10);
 }
-export const getCustomerAddressRequestInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  customerFormInputs(mode).slice(10, 16);
-export const getCustomerWorkplaceInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  customerFormInputs(mode).slice(16, 24);
-export const getCustomerWorkplaceAddressInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  customerFormInputs(mode).slice(24, 30);
-export const getCustomerBeneficiaryInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  customerFormInputs(mode).slice(30, 37);
-export const getCustomerBeneficiaryAddressInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  customerFormInputs(mode).slice(37);
+export const getCustomerAddressRequestInputs = (mode: PageActionsEnum, parentName?: string) =>
+  customerFormInputs(mode, parentName).slice(10, 16);
+export const getCustomerWorkplaceInputs = (mode: PageActionsEnum, parentName?: string) =>
+  customerFormInputs(mode, parentName).slice(16, 24);
+export const getCustomerWorkplaceAddressInputs = (mode: PageActionsEnum, parentName?: string) =>
+  customerFormInputs(mode, parentName).slice(24, 30);
+export const getCustomerBeneficiaryInputs = (mode: PageActionsEnum, parentName?: string) =>
+  customerFormInputs(mode, parentName).slice(30, 37);
+export const getCustomerBeneficiaryAddressInputs = (mode: PageActionsEnum, parentName?: string) =>
+  customerFormInputs(mode, parentName).slice(37);
 
 
 // export const getCustomerWorkplaceInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
@@ -566,178 +521,107 @@ export const contractInputs2 = (mode: PageActionsEnum = PageActionsEnum.CREATE):
   const isCreate = mode === PageActionsEnum.CREATE;
   return [
     {
+      name: 'number',
+      label: 'Número de Contrato',
+      gridSize: { xs: 12, sm: 6 },
+      required: isCreate,
+      disabled: isReadOnly,
+    },
+    {
+      name: 'customerId',
+      label: 'Cliente',
+      ...commonInputProps(isCreate, isReadOnly),
+      disabled: isReadOnly,
+      required: false,
+      inputType: ControlledInputType.select,
+      items: []
+    },
+    {
+      name: 'userId',
+      label: 'Vendedor',
+      ...commonInputProps(isCreate, isReadOnly),
+      disabled: isReadOnly,
+      required: false,
+      inputType: ControlledInputType.select,
+      items: []
+    },
+    {
+      name: 'leader',
+      label: 'Lider',
+      ...commonInputProps(isCreate, isReadOnly),
+      disabled: isReadOnly,
+      required: false,
+      inputType: ControlledInputType.select,
+      items: []
+    },
+    {
+      name: 'productType',
+      label: 'Producto',
+      ...commonInputProps(isCreate, isReadOnly),
+      disabled: isReadOnly,
+      required: false,
+      inputType: ControlledInputType.select,
+      items: []
+    },
+    {
       name: 'totalAmount',
-      label: 'Saldo Mensual',
-      ...paymentInputCommonProps,
-      required: isCreate,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'totalPayments',
-      label: 'Mens Pag',
+      label: 'Importe',
       type: 'number',
-      gridSize: { xs: 12, sm: 3 },
-      required: isCreate,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'interestRate',
-      label: 'Tasa',
-      ...paymentInputCommonProps,
-      required: isCreate,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'onTimePayments',
-      label: 'Mens Punt',
-      type: 'number',
-      gridSize: { xs: 12, sm: 3 },
-      required: isCreate,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'termMonths',
-      label: '# No. Adjud',
-      ...paymentInputCommonProps,
-      required: isCreate,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'advancedPayments',
-      label: 'Mens Adela',
-      type: 'number',
-      gridSize: { xs: 12, sm: 3 },
-      required: isCreate,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'monthlyPayment',
-      label: 'Mensualidad',
-      type: 'number',
-      ...paymentInputCommonProps,
-      required: isCreate,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'overduePayments',
-      label: 'Mens Venci',
-      type: 'number',
-      gridSize: { xs: 12, sm: 3 },
-      required: isCreate,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'agreementNumber',
-      label: 'Convenio',
-      gridSize: { xs: 12, sm: 6 },
-      required: isCreate,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'agreementType',
-      label: 'Tipo de Convenio',
-      gridSize: { xs: 12, sm: 6 },
-      disabled: isReadOnly,
-    },
-    {
-      name: 'contracts',
-      label: 'Contratos',
-      type: 'number',
-      gridSize: { xs: 12, sm: 6 },
-      disabled: isReadOnly,
-    },
-
-    // New fields from OrderSchema
-    {
-      name: 'itemName',
-      label: 'Nombre del Ítem',
-      required: isCreate,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'amountPaid',
-      label: 'Monto Pagado',
-      type: 'number',
-      gridSize: { xs: 12, sm: 6 },
-      disabled: isReadOnly,
+      ...commonInputProps(isCreate, isReadOnly),
     },
     {
       name: 'description',
       label: 'Descripción',
-      disabled: isReadOnly,
+      ...commonInputProps(isCreate, isReadOnly),
       gridSize: { xs: 12, sm: 12 },
     },
     {
-      name: 'saleDate',
-      label: 'Fecha de Venta',
+      name: 'termMonths',
+      label: 'Plazo',
+      ...commonInputProps(isCreate, isReadOnly),
       disabled: isReadOnly,
+      required: false,
+      inputType: ControlledInputType.select,
+      items: getOptionsFromEnum(TermMonths)
     },
     {
-      name: 'accumulatedAmount',
-      label: 'Monto Acumulado',
+      name: 'initialPayment',
+      label: 'Pago inicial',
       type: 'number',
-      gridSize: { xs: 12, sm: 6 },
-      disabled: isReadOnly,
+      ...commonInputProps(isCreate, isReadOnly),
     },
-    {
-      name: 'actualContribution',
-      label: 'Contribución Actual',
-      type: 'number',
 
-      gridSize: { xs: 12, sm: 6 },
-      disabled: isReadOnly,
+
+    
+    {
+      name: 'monthlyPayment',
+      label: 'Mensualidad',
+      type: 'number',
+      ...commonInputProps(isCreate, isReadOnly),
     },
     {
-      name: 'dailyInterest',
-      label: 'Interés Diario',
+      name: 'openingFee',
+      label: 'Apertura',
       type: 'number',
-
-      gridSize: { xs: 12, sm: 6 },
-      disabled: isReadOnly,
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'paymentCount',
+      label: 'Pagos',
+      type: 'number',
+      ...commonInputProps(isCreate, isReadOnly),
     },
     {
       name: 'excessAmount',
-      label: 'Monto Excedente',
+      label: 'Excedente',
       type: 'number',
-
-      gridSize: { xs: 12, sm: 6 },
-      disabled: isReadOnly,
+      ...commonInputProps(isCreate, isReadOnly),
     },
     {
-      name: 'downPayment',
-      label: 'Pago Inicial',
-      ...paymentCommonProps,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'secondPayment',
-      label: 'Segundo Pago',
-      ...paymentCommonProps,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'thirdPayment',
-      label: 'Tercer Pago',
-      ...paymentCommonProps,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'fourthPayment',
-      label: 'Cuarto Pago',
-      ...paymentCommonProps,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'fifthPayment',
-      label: 'Quinto Pago',
-      ...paymentCommonProps,
-      disabled: isReadOnly,
-    },
-    {
-      name: 'sixthPayment',
-      label: 'Sexto Pago',
-      ...paymentCommonProps,
-      disabled: isReadOnly,
+      name: 'ordersCount',
+      label: 'No. Contratos',
+      type: 'number',
+      ...commonInputProps(isCreate, isReadOnly),
     },
   ];
 };
@@ -755,81 +639,6 @@ export enum OrdersTabsEnum {
   Details = 'General',
   Payments = 'Pagos',
 }
-
-export const customerDefaultValues = {
-  id: '',
-  username: '',
-  name: '',
-  lastName: '',
-  email: '',
-  birthdate: new Date('1990-01-01'),
-  phone: '',
-  phoneSecondary: '',
-  address: '',
-  addressSecondary: '',
-  city: '',
-  state: '',
-  status: 'ToValidate',
-  country: '',
-  zip: '',
-  nationalId: '',
-  taxNumber: '',
-  licenseNumber: '',
-  licenseExpiration: new Date(),
-}
-
-export const transformOrderToOrderSchema = (initialOrder?: Order): OrderSchema => {
-  if (!initialOrder) return defaultValues;
-  return {
-    userId: 'd7252b8e-124d-49d2-8fc1-bbf03a051d0f',
-    userName: 'Admin',
-    itemName: 'Toyota Prius 2021',
-    itemId: 'Admin',
-    accumulatedAmount: initialOrder.accumulatedAmount,
-    actualContribution: initialOrder.actualContribution,
-    advancedPayments: initialOrder.advancedPayments,
-    agreementNumber: initialOrder.agreementNumber,
-    agreementType: initialOrder.agreementType,
-    amountPaid: initialOrder.amountPaid,
-    contracts: initialOrder.contracts,
-    customer: {
-      id: initialOrder.customer.id,
-      username: initialOrder.customer.username,
-      name: initialOrder.customer.name,
-      lastName: initialOrder.customer.lastName,
-      email: initialOrder.customer.email,
-      birthdate: new Date(initialOrder.customer.birthdate),
-      phone: initialOrder.customer.phone,
-      phoneSecondary: initialOrder.customer.phoneSecondary,
-      address: initialOrder.customer.address,
-      addressSecondary: initialOrder.customer.addressSecondary,
-      city: initialOrder.customer.city,
-      state: initialOrder.customer.state,
-      status: initialOrder.customer.status || 'ToValidate',
-      country: initialOrder.customer.country,
-      zip: initialOrder.customer.zip,
-      taxNumber: initialOrder.customer.taxNumber,
-    },
-    dailyInterest: initialOrder.dailyInterest,
-    description: initialOrder.description,
-    downPayment: initialOrder.downPayment,
-    excessAmount: initialOrder.excessAmount,
-    fifthPayment: initialOrder.fifthPayment,
-    fourthPayment: initialOrder.fourthPayment,
-    interestRate: initialOrder.interestRate,
-    mark: initialOrder.mark,
-    monthlyPayment: initialOrder.monthlyPayment,
-    onTimePayments: initialOrder.onTimePayments,
-    overduePayments: initialOrder.overduePayments,
-    saleDate: initialOrder.saleDate,
-    secondPayment: initialOrder.secondPayment,
-    sixthPayment: initialOrder.sixthPayment,
-    termMonths: initialOrder.termMonths,
-    thirdPayment: initialOrder.thirdPayment,
-    totalAmount: initialOrder.totalAmount,
-    totalPayments: initialOrder.totalPayments,
-  };
-};
 
 export const inventoryInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): InputsProps[] => {
   const isReadOnly = mode === PageActionsEnum.READONLY || mode === PageActionsEnum.MODALREADONLY;
@@ -930,36 +739,22 @@ export const contractInputsNew = (mode: PageActionsEnum = PageActionsEnum.CREATE
   return [
     {
       name: 'totalAmount',
-      label: 'Fecha de inicio de contrato',
+      label: 'Saldo Mensual',
       ...paymentInputCommonProps,
       required: isCreate,
       disabled: isReadOnly,
-    },
-    {
-      name: `${parent}status`,
-      label: 'Estatus',
-      ...commonInputProps(isCreate, isReadOnly),
-      disabled: isCreate || isReadOnly,
-      required: false,
-      inputType: ControlledInputType.select,
-      items: getOptionsFromEnum(PaymentPlan)
-    },
-    {
-      name: `${parent}status`,
-      label: 'Estatus',
-      ...commonInputProps(isCreate, isReadOnly),
-      disabled: isCreate || isReadOnly,
-      required: false,
-      inputType: ControlledInputType.select,
-      items: getOptionsFromEnum(PaymentPlan)
     },
     {
       name: 'termMonths',
-      label: '# No. Adjud',
-      ...paymentInputCommonProps,
-      required: isCreate,
-      disabled: isReadOnly,
+      label: 'Plazo',
+      ...commonInputProps(isCreate, isReadOnly),
+      disabled: isCreate || isReadOnly,
+      required: false,
+      inputType: ControlledInputType.select,
+      items: getOptionsFromEnum(PaymentPlan)
     },
+
+
     {
       name: 'advancedPayments',
       label: 'Mens Adela',

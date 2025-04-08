@@ -1,53 +1,58 @@
 'use client';
 
-import { Order } from '@/types/orders';
 import {
-  getUserInputsForOrderRequest,
-  getUserAddressInputsForOrderRequest,
   getContractInputsSectionOne,
   getContractInputsSectionTwo,
 } from '../../helpers';
-import { Typography } from '@mui/material';
+import { FormControlLabel, Switch, Typography } from '@mui/material';
 import { PageActionsEnum } from '@/types/enums';
 import TitlePage from '@/components/layout/PageLayout/TitlePage';
 import TwoColumnsGrid from '@/components/layout/GridLayouts/TwoColumnsGrid';
-import CustomizedAccordion from '@/components/ui/CustomizedAccordion/CustomizedAccordion';
+import CustomerFormBody from '@/components/features/customers/details/CustomerForm/CustomerFormBody';
+import { useState } from 'react';
+import { theme } from '@/styles/Theme';
 type OrderFormBodyProps = {
   title?: string;
-  initialOrder?: Order | null;
   mode: PageActionsEnum;
 };
 
-export default function OrderFormBody({ title, initialOrder, mode }: OrderFormBodyProps) {
+export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
+  const [showClientForm, setShowClientForm] = useState(true);
+  function handleClick() {
+    setShowClientForm(true);
+  }
+
   return (
     <>
-      <TitlePage title={title || initialOrder?.number} />
-      {/* <CustomizedAccordions /> */}
-      <CustomizedAccordion
-        summary='Registrar nuevo cliente'
-      >
-        <TwoColumnsGrid
-          firstColInputs={getUserInputsForOrderRequest(mode)}
-          secondColInputs={getUserAddressInputsForOrderRequest(mode)}
-        />
-      </CustomizedAccordion>
-      {/* <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <Typography variant='h3' sx={{ p: '1.5rem 0' }}>
-            Registrar nuevo cliente
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <TwoColumnsGrid
-            firstColInputs={getUserInputsForOrderRequest(mode)}
-            secondColInputs={getUserAddressInputsForOrderRequest(mode)}
+      {title && <TitlePage title={title} />}
+
+      <FormControlLabel
+        sx={{ display: 'block' }}
+        control={
+          <Switch
+            checked={showClientForm}
+            onChange={() => setShowClientForm(!showClientForm)}
+            name="showClientForm"
+            color="primary"
           />
-        </AccordionDetails>
-      </Accordion> */}
+        }
+        labelPlacement='end'
+        slotProps={{
+          typography: {
+            variant: 'h3',
+            color: theme.palette.grey[700],
+          }
+        }}
+        label={'Registrar nuevo cliente'}
+      />
+      {/* <CustomizedAccordions /> */}
+      {showClientForm && (
+        <CustomerFormBody
+          mode={mode}
+          defaultExpanded={true}
+          required={false}
+        />
+      )}
 
       <Typography variant='h3' sx={{ p: '1.5rem 0', pl: 7 }}>
         Información adicional

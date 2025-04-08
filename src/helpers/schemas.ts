@@ -92,7 +92,7 @@ export const customerSchema = userSchema.extend({
   ),// Cambiado a opcional
 });
 
-export const orderSchema = z.object({
+export const orderSchema2 = z.object({
   accumulatedAmount: z.number().optional().nullable(), // ACUMULADO
   actualContribution: z.number().optional().nullable(), // AP REAL
   advancedPayments: z.number().int().nonnegative().optional().nullable(), // PAGOS ADELANTADOS
@@ -171,18 +171,12 @@ export const updateUserRequestSchema = z.object({
   maritalStatus: z.string().optional(),
 });
 
-export const createOrderSchema = orderSchema;
-export const updateOrderSchema = orderSchema;
 // export const updateUserSchema = userSchema;
 export const createInventorySchema = inventorySchema;
 export const updateInventorySchema = inventorySchema;
 
 export type CreateInventorySchema = z.infer<typeof createInventorySchema>;
 export type UpdateInventorySchema = z.infer<typeof updateInventorySchema>;
-export type CreateOrderSchema = z.infer<typeof createOrderSchema>;
-export type UpdateOrderSchema = z.infer<typeof updateOrderSchema>;
-
-export type OrderSchema = z.infer<typeof orderSchema>;
 export type CustomerSchema = z.infer<typeof customerSchema>;
 export type InventorySchema = z.infer<typeof inventorySchema>;
 
@@ -320,3 +314,28 @@ export const updateCustomerSchema = z.object({
   beneficiary: z.object({ ...(customerBeneficiarySchema(!required).shape) }),
   status: z.string().optional().nullable(),
 });
+
+const orderBaseSchema = (isRequired = true) => {
+  const stringSchema = getStringSchema(isRequired);
+  const numberSchema = getNumberSchema(isRequired);
+
+  return z.object({
+    productType: stringSchema,
+    totalAmount: numberSchema,
+    description: stringSchema,
+    termMonths: numberSchema,
+    initialPayment: numberSchema,
+    userId: stringSchema,
+    saleDate: getDateSchema(!required),
+  });
+}
+
+export const createOrderSchema = z.object({
+  ...orderBaseSchema(required).shape,
+  customerId: z.string(),
+  number: z.string(),
+});
+export const updateOrderSchema = z.object({
+  ...orderBaseSchema(!required).shape,
+});
+

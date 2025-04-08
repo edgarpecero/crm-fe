@@ -1,101 +1,36 @@
 import { BaseEntity } from '../BaseEntity';
 import { z } from 'zod';
-import { Customer } from '../customers';
-import { createOrderSchema, orderSchema, updateOrderSchema } from '@/helpers/schemas';
+import { createOrderSchema, updateOrderSchema } from '@/helpers/schemas';
 
 interface Order extends BaseEntity {
-  userId: string; // Vendedor
-  userName: string; // Vendedor
-  itemId: string; // Producto
-  itemName: string; // Producto
-  customerId: string; // Cliente
-  customerName: string; // Cliente
-  customer: Customer;
-  description: string; // Descripcion
-  totalAmount: number; // Monto
+  userFullname?: string;          // Nombre completo del vendedor
+  employeeManager?: string;       // Nombre del gerente
+  productType?: string;          // Tipo de producto
+  description?: string;          // Descripción de la venta
+  totalAmount?: number;          // Monto total
+  initialPayment?: number;       // Pago inicial
+  openingFee?: number;           // Comisión de apertura
+  excessAmount?: number;         // Monto excedente
+  monthlyPayment?: number;       // Pago mensual
+  termMonths?: number;          // Plazo en meses
+  saleDate?: string;            // Fecha de venta
+  customerName?: string;        // Nombre del cliente
 
-  initialPayment: number; // Pago INICIAL
-  openingPayment: number; // AP APERTURA
-
-  actualContribution: number; // AP REAL
-  downPayment: number; // ENGANCHE
-  excessAmount: number; // EXCEDENTE
-  monthlyPayment: number; // Mensual
-  termMonths: number; // PLAZO
-  saleDate: string; // Fecha de Vta (ISO 8601 string)
-  totalPayments: number; // PAGOS
-  onTimePayments: number; // PAGOS PUNTUAL (corrected from onTimePayment)
-  advancedPayments: number; // PAGOS ADELANTADOS
-  overduePayments: number; // PAGOS VENCIDOS
-  interestRate: number; // Tasa
-  agreementNumber: string; // agreementNumber (added)
-  agreementType: string; // agreementType (added)
-  contracts: number; // contracts (added)
-  mark: string; // mark (added)
-  secondPayment: number; // 2DA
-  dailyInterest: number; // INT DIARIO
-  accumulatedAmount: number; // ACUMULADO
-  amountPaid: number; // PAGADO
-  thirdPayment: number; // 3RA
-  fourthPayment: number; // 4TA
-  fifthPayment: number; // 5TA
-  sixthPayment: number; //
-  //  6TA
+  paymentCount?: number;         // Conteo de pagos
+  advancedPayments?: number;     // Pagos adelantados
+  onTimePayments?: number;       // Pagos puntuales
+  totalPayments?: number;        // Total de pagos
+  overduePayments?: number;      // Pagos atrasados
+  overdueDays?: number;         // Días de atraso
+  lateFee?: number;             // Multa por retraso
+  amountPaid?: number;          // Monto pagado
+  secondPayment?: number;       // Segundo pago
+  thirdPayment?: number;        // Tercer pago
+  fourthPayment?: number;       // Cuarto pago
+  fifthPayment?: number;        // Quinto pago
+  sixthPayment?: number;        // Sexto pago
 }
 
-
-interface CustomerBeneficiaryBase {
-  name: string;
-  relationship: string;
-  age: number;
-}
-type CustomerBeneficiary = CustomerBeneficiaryBase & ContactDetails;
-
-interface ContactDetails {
-  email: string;
-  phone: string;
-  phoneSecondary: string;
-  address: string;
-  addressSecondary: string;
-  city: string;
-  state: string;
-  country: string;
-  zip: string;
-}
-interface CustomerWorkplaceBase {
-  businessName: string;
-  startDate: string;
-  position: string;
-  salary: number;
-  otherIncome: number;
-}
-
-type CustomerWorkplace = CustomerWorkplaceBase & ContactDetails;
-interface CustomerRequestBase {
-  name: string; 
-  lastName: string;
-  birthdate: string;
-  maritalStatus: string;
-  taxNumber: string;
-}
-type CustomerRequest = CustomerRequestBase & ContactDetails & {
-  customerWorkplace: CustomerWorkplace;
-  customerBeneficiary: CustomerBeneficiary;
-}
-
-interface OrderRequestTwo {
-  number: string;
-  clientId?: string;
-  customer?: CustomerRequest;
-  itemId: string;
-  userId: string;
-  description: string;
-  totalAmount: number;
-  termMonths: number;
-  initialPayment: number;
-}
-
-type OrderRequest = z.infer<typeof orderSchema>;
 type CreateOrderRequest = z.infer<typeof createOrderSchema>;
 type UpdateOrderRequest = z.infer<typeof updateOrderSchema>;
 interface ListOrdersResponse {
@@ -103,4 +38,4 @@ interface ListOrdersResponse {
   count: number;
 }
 
-export type { Order, ListOrdersResponse, CreateOrderRequest, UpdateOrderRequest, OrderRequest };
+export type { Order, ListOrdersResponse, CreateOrderRequest, UpdateOrderRequest };
