@@ -1,6 +1,8 @@
 import { ControlledInputType, InputsProps } from '@/components/ui/GridInputs/types';
 import { PageActionsEnum } from '@/types/enums';
-import { getOptionsFromEnum } from '@/helpers/utils';
+import { getOptionsFromEnum, getPersonaSelectOptions } from '@/helpers/utils';
+import { User } from '@/types/users';
+import { Inventory } from '@/types/inventory';
 
 export enum CustomerStatus {
   ToValidate = 'Por Validar',
@@ -22,11 +24,10 @@ export enum ReviewStatus {
   AcceptedWithIssue = 'Aceptado con incidencia',
   Rejected = 'Rechazado',
 }
-export enum TermMonths {
-  Sixty = '60 meses',
-  SeventyTwo = '72 meses',
-  EightyFour = '84 meses',
-  OneFourFou = '144 meses',
+export enum ProductType {
+  Vehicle = 'Auto',
+  Motorcycle = 'Moto',
+  PIM = 'PIM',
 }
 export enum CustomerType {
   Individual = 'Persona Física',
@@ -38,6 +39,28 @@ export enum EmployeeType {
   Gerente = 'Gerente',
   Admin = 'Admin',
 }
+export const termMonthOptions = [
+  {
+    label: '60 meses',
+    value: 60,
+    percentage: 0.0273,
+  },
+  {
+    label: '72 meses',
+    value: 72,
+    percentage: 0.0263,
+  },
+  {
+    label: '84 meses',
+    value: 84,
+    percentage: 0.0253,
+  },
+  {
+    label: '144 meses',
+    value: 144,
+    percentage: 0.0253,
+  }
+];
 
 //NEWERA
 const getPageModeFlags = (mode: PageActionsEnum) => {
@@ -353,7 +376,7 @@ const commonInputProps = (isCreate: boolean, isReadOnly: boolean) => ({
 const paymentCommonProps = { gridSize: { xs: 12, sm: 6 }, disabled: false, type: 'number' };
 const paymentInputCommonProps = { gridSize: { xs: 12, sm: 9 }, required: true, type: 'number' };
 
-export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): InputsProps[] => {
+export const contractInputs3 = (mode: PageActionsEnum = PageActionsEnum.CREATE): InputsProps[] => {
   const isReadOnly = mode === PageActionsEnum.READONLY || mode === PageActionsEnum.MODALREADONLY;
   const isCreate = mode === PageActionsEnum.CREATE;
   return [
@@ -535,9 +558,47 @@ export const contractInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE): 
   ];
 };
 
-export const contractInputs2 = (mode: PageActionsEnum = PageActionsEnum.CREATE): InputsProps[] => {
+export const bussinessFormulas = {
+  openingFee: (totalAmount: number) => {
+    if (totalAmount < 1000) return;
+    const fee = totalAmount > 300000 ? 4000 : 3000;
+    const openingFee = totalAmount * 0.03 + fee;
+    return (openingFee).toFixed(2);
+  },
+  monthlyPayment: (totalAmount: number, termMonths: number) => {
+    if (totalAmount < 1000) return;
+    const percentage = termMonthOptions.find((option) => option.value === termMonths)?.percentage;
+    const monthlyPayment = totalAmount * percentage;
+    return monthlyPayment.toFixed(2);
+  },
+  excessAmount: (totalAmount: number, initialPayment: number) => {
+    const fee = totalAmount > 300000 ? 4000 : 3000;
+    const openingFee = totalAmount * 0.03 + fee;
+    return (initialPayment - openingFee).toFixed(2);
+  },
+  paymentCount: (totalAmount: number, termMonths: number, initialPayment: number) => {
+    const fee = totalAmount > 300000 ? 4000 : 3000;
+    const openingFee = totalAmount * 0.03 + fee;
+    const percentage = termMonthOptions.find((option) => option.value === termMonths)?.percentage;
+    const monthlyPayment = totalAmount * percentage;
+
+    if (initialPayment < openingFee) {
+      return (initialPayment / openingFee).toFixed(2);
+    } else {
+      const rest = initialPayment - openingFee;
+      const pagosMensualidades = rest / monthlyPayment;
+      return (1 + pagosMensualidades).toFixed(2);
+    }
+  },
+}
+
+export const contractInputs = (
+  mode: PageActionsEnum = PageActionsEnum.CREATE,
+  users: User[]
+): InputsProps[] => {
   const isReadOnly = mode === PageActionsEnum.READONLY || mode === PageActionsEnum.MODALREADONLY;
   const isCreate = mode === PageActionsEnum.CREATE;
+  const readonly = true;
   return [
     {
       name: 'number',
@@ -547,28 +608,28 @@ export const contractInputs2 = (mode: PageActionsEnum = PageActionsEnum.CREATE):
       disabled: isReadOnly,
     },
     {
-      name: 'customerId',
-      label: 'Cliente',
-      ...commonInputProps(isCreate, isReadOnly),
-      required: false,
-      inputType: ControlledInputType.select,
-      items: [],
-    },
-    {
       name: 'userId',
       label: 'Vendedor',
       ...commonInputProps(isCreate, isReadOnly),
       required: false,
       inputType: ControlledInputType.select,
-      items: [],
+      items: getPersonaSelectOptions(users),
     },
     {
-      name: 'employeeLeader',
+      name: 'employeeLeaderId',
       label: 'Lider',
       ...commonInputProps(isCreate, isReadOnly),
       required: false,
       inputType: ControlledInputType.select,
-      items: [],
+      items: getPersonaSelectOptions(users),
+    },
+    {
+      name: 'employeeManagerId',
+      label: 'Gerente',
+      ...commonInputProps(isCreate, isReadOnly),
+      required: false,
+      inputType: ControlledInputType.select,
+      items: getPersonaSelectOptions(users),
     },
     {
       name: 'productType',
@@ -576,11 +637,27 @@ export const contractInputs2 = (mode: PageActionsEnum = PageActionsEnum.CREATE):
       ...commonInputProps(isCreate, isReadOnly),
       required: false,
       inputType: ControlledInputType.select,
-      items: [],
+      items: getOptionsFromEnum(ProductType),
     },
     {
       name: 'totalAmount',
       label: 'Importe',
+      type: 'number',
+      ...commonInputProps(isCreate, isReadOnly),
+    },
+    {
+      name: 'termMonths',
+      label: 'Plazo',
+      ...commonInputProps(isCreate, isReadOnly),
+      disabled: isReadOnly,
+      required: false,
+      inputType: ControlledInputType.select,
+      items: termMonthOptions,
+    },
+
+    {
+      name: 'initialPayment',
+      label: 'Pago inicial',
       type: 'number',
       ...commonInputProps(isCreate, isReadOnly),
     },
@@ -591,62 +668,58 @@ export const contractInputs2 = (mode: PageActionsEnum = PageActionsEnum.CREATE):
       gridSize: { xs: 12, sm: 12 },
     },
     {
-      name: 'termMonths',
-      label: 'Plazo',
-      ...commonInputProps(isCreate, isReadOnly),
-      disabled: isReadOnly,
-      required: false,
-      inputType: ControlledInputType.select,
-      items: getOptionsFromEnum(TermMonths),
+      name: 'location',
+      label: 'Sucursal',
+      ...commonInputProps(!readonly, readonly),
     },
     {
-      name: 'initialPayment',
-      label: 'Pago inicial',
-      type: 'number',
-      ...commonInputProps(isCreate, isReadOnly),
+      name: 'saleDate',
+      label: 'Fecha de venta',
+      inputType: ControlledInputType.datePicker,
+      ...commonInputProps(!readonly, readonly),
     },
-
     {
       name: 'monthlyPayment',
       label: 'Mensualidad',
       type: 'number',
-      ...commonInputProps(isCreate, isReadOnly),
+      ...commonInputProps(!readonly, readonly),
     },
     {
       name: 'openingFee',
       label: 'Apertura',
       type: 'number',
-      ...commonInputProps(isCreate, isReadOnly),
+      ...commonInputProps(!readonly, readonly),
     },
     {
       name: 'paymentCount',
       label: 'Pagos',
       type: 'number',
-      ...commonInputProps(isCreate, isReadOnly),
+      ...commonInputProps(!readonly, readonly),
     },
     {
       name: 'excessAmount',
       label: 'Excedente',
       type: 'number',
-      ...commonInputProps(isCreate, isReadOnly),
+      ...commonInputProps(!readonly, readonly),
     },
     {
-      name: 'ordersCount',
+      name: 'customer.orderCount',
       label: 'No. Contratos',
       type: 'number',
-      ...commonInputProps(isCreate, isReadOnly),
+      ...commonInputProps(!readonly, readonly),
     },
   ];
 };
 
-export const getContractInputsSectionOne = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  contractInputs(mode).slice(0, 8);
-export const getContractInputsSectionTwo = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  contractInputs(mode).slice(8, 11);
-export const getAddInfoInputs1 = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  contractInputs(mode).slice(12, 20);
-export const getAddInfoInputs2 = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  contractInputs(mode).slice(20);
+
+// export const getContractInputsSectionOne = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
+//   contractInputs(mode).slice(0, 8);
+// export const getContractInputsSectionTwo = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
+//   contractInputs(mode).slice(8, 11);
+// export const getAddInfoInputs1 = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
+//   contractInputs(mode).slice(12, 20);
+// export const getAddInfoInputs2 = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
+//   contractInputs(mode).slice(20);
 
 export enum OrdersTabsEnum {
   Details = 'General',
@@ -907,3 +980,4 @@ export const contractInputsNew = (
     },
   ];
 };
+

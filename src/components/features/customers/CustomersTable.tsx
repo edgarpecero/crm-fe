@@ -12,12 +12,13 @@ import { useQueryData } from '@/hooks/useQueryData';
 import { PageActionsEnum } from '@/types/enums';
 import CustomerDetailsContent from './details/CustomerDetailsContent';
 import { deleteCustomerAction } from '@/services/actions/customerActions';
+import { useQuery } from '@tanstack/react-query';
 
 function CustomersTable({ initialData }: { initialData: ListCustomersResponse }) {
-  const gridMethods = useQueryData<ListCustomersResponse>({
-    queryKey: QueryKeysEnum.CUSTOMERS,
-    fetchFn: () => customerService.getAll(),
-    initialData,
+  const gridMethods = useQuery<ListCustomersResponse>({
+    queryKey: [QueryKeysEnum.CUSTOMERS],
+    queryFn: () => customerService.getAll(),
+    gcTime: 0,
   });
   const { data, ..._pageProps } = gridMethods;
 

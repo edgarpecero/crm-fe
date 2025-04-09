@@ -7,7 +7,7 @@ interface CustomerBeneficiaryBase {
   name: string;
   lastName: string;
   relationship: string;
-  birthdate: number;
+  birthdate: string;
 }
 type CustomerBeneficiary = CustomerBeneficiaryBase & BasicContact;
 interface CustomerWorkplaceBase {
@@ -22,6 +22,7 @@ type CustomerWorkplace = CustomerWorkplaceBase & BasicContact;
 interface CustomerBase extends User {
   maritalStatus: string;
   taxNumber: string;
+  orderCount?: number;
 }
 type Customer = CustomerBase & {
   workplace: CustomerWorkplace;

@@ -29,6 +29,10 @@ export const getCurrentDate = (): string => {
 export const getRowId = (row: GridRowParams) => row.id;
 
 /* FORMATTERS */
+export const getPersonaSelectOptions = <T extends { name: string, lastName: string, id: string}>(data: T[]) => data.map((item: T) => ({
+  label: `${item.name} ${item.lastName}`,
+  value: item.id
+}));
 export const getUserFullname = (user: User) => `${user.name} ${user.lastName}`;
 const extractNumberFromString = (str: string) => {
   // Regular expression to match a number (including decimal numbers)

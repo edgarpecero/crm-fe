@@ -76,6 +76,7 @@ export default function FormLayoutFormLayout<
 
   const onSubmit = useCallback(
     async (data: z.infer<S>) => {
+      // console.log('Form submitted:', data);
       startTransition(async () => {
         handleSubmitData(data, methods);
       });

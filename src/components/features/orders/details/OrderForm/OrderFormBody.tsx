@@ -1,55 +1,167 @@
 'use client';
 
-import { getContractInputsSectionOne, getContractInputsSectionTwo } from '../../helpers';
-import { FormControlLabel, Switch, Typography } from '@mui/material';
+import { bussinessFormulas, contractInputs, termMonthOptions } from '../../helpers';
+import { Box, Divider, Typography, } from '@mui/material';
 import { PageActionsEnum } from '@/types/enums';
 import TitlePage from '@/components/layout/PageLayout/TitlePage';
 import TwoColumnsGrid from '@/components/layout/GridLayouts/TwoColumnsGrid';
 import CustomerFormBody from '@/components/features/customers/details/CustomerForm/CustomerFormBody';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { theme } from '@/styles/Theme';
+import TwoColumnsLayout from '@/components/layout/GridLayouts/TwoColumnsLayout';
+import { LinkButton } from '@/components/ui/Buttons/LinkButton';
+import ControlledSingleSelect from '@/components/ui/ControlledInputs/ControlledSingleSelect';
+import { useFormContext } from 'react-hook-form';
+import { QueryKeysEnum } from '@/services/config';
+import { userService } from '@/services/userService';
+import { useQueryData } from '@/hooks/useQueryData';
+import { ListUsersResponse } from '@/types/users';
+import { ListCustomersResponse } from '@/types/customers';
+import { customerService } from '@/services/customerService';
+import { getPersonaSelectOptions } from '@/helpers/utils';
 type OrderFormBodyProps = {
   title?: string;
   mode: PageActionsEnum;
 };
-
+const { openingFee, monthlyPayment, excessAmount, paymentCount } = bussinessFormulas;
 export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
-  const [showClientForm, setShowClientForm] = useState(true);
+  const userDataQuery = useQueryData<ListUsersResponse>({
+    queryKey: QueryKeysEnum.USERS,
+    fetchFn: () => userService.getAll(),
+  });
+  const { data: userData } = userDataQuery;
+  const customerDataQuery = useQueryData<ListCustomersResponse>({
+    queryKey: QueryKeysEnum.CUSTOMERS,
+    fetchFn: () => customerService.getAll(),
+  });
+  const { data: customerData } = customerDataQuery;
+
+  const { control, watch, reset, setValue } = useFormContext();
+  const userId = watch('userId');
+  const customerId = watch('customerId');
+  const totalAmount = watch('totalAmount');
+  const termMonths = watch('termMonths');
+  const initialPayment = watch('initialPayment');
+  const employeeManagerId = watch('employeeManagerId');
+  const employeeLeaderId = watch('employeeLeaderId');
+
+  useEffect(() => {
+    setValue('openingFee', openingFee(totalAmount));
+    setValue('monthlyPayment', monthlyPayment(totalAmount, termMonths));
+    setValue('excessAmount', excessAmount(totalAmount, initialPayment));
+    setValue('paymentCount', paymentCount(totalAmount, termMonths, initialPayment));
+  }, [totalAmount, termMonths, initialPayment]);
+  useEffect(() => {
+    if (customerId) {
+      getCustomerDetails();
+    }
+  }, [customerId]);
+  useEffect(() => {
+    if (userId) {
+      setValue('userName', users
+        .find((user) => user.id === userId)?.name,
+        { shouldValidate: true }
+      );
+    }
+  }, [userId, setValue]);
+  useEffect(() => {
+    if (employeeLeaderId) {
+      setValue('employeeLeader', users
+        .find((user) => user.id === employeeLeaderId)?.name,
+        { shouldValidate: true }
+      );
+    }
+  }, [employeeLeaderId, setValue]);
+  useEffect(() => {
+    if (employeeManagerId) {
+      setValue('employeeManager', users
+        .find((user) => user.id === employeeManagerId)?.name,
+        { shouldValidate: true }
+      );
+    }
+  }, [employeeManagerId, setValue]);
+
+  const users = userData?.users || [];
+  const _mode = customerId ? mode : PageActionsEnum.READONLY;
+
+  const getCustomerDetails = async () => {
+    try {
+      const customer = await customerService.getById(customerId);
+      if (customer) {
+        reset({
+          customerId: customer.id,
+          customerName: customer.name + ' ' + customer.lastName,
+          termMonths: termMonthOptions[0].value,
+          saleDate: new Date(),
+          location: 'Pachuca',
+          customer: { ...customer, orderCount: customer?.orderCount || 0 },
+        });
+      }
+    } catch {
+      // enqueueSnackbar(genericErrorMessage, {
+      //   variant: 'error',
+      // });
+    } finally {
+      // setLoading(false);
+    }
+  };
 
   return (
     <>
       {title && <TitlePage title={title} />}
+      {!customerId && mode === PageActionsEnum.CREATE
+        ?
 
-      <FormControlLabel
-        sx={{ display: 'block' }}
-        control={
-          <Switch
-            checked={showClientForm}
-            onChange={() => setShowClientForm(!showClientForm)}
-            name='showClientForm'
-            color='primary'
+        <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          {/* Select or Create User */}
+          <TwoColumnsLayout
+            title1='Selecciona un Cliente'
+            title2='Registra un nuevo Cliente'
+            spacing={2}
+            contentOne={
+              <ControlledSingleSelect
+                control={control}
+                name='customerId'
+                label='Cliente'
+                items={getPersonaSelectOptions(customerData?.costumers || [])}
+                placeholder='Selecciona un cliente'
+                required={true}
+                sx={{ width: '80%', height: '100%' }}
+              />
+            }
+            contentTwo={
+              <LinkButton
+                text='Registrar'
+                href='/clientes/crear?order=true'
+                color='primary'
+                size='large'
+                sx={{ width: '80%', height: '100%' }}
+              />
+            }
           />
-        }
-        labelPlacement='end'
-        slotProps={{
-          typography: {
-            variant: 'h3',
-            color: theme.palette.grey[700],
-          },
-        }}
-        label={'Registrar nuevo cliente'}
-      />
-      {/* <CustomizedAccordions /> */}
-      {showClientForm && <CustomerFormBody mode={mode} defaultExpanded={true} required={false} />}
+        </Box>
+        :
+        <>
+          {/* Create Order Form */}
+          <CustomerFormBody
+            mode={PageActionsEnum.READONLY}
+            defaultExpanded={false}
+            required={false}
+            parentName='customer.'
+          />
 
-      <Typography variant='h3' sx={{ p: '1.5rem 0', pl: 7 }}>
-        Información adicional
-      </Typography>
+          <Divider sx={{ my: 6, border: 4, color: theme.palette.primary.main }} />
 
-      <TwoColumnsGrid
-        firstColInputs={getContractInputsSectionOne(mode)}
-        secondColInputs={getContractInputsSectionTwo(mode)}
-      />
+          <Typography variant='h3' sx={{ p: '1.5rem 0', pl: 4 }}>
+            Datos del pago
+          </Typography>
+
+          <TwoColumnsGrid
+            firstColInputs={contractInputs(_mode, users).slice(0, 9)}
+            secondColInputs={contractInputs(_mode, users).slice(9)}
+          />
+        </>
+      }
     </>
   );
 }

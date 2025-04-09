@@ -16,6 +16,8 @@ import { BaseEntity } from '@/types/BaseEntity';
 interface UseSubmitDataProps<T extends BaseEntity, C, U> {
   id?: string;
   mode: PageActionsEnum;
+  afterCreateRoute?: string;
+  afterUpdateRoute?: string;
   createRequestAction?: (data: C) => Promise<ActionResponse<T>>;
   updateRequestAction?: (data: U, id: string) => Promise<ActionResponse<T>>;
 }
@@ -23,6 +25,7 @@ interface UseSubmitDataProps<T extends BaseEntity, C, U> {
 function useSubmitData<T extends BaseEntity, C, U>({
   id,
   mode,
+  afterCreateRoute,
   createRequestAction,
   updateRequestAction,
 }: UseSubmitDataProps<T, C, U>) {
@@ -37,7 +40,8 @@ function useSubmitData<T extends BaseEntity, C, U>({
         if (response.success && response.data) {
           alert(response.message);
           methods.reset();
-          router.push(`/${pathname}/${response.data.id}`);
+          const route = afterCreateRoute || `/${pathname}/${response.data.id}`;
+          router.push(route);
         } else if (response.errors) {
           console.log('Errores de validación:', response.errors);
         } else {
@@ -57,7 +61,7 @@ function useSubmitData<T extends BaseEntity, C, U>({
         }
       }
     },
-    [mode, createRequestAction, updateRequestAction, id, pathname, router],
+    [mode, createRequestAction, updateRequestAction, id, pathname, router, afterCreateRoute],
   );
 
   return { handleSubmitData };

@@ -306,7 +306,6 @@ export const createCustomerSchema = z.object({
   workplace: z.object({ ...customerWorkplaceSchema(required).shape }),
   beneficiary: z.object({ ...customerBeneficiarySchema(required).shape }),
 });
-console.log('customerBaseSchema: ', customerBeneficiarySchema(required).shape);
 export const updateCustomerSchema = z.object({
   ...customerBaseSchema(!required).shape,
   workplace: z.object({ ...customerWorkplaceSchema(!required).shape }),
@@ -325,17 +324,20 @@ const orderBaseSchema = (isRequired = true) => {
     termMonths: numberSchema,
     initialPayment: numberSchema,
     userId: stringSchema, // TODO: handle it in BE
-    saleDate: getDateSchema(!required),
+    userName: stringSchema, // TODO: handle it in BE
+    customerId: stringSchema,
+    customerName: stringSchema, // TODO: handle it in BE
+    employeeLeader: stringSchema, // TODO: handle it in BE
+    employeeLeaderId: stringSchema, // TODO: handle it in BE
+    employeeManager: stringSchema, // TODO: handle it in BE
+    employeeManagerId: stringSchema, // TODO: handle it in BE
+    number: stringSchema,
   });
 };
 
 export const createOrderSchema = z.object({
   ...orderBaseSchema(required).shape,
-  customerId: z.string(),
-  customerName: z.string(), // TODO: handle it in BE
-  userFullname: z.string(), // TODO: handle it in BE
-  employeeManager: z.string(), // TODO: handle it in BE
-  number: z.string(),
+
 });
 export const updateOrderSchema = z.object({
   description: getStringSchema(!required),

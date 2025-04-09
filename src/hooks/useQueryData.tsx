@@ -7,11 +7,14 @@ export function useQueryData<T>({
   fetchFn,
   initialData,
   staleTime = getStaleTime(),
+  cacheTime = getStaleTime(),
 }: {
+  // TODO: Change to String[]
   queryKey: string;
   fetchFn: () => Promise<T>;
-  initialData: T;
+  initialData?: T;
   staleTime?: number;
+  cacheTime?: number;
 }) {
   const [searchText, setSearchText] = useState<string>('');
 

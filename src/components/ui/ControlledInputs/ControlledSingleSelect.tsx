@@ -65,7 +65,7 @@ const ControlledSingleSelect = (props: ControlledSingleSelectProps) => {
               id={props.id || props.name}
               helperText={error?.message ?? ''}
               select
-              value={value ?? 'Por Validar'}
+              value={value || ''}
               {...rest}
               {...restField}
               slotProps={{

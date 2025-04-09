@@ -16,8 +16,8 @@ export const queryClient = new QueryClient({
       // Prevents automatic re-fetching when the component mounts if data is already cached
       refetchOnMount: 'always', // Or 'always' if you prefer to always refresh
       // Prevents re-fetching when switching windows or reconnecting
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
+      // refetchOnWindowFocus: false,
+      // refetchOnReconnect: false,
     },
     mutations: {
       // Number of retries for mutations

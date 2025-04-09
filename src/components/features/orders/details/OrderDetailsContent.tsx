@@ -24,6 +24,7 @@ export default function OrderDetailsContent({ initialData, mode, id }: OrderDeta
   const { handleSubmitData } = useSubmitData<Order, CreateOrderRequest, UpdateOrderRequest>({
     id,
     mode,
+    afterCreateRoute: '/cobranza',
     createRequestAction: createOrderAction,
     updateRequestAction: updateOrderAction,
   });

@@ -16,14 +16,14 @@ import { FormBodyProps } from '@/components/layout/FormLayout/FormLayout';
 export default function CustomerFormBody({
   title,
   mode,
-  defaultExpanded = true,
+  defaultExpanded = false,
   parentName,
 }: FormBodyProps) {
   return (
     <>
       {title && <TitlePage title={title} />}
       {/* Customer */}
-      <CustomizedAccordion summary='Datos del solicitante' defaultExpanded={defaultExpanded}>
+      <CustomizedAccordion summary='Datos del solicitante' defaultExpanded={true}>
         <TwoColumnsGrid
           firstColInputs={getCustomerRequestInputs(mode, parentName)}
           secondColInputs={getCustomerAddressRequestInputs(mode, parentName)}
