@@ -23,7 +23,7 @@ function TwoColumnsGrid(props: TwoColumnsGridProps) {
         {isTitles && (
           <Grid2 container spacing={3}>
             <Typography variant='h4' sx={{ p: '1rem 0', textAlign: 'center', minHeight: '3.3rem' }}>
-              {title1 || ''}
+              {title1?.toLocaleUpperCase() || ''}
             </Typography>
           </Grid2>
         )}
@@ -37,7 +37,7 @@ function TwoColumnsGrid(props: TwoColumnsGridProps) {
         {isTitles && (
           <Grid2 container spacing={3}>
             <Typography variant='h4' sx={{ p: '1rem 0', textAlign: 'center', minHeight: '3.3rem' }}>
-              {title2 || ''}
+              {title2?.toLocaleUpperCase() || ''}
             </Typography>
           </Grid2>
         )}

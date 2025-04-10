@@ -12,6 +12,7 @@ import CustomerDetailsContent from './details/CustomerDetailsContent';
 import { deleteCustomerAction } from '@/services/actions/customerActions';
 import { useQueryData } from '@/hooks/useQueryData';
 import StatusChipCell from '@/components/ui/DataGridCellComponents/StatusChipCell';
+import { colWidth } from '@/helpers/constants';
 
 function CustomersTable({ initialData }: { initialData: ListCustomersResponse }) {
   const gridMethods = useQueryData<ListCustomersResponse>({
@@ -32,7 +33,12 @@ function CustomersTable({ initialData }: { initialData: ListCustomersResponse })
     toolbar: true,
     initialState: {
       columns: {
-        columnVisibilityModel: {},
+        columnVisibilityModel: {
+          addressSecondary: false,
+          country: false,
+          zip: false,
+          maritalStatus: false,
+        },
       },
     },
     actionButtonsProps: {
@@ -45,6 +51,7 @@ function CustomersTable({ initialData }: { initialData: ListCustomersResponse })
         gridMethods.refetch();
       },
       editAction: true,
+      deleteAction: true,
     },
   };
 
@@ -69,15 +76,14 @@ const _columns: GridColDef<Customer>[] = [
   {
     field: 'name', // Unique field name for the combined column
     headerName: 'Nombre', // Header for the consolidated column
-    minWidth: 200, // Adjust width as needed
+    minWidth: colWidth.name,
     flex: 1,
     renderCell: (params: GridRenderCellParams) => `${params?.row?.name} ${params?.row?.lastName}`,
   },
   {
     field: 'status',
     headerName: 'Status',
-    flex: 1,
-    minWidth: 140,
+    minWidth: colWidth.status,
     renderCell: (props) => <StatusChipCell {...props} />,
   },
   {
@@ -87,19 +93,19 @@ const _columns: GridColDef<Customer>[] = [
   },
   {
     field: 'birthdate',
-    headerName: 'Fecha de Nacimiento',
-    flex: 1,
+    headerName: 'Cumpleaños',
+    width: colWidth.date,
     valueFormatter: (value) => dateFormatter(value),
   },
   {
     field: 'phone',
     headerName: 'Teléfono',
-    flex: 1,
+    width: colWidth.phone,
   },
   {
     field: 'phoneSecondary',
-    headerName: 'Teléfono Secundario',
-    flex: 1,
+    headerName: 'Teléfono 2',
+    width: colWidth.phone,
   },
   {
     field: 'address',
@@ -108,19 +114,13 @@ const _columns: GridColDef<Customer>[] = [
   },
   {
     field: 'addressSecondary',
-    headerName: 'Dirección Secundaria',
+    headerName: 'Colonia',
     flex: 1,
   },
   {
     field: 'city',
     headerName: 'Ciudad',
-    flex: 1,
-  },
-  {
-    field: 'status',
-    headerName: 'Estado',
-    minWidth: 150,
-    renderCell: (props) => <StatusChipCell {...props} />,
+    width: colWidth.city,
   },
   {
     field: 'country',
@@ -132,11 +132,11 @@ const _columns: GridColDef<Customer>[] = [
     headerName: 'Código Postal',
     flex: 1,
   },
-  {
-    field: 'nationalId',
-    headerName: 'INE',
-    flex: 1,
-  },
+  // {
+  //   field: 'nationalId',
+  //   headerName: 'INE',
+  //   flex: 1,
+  // },
   {
     field: 'maritalStatus',
     headerName: 'Estado Civil',
@@ -145,29 +145,23 @@ const _columns: GridColDef<Customer>[] = [
   {
     field: 'taxNumber',
     headerName: 'RFC',
-    flex: 1,
+    width: 130,
   },
-  {
-    field: 'licenseNumber',
-    headerName: 'Licencia de Conducir',
-    flex: 1,
-  },
-  {
-    field: 'licenseExpiration',
-    headerName: 'Fecha de Expiración de Licencia',
-    flex: 1,
-    valueFormatter: (value) => dateFormatter(value),
-  },
+  // {
+  //   field: 'orderCount',
+  //   headerName: 'Contratos',
+  //   flex: 1,
+  // },
   {
     field: 'createdAt',
-    headerName: 'Fecha de Inicio',
-    width: 110,
+    headerName: 'Registrado',
+    width: colWidth.date,
     valueFormatter: (value) => dateFormatter(value),
   },
   {
     field: 'lastModifiedAt',
-    headerName: 'Última Modificación',
-    flex: 1,
+    headerName: 'Modificado',
+    width: colWidth.date,
     valueFormatter: (value) => dateFormatter(value),
   },
 ];

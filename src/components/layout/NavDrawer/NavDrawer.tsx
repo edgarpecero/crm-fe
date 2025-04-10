@@ -24,7 +24,6 @@ import List from '@mui/material/List';
 import Link from 'next/link';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import AddCardIcon from '@mui/icons-material/AddCard';
-import WidgetsIcon from '@mui/icons-material/Widgets';
 interface NavDrawerProps {
   open: boolean;
   onClose: () => void;
@@ -66,7 +65,7 @@ const DrawerMenuItem = (props: DrawerMenuRoutes) => {
               disableTypography
               primary={
                 <Typography variant='h3' sx={{ color: 'white' }}>
-                  {props.label}
+                  {props.label.toLocaleUpperCase()}
                 </Typography>
               }
             />
@@ -134,11 +133,11 @@ const routes: DrawerMenuRoutes[] = [
     icon: <SupervisorAccountOutlinedIcon />,
     route: '/usuarios',
   },
-  {
-    label: 'Inventorio',
-    icon: <WidgetsIcon />,
-    route: '/inventario',
-  },
+  // {
+  //   label: 'Inventorio',
+  //   icon: <WidgetsIcon />,
+  //   route: '/inventario',
+  // },
   {
     label: 'Reportes',
     icon: <ListAltIcon />,

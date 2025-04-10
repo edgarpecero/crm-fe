@@ -137,7 +137,7 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
           <Divider sx={{ my: 6, border: 4, color: theme.palette.primary.main }} />
 
           <Typography variant='h3' sx={{ p: '1.5rem 0', pl: 4 }}>
-            Datos del pago
+            DATOS DEL PAGO
           </Typography>
 
           <TwoColumnsGrid

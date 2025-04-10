@@ -24,7 +24,7 @@ const DataGridHeader = ({ handleSearch, buttonProps, title }: DataGridHeaderProp
         mb: '20px',
       }}
     >
-      <Typography variant='h2'>{title}</Typography>
+      <Typography variant='h2'>{title.toLocaleUpperCase()}</Typography>
       {handleSearch && (
         <SearchInput
           id='manager-user-table-search'

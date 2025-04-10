@@ -12,6 +12,7 @@ import { PageActionsEnum } from '@/types/enums';
 import UserDetailsContent from './details/UserDetailsContent';
 import { deleteUserAction } from '@/services/actions/userActions';
 import StatusChipCell from '@/components/ui/DataGridCellComponents/StatusChipCell';
+import { colWidth } from '@/helpers/constants';
 
 function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
   const gridMethods = useQueryData<ListUsersResponse>({
@@ -33,10 +34,9 @@ function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
     initialState: {
       columns: {
         columnVisibilityModel: {
-          address: false,
           addressSecondary: false,
           country: false,
-          phoneSecondary: false,
+          state: false,
           zip: false,
         },
       },
@@ -51,6 +51,7 @@ function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
         gridMethods.refetch();
       },
       editAction: true,
+      deleteAction: true,
     },
   };
 
@@ -68,30 +69,31 @@ const _columns: GridColDef<User>[] = [
   {
     field: 'employeeType',
     headerName: 'Puesto',
-    minWidth: 80, // Adjust width as needed
-    flex: 1,
+    width: 80, // Adjust width as needed
   },
   {
     field: 'name', // Unique field name for the combined column
     headerName: 'Nombre', // Header for the consolidated column
-    minWidth: 200, // Adjust width as needed
+    minWidth: colWidth.name,
     flex: 1,
     renderCell: (params: GridRenderCellParams) => `${params?.row?.name} ${params?.row?.lastName}`,
   },
   {
     field: 'employeeLeader',
     headerName: 'Líder',
+    minWidth: colWidth.name,
     flex: 1,
   },
   {
     field: 'employeeManager',
-    headerName: 'Manager',
+    headerName: 'Gerente',
+    minWidth: colWidth.name,
     flex: 1,
   },
   {
     field: 'status',
-    headerName: 'Estado',
-    minWidth: 150,
+    headerName: 'Status',
+    minWidth: colWidth.status,
     renderCell: (props) => <StatusChipCell {...props} />,
   },
   {
@@ -101,19 +103,19 @@ const _columns: GridColDef<User>[] = [
   },
   {
     field: 'birthdate',
-    headerName: 'Fecha de Nacimiento',
-    flex: 1,
+    headerName: 'Cumpleaños',
+    width: colWidth.date,
     valueFormatter: (value) => dateFormatter(value),
   },
   {
     field: 'phone',
     headerName: 'Teléfono',
-    flex: 1,
+    width: colWidth.phone,
   },
   {
     field: 'phoneSecondary',
-    headerName: 'Teléfono Secundario',
-    flex: 1,
+    headerName: 'Teléfono 2',
+    width: colWidth.phone,
   },
   {
     field: 'address',
@@ -122,13 +124,13 @@ const _columns: GridColDef<User>[] = [
   },
   {
     field: 'addressSecondary',
-    headerName: 'Dirección Secundaria',
+    headerName: 'Colonia',
     flex: 1,
   },
   {
     field: 'city',
     headerName: 'Ciudad',
-    flex: 1,
+    width: colWidth.city,
   },
   {
     field: 'state',
@@ -148,14 +150,14 @@ const _columns: GridColDef<User>[] = [
   // New fields from BaseEntity
   {
     field: 'createdAt',
-    headerName: 'Fecha de Inicio',
-    width: 110,
+    headerName: 'Registrado',
+    width: colWidth.date,
     valueFormatter: (value) => dateFormatter(value),
   },
   {
     field: 'lastModifiedAt',
-    headerName: 'Última Modificación',
-    flex: 1,
+    headerName: 'Modificado',
+    width: colWidth.date,
     valueFormatter: (value) => dateFormatter(value),
   },
   // {

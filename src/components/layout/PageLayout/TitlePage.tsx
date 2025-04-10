@@ -11,7 +11,7 @@ function TitlePage({ title, ...rest }: TitlePageProps) {
     <>
       {title && (
         <Typography {...rest} variant={rest?.variant || 'h2'} textAlign={'center'} pb={2}>
-          {title || capitalizeFirstLetter(PageActionsEnum.CREATE)}
+          {(title || capitalizeFirstLetter(PageActionsEnum.CREATE)).toUpperCase()}
         </Typography>
       )}
     </>

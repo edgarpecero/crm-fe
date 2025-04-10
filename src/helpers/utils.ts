@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import { datePickerFormat } from './constants';
 import { GridRowParams } from '@mui/x-data-grid';
 import { User } from '@/types/users';
+import { theme } from '@/styles/Theme';
 
 export const filterData = <T>(data: T[], searchInput: string, ...keys: (keyof T)[]): T[] => {
   if (!searchInput) return data; // Return all data if search input is empty
@@ -27,6 +28,26 @@ export const getCurrentDate = (): string => {
 };
 
 export const getRowId = (row: GridRowParams) => row.id;
+
+/* VALIDATORS */
+
+/* API - QUERIES */
+export const getStaleTime = (minutes: number = 5) => minutes * 60 * 1000; // 5 minutes
+
+/* STRUCTURES */
+export const getOptionsFromEnum = <T extends Record<string, string>>(enumObject: T) =>
+  (Object.keys(enumObject) as Array<keyof T>).map((key) => ({
+    label: enumObject[key],
+    value: key,
+  }));
+
+/* STYLES */
+export const pickRandomColors = (
+  color1 = theme.palette.success.main,
+  color2 = theme.palette.error.main,
+) => {
+  return Math.random() < 0.5 ? color1 : color2;
+};
 
 /* FORMATTERS */
 export const getPersonaSelectOptions = <T extends { name: string; lastName: string; id: string }>(
@@ -169,15 +190,3 @@ export const capitalizeFirstLetter = (text?: string): string => {
   if (!text) return '';
   return text.charAt(0).toUpperCase() + text.slice(1);
 };
-
-/* VALIDATORS */
-
-/* API - QUERIES */
-export const getStaleTime = (minutes: number = 5) => minutes * 60 * 1000; // 5 minutes
-
-/* STRUCTURES */
-export const getOptionsFromEnum = <T extends Record<string, string>>(enumObject: T) =>
-  (Object.keys(enumObject) as Array<keyof T>).map((key) => ({
-    label: enumObject[key],
-    value: key,
-  }));

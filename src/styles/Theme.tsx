@@ -205,7 +205,7 @@ theme.components = {
         scrollbarColor: theme.palette.grey[500],
         '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
           backgroundColor: theme.palette.grey[500],
-          width: '6px',
+          width: '10px',
           height: '10px',
         },
         '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {

@@ -58,7 +58,7 @@ const DrawerFooter = ({ onOpen, onClose, open }: DrawerFooterProps) => {
         {open ? (
           <ButtonBase onClick={onClose}>
             <ChevronLeftIcon />
-            <Typography variant='h3'>Ocultar Menu</Typography>
+            <Typography variant='h3'>OCULTAR MENU</Typography>
           </ButtonBase>
         ) : (
           <ButtonBase onClick={onOpen}>

@@ -49,7 +49,7 @@ const ClientLayout = ({ children }: PropsWithChildren) => {
           )}
           <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} gap={2}>
             <Chip
-              label={'Pachuca'}
+              label={'PACHUCA'}
               color={'primary'}
               sx={{ fontSize: '1.2rem', fontWeight: 600 }}
             />

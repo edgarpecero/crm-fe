@@ -24,7 +24,7 @@ export default function CustomizedAccordion({
     <Accordion defaultExpanded={defaultExpanded} {...rest}>
       <AccordionSummary aria-controls='panel1d-content' id='panel1d-header'>
         <Typography variant='h3' pl={2}>
-          {summary}
+          {summary.toLocaleUpperCase()}
         </Typography>
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>

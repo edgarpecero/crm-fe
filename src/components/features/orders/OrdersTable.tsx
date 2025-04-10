@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { dateFormatter, formatToPrice } from '@/helpers/utils';
+import { dateFormatter, formatToPrice, pickRandomColors } from '@/helpers/utils';
 import { QueryKeysEnum } from '@/services/config';
 import { theme } from '@/styles/Theme';
 import { ListOrdersResponse, Order } from '@/types/orders';
@@ -14,6 +14,7 @@ import { PageActionsEnum } from '@/types/enums';
 import StatusChipCell from '@/components/ui/DataGridCellComponents/StatusChipCell';
 import { termMonthOptions } from './helpers';
 import ProductChipCell from '@/components/ui/DataGridCellComponents/ProductChipCell';
+import { colWidth } from '@/helpers/constants';
 
 function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
   const gridMethods = useQueryData<ListOrdersResponse>({
@@ -34,26 +35,15 @@ function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
     toolbar: true,
     initialState: {
       columns: {
-        columnVisibilityModel: {
-          apReal: false,
-          description: false,
-          downPayment: false,
-          secondPayment: false,
-          thirdPayment: false,
-          fourthPayment: false,
-          fifthPayment: false,
-          sixthPayment: false,
-          phone: false,
-          phoneSecondary: false,
-          totalPayments: false,
-          onTimePayment: false,
-        },
+        columnVisibilityModel: {},
       },
     },
     actionButtonsProps: {
       modalProps: {
         body: <OrderDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
       },
+      // editAction: true,
+      // deleteAction: true,
     },
   };
 
@@ -76,19 +66,33 @@ const _columns: GridColDef<Order>[] = [
   },
   {
     field: 'status',
-    headerName: 'Estado',
-    width: 150,
+    headerName: 'Status',
+    minWidth: colWidth.status,
     renderCell: (props) => <StatusChipCell {...props} />,
   },
+  {
+    field: 'createdAt',
+    headerName: 'Venta',
+    width: colWidth.date,
+    valueFormatter: (value) => dateFormatter(value),
+  },
+  { field: 'location', headerName: 'Sucursal', flex: 1, minWidth: colWidth.location }, // No está en la interfaz
   {
     field: 'userName', // Cambiado de 'username' a 'userName'
     headerName: 'Vendedor',
     flex: 1,
+    minWidth: colWidth.name,
   },
-  // { field: 'sucursal', headerName: 'Sucursal', flex: 1 }, // No está en la interfaz
   {
-    field: 'employeeManager', // Cambiado de 'manager' a 'employeeManager'
-    headerName: 'Lider',
+    field: 'employeeLeader',
+    headerName: 'Líder',
+    minWidth: colWidth.name,
+    flex: 1,
+  },
+  {
+    field: 'employeeManager',
+    headerName: 'Gerente',
+    minWidth: colWidth.name,
     flex: 1,
   },
   {
@@ -97,115 +101,145 @@ const _columns: GridColDef<Order>[] = [
     width: 100,
     renderCell: (props) => <ProductChipCell {...props} />,
   },
-  { field: 'description', headerName: 'Description', flex: 1 }, // Comentado en original
+  {
+    field: 'description',
+    headerName: 'Description',
+    width: colWidth.name,
+  }, // Comentado en original
   {
     field: 'totalAmount',
     headerName: 'Monto',
-    width: 110,
+    width: colWidth.money,
     valueFormatter: (value) => formatToPrice(value),
   },
   {
     field: 'initialPayment',
     headerName: 'Pago Inicial',
-    width: 110,
-    valueFormatter: (value) => formatToPrice(value),
+    width: colWidth.money,
+    renderCell: (params) => (
+      <span style={{ color: theme.palette.primary.dark }}>{formatToPrice(params.value)}</span>
+    ),
   },
   {
     field: 'openingFee', // Cambiado de 'openingPayment' a 'openingFee'
     headerName: 'Apertura',
-    width: 90,
-    valueFormatter: (value) => formatToPrice(value),
+    width: colWidth.money,
+    renderCell: (params) => (
+      <span style={{ color: theme.palette.warning.dark }}>{formatToPrice(params.value)}</span>
+    ),
   },
   {
     field: 'excessAmount',
     headerName: 'Excedente',
-    width: 90,
-    valueFormatter: (value) => formatToPrice(value),
+    width: colWidth.money,
     renderCell: (params) => {
       const color = params.value < 0 ? theme.palette.error.main : theme.palette.success.main;
-      return (
-        <span style={{ color }}>{formatToPrice(params.value)}</span>
-      )
+      return <span style={{ color }}>{formatToPrice(params.value)}</span>;
     },
   },
   {
     field: 'monthlyPayment',
     headerName: 'Mensualidad',
-    width: 90,
+    width: colWidth.money,
     valueFormatter: (value) => formatToPrice(value),
   },
   {
     field: 'termMonths',
     headerName: 'Plazo',
-    width: 80,
+    width: 70,
     renderCell: (params: GridRenderCellParams) => {
       const option = termMonthOptions.find((opt) => opt.value === params?.row?.termMonths);
       return option ? option.label : params?.row?.termMonths.toString();
     },
   },
   {
-    field: 'createdAt',
-    headerName: 'Fecha de Venta',
-    width: 110,
-    valueFormatter: (value) => dateFormatter(value),
-  },
-  {
     field: 'customerName',
     headerName: 'Cliente',
     flex: 1,
+    minWidth: colWidth.name,
   },
   {
-    field: 'totalPayments',
+    field: 'paymentCount',
     headerName: 'Pagos',
-    flex: 1,
-    valueFormatter: (value) => formatToPrice(value), // Agregado formatter
+    width: 60,
+    align: 'right',
   },
-  // {
-  //   field: 'onTimePayments', // Cambiado de 'onTimePayment' a 'onTimePayments'
-  //   headerName: 'Pagos Puntuales',
-  //   flex: 1,
-  //   valueFormatter: (value) => formatToPrice(value),
-  // },
-  // {
-  //   field: 'advancedPayments',
-  //   headerName: 'Pagos Adelantados',
-  //   flex: 1,
-  //   valueFormatter: (value) => formatToPrice(value),
-  // },
+  {
+    field: 'onTimePayments', // Cambiado de 'onTimePayment' a 'onTimePayments'
+    headerName: 'Pagos Puntuales',
+    width: 120,
+    align: 'right',
+  },
+  {
+    field: 'advancedPayments',
+    headerName: 'Pagos Adelantados',
+    minWidth: colWidth.money,
+    renderCell: (params) => (
+      <span style={{ color: theme.palette.primary.dark }}>{formatToPrice(params.value)}</span>
+    ),
+  },
   {
     field: 'secondPayment',
     headerName: '2DA',
-    flex: 1,
+    minWidth: colWidth.money,
+    renderCell: (params: GridRenderCellParams) => (
+      <span style={{ color: pickRandomColors() }}>{formatToPrice(params.value)}</span>
+    ),
+  },
+  {
+    field: 'dailyInterest',
+    headerName: 'Int Diario',
+    minWidth: colWidth.money,
+    valueFormatter: (value) => formatToPrice(value),
+  },
+  {
+    field: 'acumulatedInterest',
+    headerName: 'Acumulado',
+    minWidth: colWidth.money,
+    valueFormatter: (value) => formatToPrice(value),
+  },
+  {
+    field: 'interestPaid',
+    headerName: 'Int pagado',
+    minWidth: colWidth.money,
     valueFormatter: (value) => formatToPrice(value),
   },
   {
     field: 'thirdPayment',
     headerName: '3RA',
-    flex: 1,
-    valueFormatter: (value) => formatToPrice(value),
+    minWidth: colWidth.money,
+    renderCell: (params: GridRenderCellParams) => (
+      <span style={{ color: pickRandomColors() }}>{formatToPrice(params.value)}</span>
+    ),
   },
   {
     field: 'fourthPayment',
     headerName: '4TA',
-    flex: 1,
-    valueFormatter: (value) => formatToPrice(value),
+    minWidth: colWidth.money,
+    renderCell: (params: GridRenderCellParams) => (
+      <span style={{ color: pickRandomColors() }}>{formatToPrice(params.value)}</span>
+    ),
   },
   {
     field: 'fifthPayment',
     headerName: '5TA',
-    flex: 1,
-    valueFormatter: (value) => formatToPrice(value),
+    minWidth: colWidth.money,
+    renderCell: (params: GridRenderCellParams) => (
+      <span style={{ color: pickRandomColors() }}>{formatToPrice(params.value)}</span>
+    ),
   },
   {
     field: 'sixthPayment',
     headerName: '6TA',
-    flex: 1,
-    valueFormatter: (value) => formatToPrice(value),
+    minWidth: colWidth.money,
+    renderCell: (params: GridRenderCellParams) => (
+      <span style={{ color: pickRandomColors() }}>{formatToPrice(params.value)}</span>
+    ),
   },
   {
     field: 'lastModifiedAt',
-    headerName: 'Última Modificación',
-    flex: 1,
+    headerName: 'Modificado',
+    width: colWidth.date,
     valueFormatter: (value) => dateFormatter(value),
   },
 ];

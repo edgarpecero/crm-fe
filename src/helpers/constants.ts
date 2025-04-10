@@ -50,3 +50,18 @@ export const regexDigitOrMinus = /^-?\d*$/;
 export const regexPositiveDigitOrFloatPoint = /^(?:0|[1-9]\d*)(?:\.\d+)?$/;
 
 /* COMMON INPUTS */
+
+export const colWidth = {
+  money: 110,
+  name: 160,
+  email: 200,
+  status: 150,
+  location: 100,
+  address: 200,
+  phone: 100,
+  city: 140,
+  state: 140,
+  country: 140,
+  zip: 140,
+  date: 90,
+};
