@@ -121,9 +121,12 @@ const _columns: GridColDef<Order>[] = [
     headerName: 'Excedente',
     width: 90,
     valueFormatter: (value) => formatToPrice(value),
-    renderCell: (params) => (
-      <span style={{ color: theme.palette.success.main }}>{params.value}</span>
-    ),
+    renderCell: (params) => {
+      const color = params.value < 0 ? theme.palette.error.main : theme.palette.success.main;
+      return (
+        <span style={{ color }}>{params.value}</span>
+      )
+    },
   },
   {
     field: 'monthlyPayment',
