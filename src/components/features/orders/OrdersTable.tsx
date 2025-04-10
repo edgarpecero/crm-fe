@@ -124,7 +124,7 @@ const _columns: GridColDef<Order>[] = [
     renderCell: (params) => {
       const color = params.value < 0 ? theme.palette.error.main : theme.palette.success.main;
       return (
-        <span style={{ color }}>{params.value}</span>
+        <span style={{ color }}>{formatToPrice(params.value)}</span>
       )
     },
   },
