@@ -9,7 +9,9 @@ interface UserBase extends BaseEntity {
   lastName: string;
   birthdate: string;
   employeeLeader?: string;
+  employeeLeaderId?: string;
   employeeManager?: string;
+  employeeManagerId?: string;
   employeeType?: string;
 }
 type User = UserBase & BasicContact;

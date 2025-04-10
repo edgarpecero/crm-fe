@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { createOrderSchema, updateOrderSchema } from '@/helpers/schemas';
 
 interface Order extends BaseEntity {
-  userFullname?: string; // Nombre completo del vendedor
+  userName?: string; // Nombre completo del vendedor
   employeeManager?: string; // Nombre del gerente
   productType?: string; // Tipo de producto
   description?: string; // Descripción de la venta
@@ -15,7 +15,7 @@ interface Order extends BaseEntity {
   termMonths?: number; // Plazo en meses
   saleDate?: string; // Fecha de venta
   customerName?: string; // Nombre del cliente
-
+  location?: string; // Ubicación de la venta
   paymentCount?: number; // Conteo de pagos
   advancedPayments?: number; // Pagos adelantados
   onTimePayments?: number; // Pagos puntuales

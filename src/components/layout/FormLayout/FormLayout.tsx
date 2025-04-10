@@ -32,7 +32,7 @@ export interface FormProps<T extends BaseEntity, S extends z.ZodType<any, any, a
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mapToRequest?: (data?: any) => any;
   id?: string;
-  initialData?: T;
+  initialData?: Partial<T>;
   title: string;
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,6 +58,8 @@ export default function FormLayoutFormLayout<
     defaultValues,
   });
 
+  console.log('initialData', initialData);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -76,7 +78,7 @@ export default function FormLayoutFormLayout<
 
   const onSubmit = useCallback(
     async (data: z.infer<S>) => {
-      // console.log('Form submitted:', data);
+      console.log('Form submitted:', data);
       startTransition(async () => {
         handleSubmitData(data, methods);
       });

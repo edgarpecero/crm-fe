@@ -2,7 +2,6 @@ import { ControlledInputType, InputsProps } from '@/components/ui/GridInputs/typ
 import { PageActionsEnum } from '@/types/enums';
 import { getOptionsFromEnum, getPersonaSelectOptions } from '@/helpers/utils';
 import { User } from '@/types/users';
-import { Inventory } from '@/types/inventory';
 
 export enum CustomerStatus {
   ToValidate = 'Por Validar',
@@ -34,10 +33,10 @@ export enum CustomerType {
   Moral = 'Persona Moral',
 }
 export enum EmployeeType {
-  Seller = 'Vendedor',
-  Leader = 'Líder',
+  Vendedor = 'Vendedor',
+  Lider = 'Lider',
   Gerente = 'Gerente',
-  Admin = 'Admin',
+  Director = 'Director',
 }
 export const termMonthOptions = [
   {
@@ -59,7 +58,7 @@ export const termMonthOptions = [
     label: '144 meses',
     value: 144,
     percentage: 0.0253,
-  }
+  },
 ];
 
 //NEWERA
@@ -196,8 +195,13 @@ export const addressInputs = (
   ];
 };
 
+export const createUserDefaultValues = {
+  employeeType: 'Vendedor',
+};
+
 const userFormInputs = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
+  users: User[] = [],
   parent: string = '',
 ): InputsProps[] => {
   const { isReadOnly, isCreate } = getPageModeFlags(mode);
@@ -217,18 +221,24 @@ const userFormInputs = (
       items: getOptionsFromEnum(EmployeeType),
     },
     {
-      name: `${parent}employeeLeader`,
-      label: 'Lider',
-      ...commonInputProps(isCreate, isReadOnly),
+      name: `${parent}employeeLeaderId`,
+      label: 'Lider Sucursal',
+      ...commonInputProps(false, isReadOnly),
+      // ...commonInputProps(dynamicDisable, !dynamicDisable),
       inputType: ControlledInputType.select,
-      items: [],
+      items: getPersonaSelectOptions(
+        users.filter((user) => user.employeeType === EmployeeType.Lider),
+      ),
     },
     {
-      name: `${parent}employeeManager`,
-      label: 'Gerente',
-      ...commonInputProps(isCreate, isReadOnly),
+      name: `${parent}employeeManagerId`,
+      label: 'Gerente Sucursal',
+      ...commonInputProps(false, isReadOnly),
+      // ...commonInputProps(dynamicDisable, !dynamicDisable),
       inputType: ControlledInputType.select,
-      items: [],
+      items: getPersonaSelectOptions(
+        users.filter((user) => user.employeeType === EmployeeType.Gerente),
+      ),
     },
     ...commonPersonaInputs(mode, parent), // inputs 6 - 12
     ...addressInputs(mode, parent), // inputs 12 - 18
@@ -334,45 +344,29 @@ export const getCustomerBeneficiaryInputs = (mode: PageActionsEnum, parentName?:
 export const getCustomerBeneficiaryAddressInputs = (mode: PageActionsEnum, parentName?: string) =>
   customerFormInputs(mode, parentName).slice(37);
 
-// export const getCustomerWorkplaceInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-//   customerFormInputs(mode).slice(16, 20);
 export const getCustomerBeneficiaryRequestInputs = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
 ) => customerFormInputs(mode).slice(24, 31);
 
 //user inputs
-export const getUserRequestInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) => {
+export const getUserRequestInputs = (
+  mode: PageActionsEnum,
+  users: User[],
+) => {
   const start = mode !== PageActionsEnum.CREATE ? 1 : 2;
-  return userFormInputs(mode).slice(start, 11);
+  return userFormInputs(mode, users).slice(start, 11);
 };
-export const getUserAddressRequestInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  userFormInputs(mode).slice(11);
-
-//customer inputs
-export const getUserInputsForCustomerRequest = (mode: PageActionsEnum, parent = '') =>
-  userFormInputs(mode, parent)
-    .slice(2, 11)
-    .filter((input) => input.label !== 'Usuario')
-    .map((input) =>
-      input.label === 'Número de usuario' ? { ...input, label: 'Número de cliente' } : input,
-    );
-
-export const getUserAddressInputsForCustomerRequest = (mode: PageActionsEnum) =>
-  userFormInputs(mode).slice(11, 19);
-
-//order inputs
-export const getUserInputsForOrderRequest = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
-  getUserInputsForCustomerRequest(mode, 'customer.');
-
-export const getUserAddressInputsForOrderRequest = (
-  mode: PageActionsEnum = PageActionsEnum.CREATE,
-) => userFormInputs(mode, 'customer.').slice(11, 19);
+export const getUserAddressRequestInputs = (
+  mode: PageActionsEnum,
+  users: User[],
+) => userFormInputs(mode, users).slice(11);
 
 const commonInputProps = (isCreate: boolean, isReadOnly: boolean) => ({
   required: isCreate,
   disabled: isReadOnly,
   gridSize: { xs: 12, sm: 6 },
 });
+
 const paymentCommonProps = { gridSize: { xs: 12, sm: 6 }, disabled: false, type: 'number' };
 const paymentInputCommonProps = { gridSize: { xs: 12, sm: 9 }, required: true, type: 'number' };
 
@@ -563,7 +557,7 @@ export const bussinessFormulas = {
     if (totalAmount < 1000) return;
     const fee = totalAmount > 300000 ? 4000 : 3000;
     const openingFee = totalAmount * 0.03 + fee;
-    return (openingFee).toFixed(2);
+    return openingFee.toFixed(2);
   },
   monthlyPayment: (totalAmount: number, termMonths: number) => {
     if (totalAmount < 1000) return;
@@ -590,11 +584,11 @@ export const bussinessFormulas = {
       return (1 + pagosMensualidades).toFixed(2);
     }
   },
-}
+};
 
 export const contractInputs = (
   mode: PageActionsEnum = PageActionsEnum.CREATE,
-  users: User[]
+  users: User[],
 ): InputsProps[] => {
   const isReadOnly = mode === PageActionsEnum.READONLY || mode === PageActionsEnum.MODALREADONLY;
   const isCreate = mode === PageActionsEnum.CREATE;
@@ -607,30 +601,59 @@ export const contractInputs = (
       required: isCreate,
       disabled: isReadOnly,
     },
-    {
-      name: 'userId',
-      label: 'Vendedor',
-      ...commonInputProps(isCreate, isReadOnly),
-      required: false,
-      inputType: ControlledInputType.select,
-      items: getPersonaSelectOptions(users),
-    },
-    {
-      name: 'employeeLeaderId',
-      label: 'Lider',
-      ...commonInputProps(isCreate, isReadOnly),
-      required: false,
-      inputType: ControlledInputType.select,
-      items: getPersonaSelectOptions(users),
-    },
-    {
-      name: 'employeeManagerId',
-      label: 'Gerente',
-      ...commonInputProps(isCreate, isReadOnly),
-      required: false,
-      inputType: ControlledInputType.select,
-      items: getPersonaSelectOptions(users),
-    },
+    ...(isCreate
+      ? [
+          {
+            name: 'userId',
+            label: 'Vendedor',
+            ...commonInputProps(isCreate, isReadOnly),
+            required: false,
+            inputType: ControlledInputType.select,
+            items: getPersonaSelectOptions(
+              users.filter((user) => user.employeeType === EmployeeType.Vendedor),
+            ),
+          },
+          {
+            name: 'employeeLeaderId',
+            label: 'Lider',
+            ...commonInputProps(isCreate, isReadOnly),
+            required: false,
+            inputType: ControlledInputType.select,
+            items: getPersonaSelectOptions(
+              users.filter((user) => user.employeeType === EmployeeType.Lider),
+            ),
+          },
+          {
+            name: 'employeeManagerId',
+            label: 'Gerente',
+            ...commonInputProps(isCreate, isReadOnly),
+            required: false,
+            inputType: ControlledInputType.select,
+            items: getPersonaSelectOptions(
+              users.filter((user) => user.employeeType === EmployeeType.Gerente),
+            ),
+          },
+        ]
+      : []),
+    ...(isReadOnly
+      ? [
+          {
+            name: 'userName',
+            label: 'Vendedor',
+            ...commonInputProps(isCreate, isReadOnly),
+          },
+          {
+            name: 'employeeLeader',
+            label: 'Lider',
+            ...commonInputProps(isCreate, isReadOnly),
+          },
+          {
+            name: 'employeeManager',
+            label: 'Gerente',
+            ...commonInputProps(isCreate, isReadOnly),
+          },
+        ]
+      : []),
     {
       name: 'productType',
       label: 'Producto',
@@ -673,7 +696,7 @@ export const contractInputs = (
       ...commonInputProps(!readonly, readonly),
     },
     {
-      name: 'saleDate',
+      name: 'createdAt',
       label: 'Fecha de venta',
       inputType: ControlledInputType.datePicker,
       ...commonInputProps(!readonly, readonly),
@@ -702,15 +725,14 @@ export const contractInputs = (
       type: 'number',
       ...commonInputProps(!readonly, readonly),
     },
-    {
-      name: 'customer.orderCount',
-      label: 'No. Contratos',
-      type: 'number',
-      ...commonInputProps(!readonly, readonly),
-    },
+    // {
+    //   name: 'customer.orderCount',
+    //   label: 'No. Contratos',
+    //   type: 'number',
+    //   ...commonInputProps(!readonly, readonly),
+    // },
   ];
 };
-
 
 // export const getContractInputsSectionOne = (mode: PageActionsEnum = PageActionsEnum.CREATE) =>
 //   contractInputs(mode).slice(0, 8);
@@ -980,4 +1002,3 @@ export const contractInputsNew = (
     },
   ];
 };
-

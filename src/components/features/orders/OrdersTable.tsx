@@ -81,7 +81,7 @@ const _columns: GridColDef<Order>[] = [
     renderCell: (props) => <ChipCell {...props} />,
   },
   {
-    field: 'userFullname', // Cambiado de 'username' a 'userFullname'
+    field: 'userName', // Cambiado de 'username' a 'userName'
     headerName: 'Vendedor',
     flex: 1,
   },
@@ -136,8 +136,8 @@ const _columns: GridColDef<Order>[] = [
     width: 100,
   },
   {
-    field: 'saleDate',
-    headerName: 'Fecha de Vta',
+    field: 'createdAt',
+    headerName: 'Fecha de Venta',
     flex: 1,
     valueFormatter: (value) => dateFormatter(value),
   },
@@ -193,5 +193,11 @@ const _columns: GridColDef<Order>[] = [
     headerName: '6TA',
     flex: 1,
     valueFormatter: (value) => formatToPrice(value),
+  },
+  {
+    field: 'lastModifiedAt',
+    headerName: 'Última Modificación',
+    flex: 1,
+    valueFormatter: (value) => dateFormatter(value),
   },
 ];

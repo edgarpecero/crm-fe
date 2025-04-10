@@ -243,12 +243,13 @@ const userBaseSchema = (isRequired = true) => {
   const dateSchema = getDateSchema(isRequired);
 
   return z.object({
-    username: stringSchema,
     name: stringSchema,
     lastName: stringSchema,
-    employeeLeader: stringSchema,
-    employeeManager: stringSchema,
-    EmployeeType: stringSchema,
+    employeeLeader: getStringSchema(!required),
+    employeeLeaderId: getStringSchema(!required),
+    employeeManager: getStringSchema(!required),
+    employeeManagerId: getStringSchema(!required),
+    employeeType: stringSchema,
     birthdate: dateSchema,
   });
 };
@@ -332,12 +333,12 @@ const orderBaseSchema = (isRequired = true) => {
     employeeManager: stringSchema, // TODO: handle it in BE
     employeeManagerId: stringSchema, // TODO: handle it in BE
     number: stringSchema,
+    location: stringSchema,
   });
 };
 
 export const createOrderSchema = z.object({
   ...orderBaseSchema(required).shape,
-
 });
 export const updateOrderSchema = z.object({
   description: getStringSchema(!required),

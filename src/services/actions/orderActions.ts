@@ -10,8 +10,6 @@ export const createOrderAction = async (
   data: CreateOrderRequest,
 ): Promise<ActionResponse<Order>> => {
   try {
-    data.saleDate = new Date();
-    data.saleDate.toISOString();
     const res = await createAction(orderService, data);
     return {
       success: true,

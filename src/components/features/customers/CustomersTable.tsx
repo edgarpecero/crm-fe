@@ -8,17 +8,16 @@ import { GridColDef } from '@mui/x-data-grid';
 import ChipCell from '@/components/ui/DataGridCellComponents/ChipCell';
 import { customerService } from '@/services/customerService';
 import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
-import { useQueryData } from '@/hooks/useQueryData';
 import { PageActionsEnum } from '@/types/enums';
 import CustomerDetailsContent from './details/CustomerDetailsContent';
 import { deleteCustomerAction } from '@/services/actions/customerActions';
-import { useQuery } from '@tanstack/react-query';
+import { useQueryData } from '@/hooks/useQueryData';
 
 function CustomersTable({ initialData }: { initialData: ListCustomersResponse }) {
-  const gridMethods = useQuery<ListCustomersResponse>({
-    queryKey: [QueryKeysEnum.CUSTOMERS],
-    queryFn: () => customerService.getAll(),
-    gcTime: 0,
+  const gridMethods = useQueryData<ListCustomersResponse>({
+    queryKey: QueryKeysEnum.CUSTOMERS,
+    fetchFn: () => customerService.getAll(),
+    initialData,
   });
   const { data, ..._pageProps } = gridMethods;
 

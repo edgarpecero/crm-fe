@@ -9,6 +9,7 @@ import FormLayout from '@/components/layout/FormLayout/FormLayout';
 import { createUserSchema, updateUserSchema } from '@/helpers/schemas';
 import { getUserFullname } from '@/helpers/utils';
 import useSubmitData from '@/hooks/useSubmitData';
+import { createUserDefaultValues } from '../../orders/helpers';
 
 interface UserDetailsContentProps {
   initialData?: User;
@@ -31,7 +32,7 @@ export default function UserDetailsContent({ initialData, mode, id }: UserDetail
 
   const formProps = {
     handleSubmitData,
-    initialData,
+    initialData: isCreateMode ? createUserDefaultValues : initialData,
     id,
     service,
     schema,

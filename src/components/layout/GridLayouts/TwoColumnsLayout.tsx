@@ -8,7 +8,7 @@ type TwoColumnsLayoutProps = Grid2Props & {
   contentTwo: ReactNode;
   title1?: string;
   title2?: string;
-}
+};
 function hasTitles(props: TwoColumnsLayoutProps): boolean {
   return props.title1 !== undefined || props.title2 !== undefined;
 }

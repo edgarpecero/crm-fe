@@ -37,7 +37,6 @@ export default function InventoryDetailsContent({
       ? 'Ingresar nuevo auto'
       : `Detalles del auto:  ${initialData?.sku || ''}`;
 
-
   const formProps = {
     handleSubmitData,
     initialData,

@@ -1,12 +1,12 @@
 'use client';
 
 import { bussinessFormulas, contractInputs, termMonthOptions } from '../../helpers';
-import { Box, Divider, Typography, } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import { PageActionsEnum } from '@/types/enums';
 import TitlePage from '@/components/layout/PageLayout/TitlePage';
 import TwoColumnsGrid from '@/components/layout/GridLayouts/TwoColumnsGrid';
 import CustomerFormBody from '@/components/features/customers/details/CustomerForm/CustomerFormBody';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { theme } from '@/styles/Theme';
 import TwoColumnsLayout from '@/components/layout/GridLayouts/TwoColumnsLayout';
 import { LinkButton } from '@/components/ui/Buttons/LinkButton';
@@ -18,7 +18,7 @@ import { useQueryData } from '@/hooks/useQueryData';
 import { ListUsersResponse } from '@/types/users';
 import { ListCustomersResponse } from '@/types/customers';
 import { customerService } from '@/services/customerService';
-import { getPersonaSelectOptions } from '@/helpers/utils';
+import { buildUserFullname, getPersonaSelectOptions } from '@/helpers/utils';
 type OrderFormBodyProps = {
   title?: string;
   mode: PageActionsEnum;
@@ -44,47 +44,9 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
   const initialPayment = watch('initialPayment');
   const employeeManagerId = watch('employeeManagerId');
   const employeeLeaderId = watch('employeeLeaderId');
-
-  useEffect(() => {
-    setValue('openingFee', openingFee(totalAmount));
-    setValue('monthlyPayment', monthlyPayment(totalAmount, termMonths));
-    setValue('excessAmount', excessAmount(totalAmount, initialPayment));
-    setValue('paymentCount', paymentCount(totalAmount, termMonths, initialPayment));
-  }, [totalAmount, termMonths, initialPayment]);
-  useEffect(() => {
-    if (customerId) {
-      getCustomerDetails();
-    }
-  }, [customerId]);
-  useEffect(() => {
-    if (userId) {
-      setValue('userName', users
-        .find((user) => user.id === userId)?.name,
-        { shouldValidate: true }
-      );
-    }
-  }, [userId, setValue]);
-  useEffect(() => {
-    if (employeeLeaderId) {
-      setValue('employeeLeader', users
-        .find((user) => user.id === employeeLeaderId)?.name,
-        { shouldValidate: true }
-      );
-    }
-  }, [employeeLeaderId, setValue]);
-  useEffect(() => {
-    if (employeeManagerId) {
-      setValue('employeeManager', users
-        .find((user) => user.id === employeeManagerId)?.name,
-        { shouldValidate: true }
-      );
-    }
-  }, [employeeManagerId, setValue]);
-
-  const users = userData?.users || [];
+  const users = useMemo(() => userData?.users || [], [userData]);
   const _mode = customerId ? mode : PageActionsEnum.READONLY;
-
-  const getCustomerDetails = async () => {
+  const getCustomerDetails = useCallback(async () => {
     try {
       const customer = await customerService.getById(customerId);
       if (customer) {
@@ -92,7 +54,7 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
           customerId: customer.id,
           customerName: customer.name + ' ' + customer.lastName,
           termMonths: termMonthOptions[0].value,
-          saleDate: new Date(),
+          createdAt: new Date(),
           location: 'Pachuca',
           customer: { ...customer, orderCount: customer?.orderCount || 0 },
         });
@@ -104,14 +66,36 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
     } finally {
       // setLoading(false);
     }
-  };
+  },[customerId, reset]);
+  useEffect(() => {
+    setValue('openingFee', openingFee(totalAmount));
+    setValue('monthlyPayment', monthlyPayment(totalAmount, termMonths));
+    setValue('excessAmount', excessAmount(totalAmount, initialPayment));
+    setValue('paymentCount', paymentCount(totalAmount, termMonths, initialPayment));
+  }, [totalAmount, termMonths, initialPayment, setValue]);
+  useEffect(() => {
+    if (customerId) {
+      getCustomerDetails();
+    }
+  }, [customerId, getCustomerDetails]);
+  useEffect(() => {
+    const fields = [
+      { id: userId, key: 'userName' },
+      { id: employeeLeaderId, key: 'employeeLeader' },
+      { id: employeeManagerId, key: 'employeeManager' },
+    ];
+
+    fields.forEach(({ id, key }) => {
+      if (id) {
+        setValue(key, buildUserFullname(users, id), { shouldValidate: true });
+      }
+    });
+  }, [userId, employeeLeaderId, employeeManagerId, setValue, users]);
 
   return (
     <>
       {title && <TitlePage title={title} />}
-      {!customerId && mode === PageActionsEnum.CREATE
-        ?
-
+      {!customerId && mode === PageActionsEnum.CREATE ? (
         <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           {/* Select or Create User */}
           <TwoColumnsLayout
@@ -140,7 +124,7 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
             }
           />
         </Box>
-        :
+      ) : (
         <>
           {/* Create Order Form */}
           <CustomerFormBody
@@ -161,7 +145,7 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
             secondColInputs={contractInputs(_mode, users).slice(9)}
           />
         </>
-      }
+      )}
     </>
   );
 }
