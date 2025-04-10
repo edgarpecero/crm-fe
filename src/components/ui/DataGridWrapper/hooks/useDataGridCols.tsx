@@ -13,6 +13,7 @@ export interface DataGridActionButtonsProps<T> {
   editAction?: boolean;
   onViewCb?: (row: T) => void;
   viewAction?: boolean;
+  actionFirstCol?: boolean;
 }
 interface UseDataGridColsParams<T extends GridValidRowModel> {
   cols: GridColDef<T>[];
@@ -31,12 +32,13 @@ function useDataGridCols<T extends GridValidRowModel>({
     deleteAction = false,
     editAction = false,
     viewAction = true,
+    actionFirstCol = false
   } = actionButtonsProps || {};
   const hasActionButtons = Boolean(
     actionButtonsProps &&
-      Object.keys(actionButtonsProps).some(
-        (key) => actionButtonsProps[key as keyof DataGridActionButtonsProps<T>] !== undefined,
-      ),
+    Object.keys(actionButtonsProps).some(
+      (key) => actionButtonsProps[key as keyof DataGridActionButtonsProps<T>] !== undefined,
+    ),
   );
   const { openModal } = useModal();
   const router = useRouter();
@@ -94,6 +96,9 @@ function useDataGridCols<T extends GridValidRowModel>({
   );
 
   const columns: GridColDef<T>[] = useMemo(() => {
+    let width = 80;
+    if (editAction) width = 110;
+    if (deleteAction) width = 150;
     const baseColumns = [
       {
         field: 'tableIndex',
@@ -104,20 +109,27 @@ function useDataGridCols<T extends GridValidRowModel>({
       ...cols,
     ];
 
-    let width = 80;
-    if (editAction) width = 110;
-    if (deleteAction) width = 150;
+
     if (hasActionButtons) {
-      baseColumns.push({
-        field: 'actions',
-        headerName: 'Acciones',
-        width,
-        renderCell: renderActionsCell,
-      });
+      if (actionFirstCol) {
+        baseColumns.unshift({
+          field: 'actions',
+          headerName: 'Acciones',
+          width,
+          renderCell: renderActionsCell,
+        });
+      } else {
+        baseColumns.push({
+          field: 'actions',
+          headerName: 'Acciones',
+          width,
+          renderCell: renderActionsCell,
+        });
+      }
     }
 
     return baseColumns;
-  }, [cols, hasActionButtons, renderActionsCell, editAction, deleteAction]);
+  }, [cols, hasActionButtons, renderActionsCell, editAction, deleteAction, actionFirstCol]);
 
   return columns;
 }

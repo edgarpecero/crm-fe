@@ -42,6 +42,7 @@ function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
       modalProps: {
         body: <OrderDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
       },
+      actionFirstCol: true
       // editAction: true,
       // deleteAction: true,
     },
