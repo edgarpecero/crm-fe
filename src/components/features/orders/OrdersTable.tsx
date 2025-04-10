@@ -76,7 +76,12 @@ const _columns: GridColDef<Order>[] = [
     width: colWidth.date,
     valueFormatter: (value) => dateFormatter(value),
   },
-  { field: 'location', headerName: 'Sucursal', flex: 1, minWidth: colWidth.location }, // No está en la interfaz
+  {
+    field: 'location', headerName: 'Sucursal', flex: 1, minWidth: colWidth.location,
+    renderCell: () => (
+      <span >Pachuca</span>
+    ),
+  }, // No está en la interfaz
   {
     field: 'userName', // Cambiado de 'username' a 'userName'
     headerName: 'Vendedor',
