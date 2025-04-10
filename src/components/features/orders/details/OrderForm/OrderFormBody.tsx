@@ -1,7 +1,13 @@
 'use client';
 
-import { bussinessFormulas, contractInputs, getCustomerAddressRequestInputs, getCustomerRequestInputs, termMonthOptions } from '../../helpers';
-import { Box, Divider, Typography } from '@mui/material';
+import {
+  bussinessFormulas,
+  contractInputs,
+  getCustomerAddressRequestInputs,
+  getCustomerRequestInputs,
+  termMonthOptions,
+} from '../../helpers';
+import { Box, Divider } from '@mui/material';
 import { PageActionsEnum } from '@/types/enums';
 import TitlePage from '@/components/layout/PageLayout/TitlePage';
 import TwoColumnsGrid from '@/components/layout/GridLayouts/TwoColumnsGrid';
@@ -128,33 +134,36 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
       ) : (
         <>
           {/* Create Order Form */}
-          {isModalMode
-            ? (
-              <>
-                <TwoColumnsGrid
-                  title1='Datos del solicitante'
-                  firstColInputs={getCustomerRequestInputs(PageActionsEnum.MODALREADONLY, 'customer.')}
-                  secondColInputs={getCustomerAddressRequestInputs(PageActionsEnum.MODALREADONLY, 'customer.')}
-                />
-              </>
-            )
-            : (
-              <>
-                <CustomerFormBody
-                  mode={PageActionsEnum.READONLY}
-                  defaultExpanded={false}
-                  required={false}
-                  parentName='customer.'
-                />
-                <Divider sx={{ my: 6, border: 4, color: theme.palette.primary.main }} />
-              </>
-            )
-          }
+          {isModalMode ? (
+            <>
+              <TwoColumnsGrid
+                title1='Datos del solicitante'
+                firstColInputs={getCustomerRequestInputs(
+                  PageActionsEnum.MODALREADONLY,
+                  'customer.',
+                )}
+                secondColInputs={getCustomerAddressRequestInputs(
+                  PageActionsEnum.MODALREADONLY,
+                  'customer.',
+                )}
+              />
+            </>
+          ) : (
+            <>
+              <CustomerFormBody
+                mode={PageActionsEnum.READONLY}
+                defaultExpanded={false}
+                required={false}
+                parentName='customer.'
+              />
+              <Divider sx={{ my: 6, border: 4, color: theme.palette.primary.main }} />
+            </>
+          )}
 
-
+          {/* 
           {isCreateMode && (<Typography variant='h3' sx={{ p: '1.5rem 0', pl: 4 }}>
             DATOS DEL PAGO
-          </Typography>)}
+          </Typography>)} */}
 
           <TwoColumnsGrid
             title1={isModalMode ? 'Datos del pago' : undefined}

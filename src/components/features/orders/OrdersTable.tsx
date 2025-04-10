@@ -42,7 +42,7 @@ function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
       modalProps: {
         body: <OrderDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
       },
-      actionFirstCol: true
+      actionFirstCol: true,
       // editAction: true,
       // deleteAction: true,
     },
@@ -78,10 +78,11 @@ const _columns: GridColDef<Order>[] = [
     valueFormatter: (value) => dateFormatter(value),
   },
   {
-    field: 'location', headerName: 'Sucursal', flex: 1, minWidth: colWidth.location,
-    renderCell: () => (
-      <span >Pachuca</span>
-    ),
+    field: 'location',
+    headerName: 'Sucursal',
+    flex: 1,
+    minWidth: colWidth.location,
+    renderCell: () => <span>Pachuca</span>,
   }, // No está en la interfaz
   {
     field: 'userName', // Cambiado de 'username' a 'userName'

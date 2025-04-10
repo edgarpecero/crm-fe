@@ -32,13 +32,13 @@ function useDataGridCols<T extends GridValidRowModel>({
     deleteAction = false,
     editAction = false,
     viewAction = true,
-    actionFirstCol = false
+    actionFirstCol = false,
   } = actionButtonsProps || {};
   const hasActionButtons = Boolean(
     actionButtonsProps &&
-    Object.keys(actionButtonsProps).some(
-      (key) => actionButtonsProps[key as keyof DataGridActionButtonsProps<T>] !== undefined,
-    ),
+      Object.keys(actionButtonsProps).some(
+        (key) => actionButtonsProps[key as keyof DataGridActionButtonsProps<T>] !== undefined,
+      ),
   );
   const { openModal } = useModal();
   const router = useRouter();
@@ -108,7 +108,6 @@ function useDataGridCols<T extends GridValidRowModel>({
       },
       ...cols,
     ];
-
 
     if (hasActionButtons) {
       if (actionFirstCol) {
