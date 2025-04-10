@@ -20,6 +20,7 @@ declare module '@mui/material/styles' {
   interface PaletteOptions {
     dark?: PaletteOptions['primary'];
     purple?: PaletteOptions['primary'];
+    aqua?: PaletteOptions['primary'];
   }
   interface Theme {
     hideShowOnHover?: {
@@ -64,20 +65,21 @@ export const theme = createTheme(
       primary: {
         main: '#1626BA',
         dark: '#111574',
-        light: '#ADD8E6',
+        light: '#cce6ff',
       },
       secondary: {
         main: '#1EBB8C',
         light: '#D7F1E9',
       },
       error: {
-        main: '#D9244F',
-        light: '#e97b95',
+        main: '#ff0000',
+        dark: '#b30000',
+        light: '#ffb3b3',
       },
       warning: {
-        main: '#D6A11C',
+        main: '#ff8000',
         // yellow
-        light: '#FFF7D9',
+        light: '#ffebcc',
       },
       common: {
         black: '#000000',
@@ -101,6 +103,11 @@ export const theme = createTheme(
         light: '#333',
       },
       purple: {
+        main: '#70299B',
+        light: '#F0D8FF',
+        contrastText: '#FFF',
+      },
+      aqua: {
         main: '#70299B',
         light: '#F0D8FF',
         contrastText: '#FFF',
@@ -174,7 +181,7 @@ export const theme = createTheme(
       },
       button: {
         fontWeight: 700,
-        fontSize: '11px',
+        fontSize: '12px',
         letterSpacing: '0.46',
       },
     },
@@ -294,6 +301,13 @@ theme.components = {
         '& .MuiAutocomplete-endAdornment': {
           top: 0,
         },
+      },
+    },
+  },
+  MuiButton: {
+    styleOverrides: {
+      root: {
+        borderRadius: '999px', // Makes buttons rounded (adjust value as needed)
       },
     },
   },

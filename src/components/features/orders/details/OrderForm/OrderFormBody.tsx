@@ -66,7 +66,7 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
     } finally {
       // setLoading(false);
     }
-  },[customerId, reset]);
+  }, [customerId, reset]);
   useEffect(() => {
     setValue('openingFee', openingFee(totalAmount));
     setValue('monthlyPayment', monthlyPayment(totalAmount, termMonths));

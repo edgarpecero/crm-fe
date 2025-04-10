@@ -4,14 +4,14 @@ import React from 'react';
 import { dateFormatter } from '@/helpers/utils';
 import { QueryKeysEnum } from '@/services/config';
 import { ListUsersResponse, User } from '@/types/users';
-import { GridColDef } from '@mui/x-data-grid';
-import ChipCell from '@/components/ui/DataGridCellComponents/ChipCell';
+import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { userService } from '@/services/userService';
 import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
 import { useQueryData } from '@/hooks/useQueryData';
 import { PageActionsEnum } from '@/types/enums';
 import UserDetailsContent from './details/UserDetailsContent';
 import { deleteUserAction } from '@/services/actions/userActions';
+import StatusChipCell from '@/components/ui/DataGridCellComponents/StatusChipCell';
 
 function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
   const gridMethods = useQueryData<ListUsersResponse>({
@@ -45,12 +45,12 @@ function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
       modalProps: {
         body: <UserDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
       },
-
       onDeleteCb: async (user: User) => {
         await deleteUserAction(user.id);
         alert('Usuario removido exitosamente!');
         gridMethods.refetch();
       },
+      editAction: true,
     },
   };
 
@@ -67,20 +67,16 @@ export default React.memo(UsersTable);
 const _columns: GridColDef<User>[] = [
   {
     field: 'employeeType',
-    headerName: 'Tipo de Empleado',
+    headerName: 'Puesto',
+    minWidth: 80, // Adjust width as needed
     flex: 1,
   },
   {
-    field: 'name',
-    headerName: 'Nombre',
-    minWidth: 120,
+    field: 'name', // Unique field name for the combined column
+    headerName: 'Nombre', // Header for the consolidated column
+    minWidth: 200, // Adjust width as needed
     flex: 1,
-  },
-  {
-    field: 'lastName',
-    headerName: 'Apellido',
-    minWidth: 120,
-    flex: 1,
+    renderCell: (params: GridRenderCellParams) => `${params?.row?.name} ${params?.row?.lastName}`,
   },
   {
     field: 'employeeLeader',
@@ -94,10 +90,9 @@ const _columns: GridColDef<User>[] = [
   },
   {
     field: 'status',
-    headerName: 'Status',
-    flex: 1,
-    minWidth: 100,
-    renderCell: (props) => <ChipCell {...props} />,
+    headerName: 'Estado',
+    minWidth: 150,
+    renderCell: (props) => <StatusChipCell {...props} />,
   },
   {
     field: 'email',
@@ -154,7 +149,7 @@ const _columns: GridColDef<User>[] = [
   {
     field: 'createdAt',
     headerName: 'Fecha de Inicio',
-    flex: 1,
+    width: 110,
     valueFormatter: (value) => dateFormatter(value),
   },
   {

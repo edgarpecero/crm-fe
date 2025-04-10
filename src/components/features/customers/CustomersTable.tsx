@@ -4,14 +4,14 @@ import React from 'react';
 import { dateFormatter } from '@/helpers/utils';
 import { QueryKeysEnum } from '@/services/config';
 import { ListCustomersResponse, Customer } from '@/types/customers';
-import { GridColDef } from '@mui/x-data-grid';
-import ChipCell from '@/components/ui/DataGridCellComponents/ChipCell';
+import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { customerService } from '@/services/customerService';
 import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
 import { PageActionsEnum } from '@/types/enums';
 import CustomerDetailsContent from './details/CustomerDetailsContent';
 import { deleteCustomerAction } from '@/services/actions/customerActions';
 import { useQueryData } from '@/hooks/useQueryData';
+import StatusChipCell from '@/components/ui/DataGridCellComponents/StatusChipCell';
 
 function CustomersTable({ initialData }: { initialData: ListCustomersResponse }) {
   const gridMethods = useQueryData<ListCustomersResponse>({
@@ -44,6 +44,7 @@ function CustomersTable({ initialData }: { initialData: ListCustomersResponse })
         alert('Cliente removido exitosamente!');
         gridMethods.refetch();
       },
+      editAction: true,
     },
   };
 
@@ -59,30 +60,25 @@ function CustomersTable({ initialData }: { initialData: ListCustomersResponse })
 export default React.memo(CustomersTable);
 
 const _columns: GridColDef<Customer>[] = [
+  // {
+  //   field: 'number',
+  //   headerName: 'Numero',
+  //   minWidth: 100,
+  //   flex: 1,
+  // },
   {
-    field: 'number',
-    headerName: 'Numero',
-    minWidth: 100,
+    field: 'name', // Unique field name for the combined column
+    headerName: 'Nombre', // Header for the consolidated column
+    minWidth: 200, // Adjust width as needed
     flex: 1,
+    renderCell: (params: GridRenderCellParams) => `${params?.row?.name} ${params?.row?.lastName}`,
   },
   {
     field: 'status',
     headerName: 'Status',
     flex: 1,
-    minWidth: 100,
-    renderCell: (props) => <ChipCell {...props} />,
-  },
-  {
-    field: 'name',
-    headerName: 'Nombre',
-    minWidth: 120,
-    flex: 1,
-  },
-  {
-    field: 'lastName',
-    headerName: 'Apellido',
-    minWidth: 120,
-    flex: 1,
+    minWidth: 140,
+    renderCell: (props) => <StatusChipCell {...props} />,
   },
   {
     field: 'email',
@@ -121,9 +117,10 @@ const _columns: GridColDef<Customer>[] = [
     flex: 1,
   },
   {
-    field: 'state',
+    field: 'status',
     headerName: 'Estado',
-    flex: 1,
+    minWidth: 150,
+    renderCell: (props) => <StatusChipCell {...props} />,
   },
   {
     field: 'country',
@@ -158,6 +155,18 @@ const _columns: GridColDef<Customer>[] = [
   {
     field: 'licenseExpiration',
     headerName: 'Fecha de Expiración de Licencia',
+    flex: 1,
+    valueFormatter: (value) => dateFormatter(value),
+  },
+  {
+    field: 'createdAt',
+    headerName: 'Fecha de Inicio',
+    width: 110,
+    valueFormatter: (value) => dateFormatter(value),
+  },
+  {
+    field: 'lastModifiedAt',
+    headerName: 'Última Modificación',
     flex: 1,
     valueFormatter: (value) => dateFormatter(value),
   },

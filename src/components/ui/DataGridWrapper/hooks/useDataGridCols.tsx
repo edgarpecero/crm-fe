@@ -99,22 +99,25 @@ function useDataGridCols<T extends GridValidRowModel>({
         field: 'tableIndex',
         headerName: '#',
         hide: true,
-        width: 60,
+        width: 70,
       },
       ...cols,
     ];
 
+    let width = 80;
+    if (editAction) width = 110;
+    if (deleteAction) width = 150;
     if (hasActionButtons) {
       baseColumns.push({
         field: 'actions',
         headerName: 'Acciones',
-        width: viewAction && editAction ? 150 : 80,
+        width,
         renderCell: renderActionsCell,
       });
     }
 
     return baseColumns;
-  }, [cols, hasActionButtons, renderActionsCell, viewAction, editAction]);
+  }, [cols, hasActionButtons, renderActionsCell, editAction, deleteAction]);
 
   return columns;
 }

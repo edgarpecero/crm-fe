@@ -22,6 +22,7 @@ const Content = styled(Box, {
   overflow: 'auto',
   [theme.breakpoints.down('sm')]: {
     border: hideBorderOnMobile ? 'none' : `2px solid ${theme.palette.grey[400]}`,
+    padding: '20px 10px !important',
   },
 }));
 

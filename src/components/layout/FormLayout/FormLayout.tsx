@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { PageActionsEnum } from '@/types/enums';
 import { BaseEntity } from '@/types/BaseEntity';
 import { z } from 'zod';
@@ -51,14 +51,13 @@ export default function FormLayoutFormLayout<
   const readonly = mode === PageActionsEnum.READONLY;
   const modalReadonly = mode === PageActionsEnum.MODALREADONLY;
   const defaultValues = mapToRequest ? mapToRequest(initialData) : initialData;
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [isPending, startTransition] = useTransition();
   const methods = useForm<z.infer<S>>({
     resolver: zodResolver(schema),
     mode: 'all',
     defaultValues,
   });
-
-  console.log('initialData', initialData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,7 +103,7 @@ export default function FormLayoutFormLayout<
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
-            width: modalReadonly ? '100%' : '70%',
+            width: isMobile ? '90%' : modalReadonly ? '100%' : '70%',
           }}
         >
           <FormContext.Provider value={contextValue}>

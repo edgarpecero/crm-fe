@@ -5,13 +5,14 @@ import Content from '@/components/layout/PageLayout/Content';
 import MainStyled from '@/components/layout/PageLayout/MainStyled';
 import { getCurrentDate } from '@/helpers/utils';
 import useDrawerWidth from '@/hooks/useDrawerWidth';
-import { Box, Chip } from '@mui/material';
-import { memo, PropsWithChildren, useCallback, useState } from 'react';
-
+import { Box, Chip, useMediaQuery } from '@mui/material';
+import { memo, PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react';
+import MenuButton from '@/components/ui/IconButtons/MenuButton';
+import { usePathname } from 'next/navigation';
 const ClientLayout = ({ children }: PropsWithChildren) => {
-  const [isNavDrawerOpen, setNavDrawerOpen] = useState(false);
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const [isNavDrawerOpen, setNavDrawerOpen] = useState(!isMobile);
   const drawerWidth = useDrawerWidth();
-
   const handleDrawerOpen = useCallback(() => {
     setNavDrawerOpen(true);
   }, []);
@@ -20,12 +21,32 @@ const ClientLayout = ({ children }: PropsWithChildren) => {
     setNavDrawerOpen(false);
   }, []);
 
+  const handleToggleDrawer = useCallback(() => {
+    setNavDrawerOpen((prev) => !prev);
+  }, []);
+
+  const pathname = usePathname();
+  const prevPathname = useRef<string | null>(null);
+
+  useEffect(() => {
+    // if url changes and is not mobile, close the drawer
+    if (isMobile && prevPathname.current !== null && prevPathname.current !== pathname) {
+      handleToggleDrawer();
+    }
+    prevPathname.current = pathname;
+  }, [pathname, isMobile, handleToggleDrawer]);
+
   return (
     <Box sx={{ height: '100%', display: 'flex' }}>
       <NavDrawer open={isNavDrawerOpen} onClose={handleDrawerClose} onOpen={handleDrawerOpen} />
-      <MainStyled open={isNavDrawerOpen} drawerwidth={drawerWidth}>
+      <MainStyled id={'MainStyled'} open={isNavDrawerOpen} drawerwidth={drawerWidth}>
         {/* TODO: Add select to change location */}
-        <Box display={'flex'} justifyContent={'flex-end'} p={1}>
+        <Box display={'flex'} justifyContent={isMobile ? 'space-between' : 'flex-end'} p={1}>
+          {isMobile && (
+            <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} gap={2}>
+              <MenuButton onClick={handleToggleDrawer} />
+            </Box>
+          )}
           <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} gap={2}>
             <Chip
               label={'Pachuca'}
@@ -41,7 +62,7 @@ const ClientLayout = ({ children }: PropsWithChildren) => {
           </Box>
         </Box>
         {/* {children} */}
-        <Content>{children}</Content>
+        <Content id='Content'>{children}</Content>
       </MainStyled>
     </Box>
   );

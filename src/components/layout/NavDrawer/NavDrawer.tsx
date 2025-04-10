@@ -16,7 +16,6 @@ import {
 import NavDrawerHeader from './NavDrawerHeader';
 import { BreakpointVisible } from '@/components/ui/BreakpointVisible';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import { DrawerMenuRoutes } from './types';
@@ -25,6 +24,7 @@ import List from '@mui/material/List';
 import Link from 'next/link';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import AddCardIcon from '@mui/icons-material/AddCard';
+import WidgetsIcon from '@mui/icons-material/Widgets';
 interface NavDrawerProps {
   open: boolean;
   onClose: () => void;
@@ -136,7 +136,7 @@ const routes: DrawerMenuRoutes[] = [
   },
   {
     label: 'Inventorio',
-    icon: <DirectionsCarIcon />,
+    icon: <WidgetsIcon />,
     route: '/inventario',
   },
   {

@@ -3,7 +3,6 @@
 import DataGridHeader from '@/components/ui/DataGridWrapper/DataGridHeader';
 import DataGridWrapper from '@/components/ui/DataGridWrapper/DataGridWrapper';
 import { capitalizeFirstLetter } from '@/helpers/utils';
-import { Typography } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { DataGridHeaderProps } from '@/components/ui/DataGridWrapper/DataGridHeader';
 import { DataGridWrapperProps } from '@/components/ui/DataGridWrapper/DataGridWrapper';
@@ -25,11 +24,11 @@ function DataGridLayout<T extends BaseEntity>({
   pageProps,
 }: DataGridLayoutProps<T>) {
   const pathname = usePathname()?.split('/').pop();
-
+  const title = pageProps?.title || capitalizeFirstLetter(pathname);
   return (
     <>
-      <Typography variant='h2'>{pageProps?.title || capitalizeFirstLetter(pathname)}</Typography>
-      {dataGridHeaderProps && <DataGridHeader {...dataGridHeaderProps} />}
+      {/* <Typography variant='h2'>{pageProps?.title || capitalizeFirstLetter(pathname)}</Typography> */}
+      {dataGridHeaderProps && <DataGridHeader {...dataGridHeaderProps} title={title} />}
       <DataGridWrapper {...dataGridProps} loading={pageProps?.isFetching} />
     </>
   );

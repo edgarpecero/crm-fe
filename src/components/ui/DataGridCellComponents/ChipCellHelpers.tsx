@@ -116,6 +116,23 @@ export const getChipIcon = (status: ChipTypesEnum) => {
   }
 };
 
+// export const ChipCell = (props: GridRenderCellParams) => {
+//   const statusKey = props.value as keyof typeof CustomerStatus;
+//   const statusValue = CustomerStatus[statusKey] || statusKey;
+
+//   // Optional: Add styling based on status
+//   const getColor = (status: keyof typeof CustomerStatus) => {
+//     switch (status) {
+//       case 'ToValidate': return 'warning';
+//       case 'Active': return 'success';
+//       case 'Canceled': return 'error';
+//       default: return 'default';
+//     }
+//   };
+
+//   return <Chip label={statusValue} color={getColor(statusKey)} />;
+// };
+
 export const getStylesByCashDrawerStatus = (value: string): SxProps<Theme> => {
   const fontStyle = { fontWeight: '700' };
 

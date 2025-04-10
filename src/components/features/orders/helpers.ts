@@ -349,17 +349,12 @@ export const getCustomerBeneficiaryRequestInputs = (
 ) => customerFormInputs(mode).slice(24, 31);
 
 //user inputs
-export const getUserRequestInputs = (
-  mode: PageActionsEnum,
-  users: User[],
-) => {
+export const getUserRequestInputs = (mode: PageActionsEnum, users: User[]) => {
   const start = mode !== PageActionsEnum.CREATE ? 1 : 2;
   return userFormInputs(mode, users).slice(start, 11);
 };
-export const getUserAddressRequestInputs = (
-  mode: PageActionsEnum,
-  users: User[],
-) => userFormInputs(mode, users).slice(11);
+export const getUserAddressRequestInputs = (mode: PageActionsEnum, users: User[]) =>
+  userFormInputs(mode, users).slice(11);
 
 const commonInputProps = (isCreate: boolean, isReadOnly: boolean) => ({
   required: isCreate,
@@ -473,7 +468,7 @@ export const contractInputs3 = (mode: PageActionsEnum = PageActionsEnum.CREATE):
     },
     {
       name: 'description',
-      label: 'Descripción',
+      label: 'Descripción del producto',
       disabled: isReadOnly,
       gridSize: { xs: 12, sm: 12 },
     },
@@ -686,7 +681,7 @@ export const contractInputs = (
     },
     {
       name: 'description',
-      label: 'Descripción',
+      label: 'Descripción del producto',
       ...commonInputProps(isCreate, isReadOnly),
       gridSize: { xs: 12, sm: 12 },
     },
@@ -778,7 +773,7 @@ export const inventoryInputs = (mode: PageActionsEnum = PageActionsEnum.CREATE):
     },
     {
       name: 'description',
-      label: 'Descripción',
+      label: 'Descripción del producto',
       ...commonInputProps(isCreate, isReadOnly),
       gridSize: { xs: 12, sm: 12 },
     },

@@ -5,13 +5,15 @@ import { dateFormatter, formatToPrice } from '@/helpers/utils';
 import { QueryKeysEnum } from '@/services/config';
 import { theme } from '@/styles/Theme';
 import { ListOrdersResponse, Order } from '@/types/orders';
-import { GridColDef } from '@mui/x-data-grid';
-import ChipCell from '@/components/ui/DataGridCellComponents/ChipCell';
+import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { orderService } from '@/services/orderService';
 import DataGridLayout from '@/components/layout/DataGridLayout/DataGridLayout';
 import { useQueryData } from '@/hooks/useQueryData';
 import OrderDetailsContent from './details/OrderDetailsContent';
 import { PageActionsEnum } from '@/types/enums';
+import StatusChipCell from '@/components/ui/DataGridCellComponents/StatusChipCell';
+import { termMonthOptions } from './helpers';
+import ProductChipCell from '@/components/ui/DataGridCellComponents/ProductChipCell';
 
 function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
   const gridMethods = useQueryData<ListOrdersResponse>({
@@ -70,15 +72,13 @@ const _columns: GridColDef<Order>[] = [
   {
     field: 'number',
     headerName: 'Folio',
-    minWidth: 100,
-    flex: 1,
+    width: 120,
   },
   {
     field: 'status',
-    headerName: 'Estatus',
-    flex: 1,
-    minWidth: 100,
-    renderCell: (props) => <ChipCell {...props} />,
+    headerName: 'Estado',
+    width: 150,
+    renderCell: (props) => <StatusChipCell {...props} />,
   },
   {
     field: 'userName', // Cambiado de 'username' a 'userName'
@@ -94,31 +94,32 @@ const _columns: GridColDef<Order>[] = [
   {
     field: 'productType', // Cambiado de 'inventoryType' a 'productType'
     headerName: 'Producto',
-    flex: 1,
+    width: 100,
+    renderCell: (props) => <ProductChipCell {...props} />,
   },
   { field: 'description', headerName: 'Description', flex: 1 }, // Comentado en original
   {
     field: 'totalAmount',
     headerName: 'Monto',
-    width: 120,
+    width: 110,
     valueFormatter: (value) => formatToPrice(value),
   },
   {
     field: 'initialPayment',
     headerName: 'Pago Inicial',
-    width: 120,
+    width: 110,
     valueFormatter: (value) => formatToPrice(value),
   },
   {
     field: 'openingFee', // Cambiado de 'openingPayment' a 'openingFee'
     headerName: 'Apertura',
-    width: 120,
+    width: 90,
     valueFormatter: (value) => formatToPrice(value),
   },
   {
     field: 'excessAmount',
     headerName: 'Excedente',
-    width: 120,
+    width: 90,
     valueFormatter: (value) => formatToPrice(value),
     renderCell: (params) => (
       <span style={{ color: theme.palette.success.main }}>{params.value}</span>
@@ -127,18 +128,22 @@ const _columns: GridColDef<Order>[] = [
   {
     field: 'monthlyPayment',
     headerName: 'Mensualidad',
-    width: 120,
+    width: 90,
     valueFormatter: (value) => formatToPrice(value),
   },
   {
     field: 'termMonths',
     headerName: 'Plazo',
-    width: 100,
+    width: 80,
+    renderCell: (params: GridRenderCellParams) => {
+      const option = termMonthOptions.find((opt) => opt.value === params?.row?.termMonths);
+      return option ? option.label : params?.row?.termMonths.toString();
+    },
   },
   {
     field: 'createdAt',
     headerName: 'Fecha de Venta',
-    flex: 1,
+    width: 110,
     valueFormatter: (value) => dateFormatter(value),
   },
   {
@@ -152,18 +157,18 @@ const _columns: GridColDef<Order>[] = [
     flex: 1,
     valueFormatter: (value) => formatToPrice(value), // Agregado formatter
   },
-  {
-    field: 'onTimePayments', // Cambiado de 'onTimePayment' a 'onTimePayments'
-    headerName: 'Pago Puntual',
-    flex: 1,
-    valueFormatter: (value) => formatToPrice(value),
-  },
-  {
-    field: 'advancedPayments',
-    headerName: 'Pagos Adelantados',
-    flex: 1,
-    valueFormatter: (value) => formatToPrice(value),
-  },
+  // {
+  //   field: 'onTimePayments', // Cambiado de 'onTimePayment' a 'onTimePayments'
+  //   headerName: 'Pagos Puntuales',
+  //   flex: 1,
+  //   valueFormatter: (value) => formatToPrice(value),
+  // },
+  // {
+  //   field: 'advancedPayments',
+  //   headerName: 'Pagos Adelantados',
+  //   flex: 1,
+  //   valueFormatter: (value) => formatToPrice(value),
+  // },
   {
     field: 'secondPayment',
     headerName: '2DA',
