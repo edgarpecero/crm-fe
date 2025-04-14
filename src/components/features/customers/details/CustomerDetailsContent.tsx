@@ -35,7 +35,7 @@ export default function CustomerDetailsContent({
   const title =
     mode === PageActionsEnum.CREATE
       ? 'Registrar nuevo cliente'
-      : `Detalles del cliente: ${getUserFullname(initialData) || ''}`;
+      : `Datos del cliente: ${getUserFullname(initialData) || ''}`;
 
   const formProps = {
     handleSubmitData,

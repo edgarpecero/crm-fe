@@ -334,6 +334,7 @@ const orderBaseSchema = (isRequired = true) => {
     employeeManagerId: stringSchema, // TODO: handle it in BE
     number: stringSchema,
     location: stringSchema,
+    createdAt: getDateSchema(!isRequired),
   });
 };
 

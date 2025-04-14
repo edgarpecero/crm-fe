@@ -11,7 +11,7 @@ export const createUserAction = async (data: CreateUserRequest): Promise<ActionR
     const res = await createAction(userService, data);
     return {
       success: true,
-      message: 'Usuario creado con éxito',
+      message: 'Empleado creado con éxito',
       data: res as User,
     };
   } catch (error) {
@@ -40,7 +40,7 @@ export const updateUserAction = async (
 
     return {
       success: true,
-      message: 'Usuario actualizado con éxito',
+      message: 'Empleado actualizado con éxito',
       data: resp as User,
     };
   } catch (error) {

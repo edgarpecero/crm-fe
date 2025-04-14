@@ -22,9 +22,9 @@ function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
   });
   const { data, ..._pageProps } = gridMethods;
 
-  const pageProps = { ..._pageProps };
+  const pageProps = { ..._pageProps, title: 'Empleados' };
   const dataGridHeaderProps = {
-    buttonProps: { text: 'Registrar nuevo usuario', href: 'usuarios/crear' },
+    // buttonProps: { text: 'Registrar nuevo empleado', href: 'usuarios/crear' },
     // handleSearch: () => { },
   };
   const dataGridProps = {
@@ -47,11 +47,11 @@ function UsersTable({ initialData }: { initialData: ListUsersResponse }) {
       },
       onDeleteCb: async (user: User) => {
         await deleteUserAction(user.id);
-        alert('Usuario removido exitosamente!');
+        alert('Empleado removido exitosamente!');
         gridMethods.refetch();
       },
       editAction: true,
-      deleteAction: true,
+      // deleteAction: true,
     },
   };
 

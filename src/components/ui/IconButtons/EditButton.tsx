@@ -1,13 +1,13 @@
 import { memo } from 'react';
 import BaseIconButton, { BaseIconButtonProps } from './BaseIconButton';
 import { theme } from '@/styles/Theme';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 const EditButton = (props: BaseIconButtonProps) => {
   return (
     <BaseIconButton
       {...props}
       tooltip='Editar'
-      icon={<EditOutlinedIcon />}
+      icon={<OpenInNewIcon />}
       sx={{
         '&:hover': {
           color: theme.palette.primary.main,

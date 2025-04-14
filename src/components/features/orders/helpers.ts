@@ -694,6 +694,7 @@ export const contractInputs = (
       name: 'createdAt',
       label: 'Fecha de venta',
       inputType: ControlledInputType.datePicker,
+      // ...commonInputProps(isCreate, isReadOnly),
       ...commonInputProps(!readonly, readonly),
     },
     {

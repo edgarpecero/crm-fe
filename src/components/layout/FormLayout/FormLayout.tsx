@@ -40,13 +40,14 @@ export interface FormLayoutProps<T extends BaseEntity, S extends z.ZodType<any, 
   mode: PageActionsEnum;
   children: React.ReactNode;
   formProps: FormProps<T, S>;
+  footer?: boolean;
 }
 
 export default function FormLayoutFormLayout<
   T extends BaseEntity,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   S extends z.ZodType<any, any, any>,
->({ mode, children, formProps }: FormLayoutProps<T, S>) {
+>({ mode, children, formProps, footer = true }: FormLayoutProps<T, S>) {
   const { schema, id, initialData, service, mapToRequest, handleSubmitData } = formProps || {};
   const readonly = mode === PageActionsEnum.READONLY;
   const modalReadonly = mode === PageActionsEnum.MODALREADONLY;
@@ -108,7 +109,7 @@ export default function FormLayoutFormLayout<
         >
           <FormContext.Provider value={contextValue}>
             {children}
-            {!readonly && !modalReadonly && <FormFooterLayout />}
+            {footer && !readonly && !modalReadonly && <FormFooterLayout />}
           </FormContext.Provider>
         </form>
       </FormProvider>

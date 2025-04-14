@@ -129,7 +129,7 @@ const routes: DrawerMenuRoutes[] = [
     route: '/cobranza',
   },
   {
-    label: 'Usuarios',
+    label: 'Empleados',
     icon: <SupervisorAccountOutlinedIcon />,
     route: '/usuarios',
   },

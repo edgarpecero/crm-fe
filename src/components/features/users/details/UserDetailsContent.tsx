@@ -27,8 +27,8 @@ export default function UserDetailsContent({ initialData, mode, id }: UserDetail
   const isCreateMode = mode === PageActionsEnum.CREATE;
   const schema = isCreateMode ? createUserSchema : updateUserSchema;
   const title = isCreateMode
-    ? 'Registrar nuevo usuario'
-    : `Detalles del usuario: ${getUserFullname(initialData) || ''}`;
+    ? 'Registrar nuevo Empleado'
+    : `Datos del Empleado: ${getUserFullname(initialData) || ''}`;
 
   const formProps = {
     handleSubmitData,

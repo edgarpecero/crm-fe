@@ -37,6 +37,12 @@ export function createApiService<T extends BaseEntity, ListResponse, C, U>(endpo
     delete: async (id: string): Promise<void> => {
       await apiFetch<void>(`${endpoint}/${id}`, { method: 'DELETE' });
     },
+    saveFileMetadata: async (id: string): Promise<Record<string, string>> => {
+      const response = await apiFetch<Record<string, string>>(`${endpoint}/${id}/file`, {
+        method: 'POST',
+      });
+      return replaceNulls<Record<string, string>>(response);
+    },
     endpoint,
   };
 }

@@ -43,7 +43,7 @@ function OrdersTable({ initialData }: { initialData: ListOrdersResponse }) {
         body: <OrderDetailsContent mode={PageActionsEnum.MODALREADONLY} />,
       },
       actionFirstCol: true,
-      // editAction: true,
+      editAction: true,
       // deleteAction: true,
     },
   };

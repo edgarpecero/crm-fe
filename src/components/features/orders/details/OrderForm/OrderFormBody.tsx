@@ -25,34 +25,45 @@ import { ListUsersResponse } from '@/types/users';
 import { ListCustomersResponse } from '@/types/customers';
 import { customerService } from '@/services/customerService';
 import { buildUserFullname, getPersonaSelectOptions } from '@/helpers/utils';
+import FileUploadButton from '@/components/ui/Buttons/FileUploadButton';
+import { orderService } from '@/services/orderService';
+import { Order } from '@/types/orders';
+import FileViewer from '@/components/ui/FileViewer/FileViewer';
 type OrderFormBodyProps = {
   title?: string;
   mode: PageActionsEnum;
 };
 const { openingFee, monthlyPayment, excessAmount, paymentCount } = bussinessFormulas;
 export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
+  const isCreateMode = mode === PageActionsEnum.CREATE;
+  const isModalMode = mode === PageActionsEnum.MODALREADONLY;
   const userDataQuery = useQueryData<ListUsersResponse>({
     queryKey: QueryKeysEnum.USERS,
     fetchFn: () => userService.getAll(),
+    enable: isCreateMode,
   });
   const { data: userData } = userDataQuery;
   const customerDataQuery = useQueryData<ListCustomersResponse>({
     queryKey: QueryKeysEnum.CUSTOMERS,
     fetchFn: () => customerService.getAll(),
+    enable: isCreateMode,
   });
   const { data: customerData } = customerDataQuery;
-  const isCreateMode = mode === PageActionsEnum.CREATE;
-  const isModalMode = mode === PageActionsEnum.MODALREADONLY;
-  const { control, watch, reset, setValue } = useFormContext();
+
+  const { control, watch, reset, setValue, getValues } = useFormContext();
+  const orderInitialData = getValues() as Order;
   const userId = watch('userId');
+  const termMonths = watch('termMonths');
   const customerId = watch('customerId');
   const totalAmount = watch('totalAmount');
-  const termMonths = watch('termMonths');
   const initialPayment = watch('initialPayment');
-  const employeeManagerId = watch('employeeManagerId');
+  const uploadFileUrl = watch('uploadFileUrl');
+  const downloadFileUrl = watch('downloadFileUrl');
   const employeeLeaderId = watch('employeeLeaderId');
+  const employeeManagerId = watch('employeeManagerId');
   const users = useMemo(() => userData?.users || [], [userData]);
   const _mode = customerId ? mode : PageActionsEnum.READONLY;
+
   const getCustomerDetails = useCallback(async () => {
     try {
       const customer = await customerService.getById(customerId);
@@ -99,6 +110,29 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
     });
   }, [userId, employeeLeaderId, employeeManagerId, setValue, users]);
 
+  const onUploadSuccess = useCallback(async () => {
+    try {
+      if (orderInitialData?.id) {
+        const response = await orderService.saveFileMetadata(orderInitialData.id);
+        if (response?.downloadUrl) {
+          const { downloadUrl } = response;
+          setValue('downloadFileUrl', downloadUrl, {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true,
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error al guardar los metadatos del archivo:', error);
+      // Aquí puedes manejar el error, como mostrar un mensaje al usuario
+    }
+  }, [setValue, orderInitialData]);
+
+  const onUploadError = useCallback((error: unknown) => {
+    console.error('Error uploading file:', error);
+  }, []);
+
   return (
     <>
       {title && <TitlePage title={title} />}
@@ -134,6 +168,43 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
       ) : (
         <>
           {/* Create Order Form */}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+              mt: 2,
+              gap: 2,
+            }}
+          >
+            <TwoColumnsGrid
+              title1={isModalMode ? 'Datos del pago' : undefined}
+              firstColInputs={contractInputs(_mode, users).slice(0, 9)}
+              secondColInputs={contractInputs(_mode, users).slice(9)}
+            />
+            {uploadFileUrl && !downloadFileUrl && (
+              <FileUploadButton
+                presignedUrl={uploadFileUrl}
+                onUploadSuccess={onUploadSuccess}
+                onUploadError={onUploadError}
+              />
+            )}
+            {downloadFileUrl && (
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'flex-end', // Alinea FileViewer a la derecha
+                }}
+              >
+                <FileViewer presignedUrl={downloadFileUrl} text='Ver contrato' />
+              </Box>
+            )}
+          </Box>
+
+          <Divider sx={{ my: 4, border: 3, color: theme.palette.primary.main }} />
+
           {isModalMode ? (
             <>
               <TwoColumnsGrid
@@ -156,7 +227,6 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
                 required={false}
                 parentName='customer.'
               />
-              <Divider sx={{ my: 6, border: 4, color: theme.palette.primary.main }} />
             </>
           )}
 
@@ -164,12 +234,6 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
           {isCreateMode && (<Typography variant='h3' sx={{ p: '1.5rem 0', pl: 4 }}>
             DATOS DEL PAGO
           </Typography>)} */}
-
-          <TwoColumnsGrid
-            title1={isModalMode ? 'Datos del pago' : undefined}
-            firstColInputs={contractInputs(_mode, users).slice(0, 9)}
-            secondColInputs={contractInputs(_mode, users).slice(9)}
-          />
         </>
       )}
     </>

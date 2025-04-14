@@ -38,7 +38,7 @@
 //   const title =
 //     mode === PageActionsEnum.CREATE
 //       ? 'Crea un nuevo contrato'
-//       : `Detalles del contrato número: ${initialData?.number || ''}`;
+//       : `Datos del contrato número: ${initialData?.number || ''}`;
 
 //   const formProps: FormProps<Order, OrderRequest> = {
 //     schema: orderSchema,
@@ -57,7 +57,7 @@
 //         <TitlePage title={'Información Adicional'} />
 
 //         <TwoColumnsGrid
-//           title1='Detalles'
+//           title1='Datos'
 //           title2='Pagos'
 //           firstColInputs={getAddInfoInputs1(mode)}
 //           secondColInputs={getAddInfoInputs2(mode)}

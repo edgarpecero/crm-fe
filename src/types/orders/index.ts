@@ -29,6 +29,8 @@ interface Order extends BaseEntity {
   fourthPayment?: number; // Cuarto pago
   fifthPayment?: number; // Quinto pago
   sixthPayment?: number; // Sexto pago
+  uploadFileUrl?: string; //s3Url
+  downloadFileUrl?: string; //s3Url
 }
 
 type CreateOrderRequest = z.infer<typeof createOrderSchema>;

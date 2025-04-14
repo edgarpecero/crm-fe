@@ -35,7 +35,7 @@ export default function InventoryDetailsContent({
   const title =
     mode === PageActionsEnum.CREATE
       ? 'Ingresar nuevo auto'
-      : `Detalles del auto:  ${initialData?.sku || ''}`;
+      : `Datos del auto:  ${initialData?.sku || ''}`;
 
   const formProps = {
     handleSubmitData,

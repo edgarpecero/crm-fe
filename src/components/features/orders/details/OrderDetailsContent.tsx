@@ -20,29 +20,28 @@ export type OrderDetailsContentProps = {
   mode: PageActionsEnum;
 };
 export default function OrderDetailsContent({ initialData, mode, id }: OrderDetailsContentProps) {
+  const isCreateMode = mode === PageActionsEnum.CREATE;
   const { innerPageTab } = useInnerPageTabs(TabsIdentifierEnum.ordersTab);
   const { handleSubmitData } = useSubmitData<Order, CreateOrderRequest, UpdateOrderRequest>({
     id,
     mode,
-    afterCreateRoute: '/cobranza',
+    // afterCreateRoute: '/cobranza',
     createRequestAction: createOrderAction,
     updateRequestAction: updateOrderAction,
   });
   const wrapperStyles = useMemo(
     () =>
       getTabContentStyle(
-        mode === PageActionsEnum.MODALREADONLY ||
-          mode === PageActionsEnum.CREATE ||
+        isCreateMode ||
+          mode === PageActionsEnum.MODALREADONLY ||
           innerPageTab === OrdersTabsEnum.Details,
       ),
-    [innerPageTab, mode],
+    [innerPageTab, mode, isCreateMode],
   );
-  const isCreateMode = mode === PageActionsEnum.CREATE;
   const schema = isCreateMode ? createOrderSchema : updateOrderSchema;
-  const title =
-    mode === PageActionsEnum.CREATE
-      ? 'Crea un nuevo contrato'
-      : `Detalles del contrato número: ${initialData?.number || ''}`;
+  const title = isCreateMode
+    ? 'Datos del pago'
+    : `Datos del contrato número: ${initialData?.number || ''}`;
 
   const formProps = {
     handleSubmitData,
@@ -55,7 +54,7 @@ export default function OrderDetailsContent({ initialData, mode, id }: OrderDeta
 
   return (
     <div style={wrapperStyles}>
-      <FormLayout mode={mode} formProps={formProps}>
+      <FormLayout mode={mode} formProps={formProps} footer={!(mode === PageActionsEnum.UPDATE)}>
         {/* Grid Section */}
         <OrderFormBody mode={mode} title={title} />
       </FormLayout>
