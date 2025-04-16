@@ -36,6 +36,7 @@ type OrderFormBodyProps = {
 const { openingFee, monthlyPayment, excessAmount, paymentCount } = bussinessFormulas;
 export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
   const isCreateMode = mode === PageActionsEnum.CREATE;
+  const isUpdateMode = mode === PageActionsEnum.UPDATE;
   const isModalMode = mode === PageActionsEnum.MODALREADONLY;
   const userDataQuery = useQueryData<ListUsersResponse>({
     queryKey: QueryKeysEnum.USERS,
@@ -183,7 +184,7 @@ export default function OrderFormBody({ title, mode }: OrderFormBodyProps) {
               firstColInputs={contractInputs(_mode, users).slice(0, 9)}
               secondColInputs={contractInputs(_mode, users).slice(9)}
             />
-            {uploadFileUrl && !downloadFileUrl && (
+            {uploadFileUrl && !downloadFileUrl && isUpdateMode && (
               <FileUploadButton
                 presignedUrl={uploadFileUrl}
                 onUploadSuccess={onUploadSuccess}

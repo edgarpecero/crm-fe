@@ -15,6 +15,12 @@ const FileViewer: React.FC<FileViewerProps> = ({ presignedUrl, text }) => {
   const [fileType, setFileType] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!presignedUrl) {
+      setFileType(null);
+      setLoading(false);
+      return;
+    }
+
     const determineFileType = () => {
       try {
         const extension = presignedUrl.split('.').pop()?.toLowerCase();
